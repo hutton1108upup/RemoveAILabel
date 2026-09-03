@@ -239,6 +239,7 @@ describe("remove-ai-label tool behavior", () => {
     worker?.emit(createReadyResponse("a", true));
 
     const downloadLink = await screen.findByRole("link", { name: "Download Cleaned Image" });
+    expect(screen.queryByRole("button", { name: "Still seeing visible artifacts?" })).not.toBeInTheDocument();
     downloadLink.addEventListener("click", (event) => event.preventDefault());
     await user.click(downloadLink);
     expect(screen.queryByRole("link", { name: "Review visible artifacts" })).not.toBeInTheDocument();
@@ -258,6 +259,11 @@ describe("remove-ai-label tool behavior", () => {
     worker?.emit(createReadyResponse("a", true));
 
     expect(screen.queryByRole("link", { name: "Review visible artifacts" })).not.toBeInTheDocument();
+    const visualReviewTrigger = await screen.findByRole("button", {
+      name: "Still seeing visible artifacts?",
+    });
+    expect(visualReviewTrigger).toHaveClass("button-ghost");
+    expect(visualReviewTrigger).not.toHaveClass("button-secondary");
 
     const downloadLink = await screen.findByRole("link", { name: "Download Cleaned Image" });
     downloadLink.addEventListener("click", (event) => event.preventDefault());

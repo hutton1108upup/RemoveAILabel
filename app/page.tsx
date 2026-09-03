@@ -207,7 +207,7 @@ export default function HomePage() {
             </section>
           </div>
         </main>
-        <Footer siteBLabel={homePageContent.footerSiteBLabel} />
+        <Footer />
       </div>
     </>
   );

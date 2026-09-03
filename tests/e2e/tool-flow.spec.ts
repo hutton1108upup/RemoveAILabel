@@ -63,6 +63,20 @@ test("mobile page hydrates without runtime or console errors", async ({ page }) 
   expect(consoleErrors).toEqual([]);
 });
 
+test("content route keeps the breadcrumb close to the header", async ({ page }) => {
+  await page.goto("/instagram-ai-info/");
+  await page.waitForLoadState("networkidle");
+
+  const header = await page.locator(".site-header").boundingBox();
+  const breadcrumbs = await page.locator(".breadcrumbs").boundingBox();
+  expect(header).not.toBeNull();
+  expect(breadcrumbs).not.toBeNull();
+
+  const gap = breadcrumbs!.y - (header!.y + header!.height);
+  expect(gap).toBeGreaterThanOrEqual(40);
+  expect(gap).toBeLessThanOrEqual(72);
+});
+
 test("already-clean file is not rewritten and can reset", async ({ page }) => {
   await page.goto("/");
   await page.getByLabel("Choose image files").setInputFiles(pngFile("camera-clean.png"));

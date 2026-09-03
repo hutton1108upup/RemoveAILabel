@@ -54,6 +54,7 @@ export function FileResultCard({
             href={downloadHref}
             downloadName={downloadName}
             onDownload={onDownload}
+            showVisualReview={Boolean(siteBUrl)}
             onToggleVisual={onToggleVisual}
             onCheckAnother={onCheckAnother}
           />
