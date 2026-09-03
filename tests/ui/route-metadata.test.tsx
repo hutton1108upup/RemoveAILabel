@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
 import HomePage, { metadata as homeMetadata } from "@/app/page";
@@ -13,6 +13,8 @@ import GuidesPage, { metadata as guidesMetadata } from "@/app/guides/page";
 import AboutPage from "@/app/about/page";
 import PrivacyPage from "@/app/privacy/page";
 import TermsPage from "@/app/terms/page";
+
+afterEach(() => cleanup());
 
 const expectedRoutes = [
   {
@@ -107,6 +109,81 @@ describe("route metadata and static seo", () => {
       expect(screen.getByRole("heading", { level: 1, name: route.h1 })).toBeInTheDocument();
       unmount();
     }
+  });
+
+  it("renders route-specific guidance with traceable evidence", () => {
+    const pages = [
+      {
+        Page: PhotoshopPage,
+        heading: "Check the Export, Not Just the Tool Name",
+        officialSource: "Adobe: Export images with Content Credentials",
+      },
+      {
+        Page: InstagramPage,
+        heading: "What Instagram AI Info Does—and Does Not—Mean",
+        officialSource: "Meta: How AI labels work on Facebook and Instagram",
+      },
+      {
+        Page: FacebookPage,
+        heading: "Why Facebook May Show AI Info",
+        officialSource: "Meta: How AI labels work on Facebook and Instagram",
+      },
+      {
+        Page: WhyAiInfoPage,
+        heading: "Where an AI Info Signal Can Come From",
+        officialSource: "Meta: How AI labels work on Facebook and Instagram",
+      },
+      {
+        Page: C2paPage,
+        heading: "Before You Remove Content Credentials",
+        officialSource: "C2PA: Content Credentials specification",
+      },
+      {
+        Page: SupportedFormatsPage,
+        heading: "Keep or Remove Workflow Metadata?",
+        officialSource: "W3C: Portable Network Graphics specification",
+      },
+    ];
+
+    for (const page of pages) {
+      const { unmount } = render(<page.Page />);
+      expect(screen.getByRole("heading", { level: 2, name: page.heading })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: page.officialSource })).toHaveAttribute(
+        "href",
+        expect.stringMatching(/^https:\/\//),
+      );
+      expect(screen.getAllByText("Official source").length).toBeGreaterThan(0);
+      unmount();
+    }
+  });
+
+  it("labels community reports as user discussions and answers the reported questions cautiously", () => {
+    const { unmount } = render(<PhotoshopPage />);
+
+    expect(screen.getAllByText("User discussion").length).toBeGreaterThan(0);
+    expect(
+      screen.getByRole("button", { name: "Which Photoshop tool triggered the AI Info label?" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Does undoing Generative Fill remove every AI-related signal?" }),
+    ).toBeInTheDocument();
+    unmount();
+
+    render(<InstagramPage />);
+    expect(
+      screen.getByRole("button", { name: "Can this remove AI Info from an Instagram post that is already live?" }),
+    ).toBeInTheDocument();
+  });
+
+  it("states the current local-processing privacy boundary without aspirational wording", () => {
+    render(<PrivacyPage />);
+
+    expect(screen.getByRole("heading", { level: 2, name: "Your Images Stay in Your Browser" })).toBeInTheDocument();
+    expect(
+      screen.getByText(/This build does not upload selected image bytes, file names, prompts, workflow JSON, GPS, raw EXIF, raw XMP, image hashes, or thumbnails/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/The current analytics adapter is a no-op/i)).toBeInTheDocument();
+    expect(screen.queryByText(/should not upload/i)).not.toBeInTheDocument();
   });
 
   it("renders the legal routes as readable narrow pages", () => {

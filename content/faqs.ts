@@ -59,70 +59,90 @@ export const homeFaqs: FaqItem[] = [
 export const pageFaqs: Record<string, FaqItem[]> = {
   "instagram-ai-info": [
     {
-      question: "Why can a real photo still show AI Info on Instagram?",
+      question: "Does Instagram AI Info mean the whole photo was generated?",
       answer:
-        "A real photo can still carry Content Credentials or editing metadata after AI-assisted tools such as Generative Fill, Expand, or denoise workflows.",
+        "No. The notice can reflect an industry-shared signal or disclosure that AI was involved, but it does not state what percentage of the image was generated rather than photographed.",
     },
     {
-      question: "Can this tool edit an Instagram post after upload?",
+      question: "Can this remove AI Info from an Instagram post that is already live?",
       answer:
-        "No. It only checks a local source file and can create a cleaned copy before you post.",
+        "No. The tool can only inspect a local file and create a separate copy before a future upload. It cannot edit, appeal, or relabel an existing Instagram post.",
     },
     {
-      question: "Does Instagram only use metadata?",
+      question: "Which file should I check in an Instagram carousel?",
       answer:
-        "No. Meta says labels can come from industry-shared signals, creator disclosure, and other platform systems.",
+        "Check each original JPG or PNG separately. The tool reports file-level findings and cannot determine which file or platform-side signal affected the carousel as a whole.",
+    },
+    {
+      question: "What if the scan finds no supported metadata?",
+      answer:
+        "Confirm that you scanned the same export you planned to upload. If it is already clean, the notice may involve disclosure or another platform-side signal that this local scanner cannot inspect.",
     },
   ],
   "facebook-ai-info": [
     {
-      question: "Why does Facebook add AI Info to some photos?",
+      question: "Why can a real photo show AI Info on Facebook?",
       answer:
-        "Facebook can react to embedded credentials, disclosures, or other systems that interpret how the file was produced or edited.",
+        "A real photo can still carry a Content Credential or AI-related editing record. Meta also describes disclosure and other platform systems, so one notice does not prove the whole image was generated.",
     },
     {
-      question: "Can a cleaned file still be labeled on Facebook?",
+      question: "Can this remove AI Info from an existing Facebook post?",
       answer:
-        "Yes. The tool can remove supported file metadata, but Facebook can still apply its own rules.",
+        "No. It changes only a new local copy. It cannot edit a live post, change an account setting, or submit an appeal to Facebook.",
     },
     {
-      question: "What should I verify before posting?",
+      question: "Can I check a batch of product or campaign images?",
       answer:
-        "Check whether embedded C2PA credentials, AI-related XMP, or prompt-style text fields were removed from the cleaned copy.",
+        "Yes. Add the final files together and review each result. One failed or unsupported file does not block verified clean copies from the rest of the batch.",
+    },
+    {
+      question: "Can a cleaned file still receive AI Info on Facebook?",
+      answer:
+        "Yes. Cleaning removes only supported metadata in that file. Facebook may use disclosure or other systems that the local scanner cannot inspect or control.",
     },
   ],
   "photoshop-ai-label": [
     {
-      question: "Can Photoshop export Content Credentials into JPG or PNG?",
+      question: "Which Photoshop tool triggered the AI Info label?",
       answer:
-        "Yes. Adobe documents that Content Credentials can be attached directly to a file, stored in the cloud, or omitted on export depending on the workflow.",
+        "The final file does not provide a reliable, version-independent list of which button caused a platform notice. Review the current Photoshop export options and scan the actual JPG or PNG you plan to share.",
     },
     {
-      question: "Does this tool remove visible edits from Generative Fill?",
+      question: "Does undoing Generative Fill remove every AI-related signal?",
       answer:
-        "No. It only works on supported file metadata and does not change visible content.",
+        "Undoing or deleting an edit does not prove what the final export contains. Photoshop behavior can vary by version and export path, so inspect the exported file instead of relying on the document history alone.",
+    },
+    {
+      question: "Does Content Credentials mean the whole photo was generated?",
+      answer:
+        "No. Content Credentials can record provenance and editing actions. This scanner does not estimate how much of an image was generated or photographed.",
     },
     {
       question: "Should I keep the original Photoshop export?",
       answer:
-        "Yes. Keep the original source file because the cleaned copy may no longer carry the embedded provenance record.",
+        "Yes. Keep the original document and export when provenance or client records matter. A cleaned copy may no longer contain the embedded credential.",
     },
   ],
   "why-does-my-photo-say-ai-info": [
     {
-      question: "Can software names alone prove a photo is AI generated?",
+      question: "Can a software name prove that my photo was AI-generated?",
       answer:
-        "No. A software tag like Photoshop alone is not enough to treat a file as AI-generated, which is why the tool only removes confirmed targets.",
+        "No. A general software tag such as Photoshop is not enough to show that the entire image was generated, which is why the scanner separates confirmed targets from general metadata.",
     },
     {
-      question: "What if no supported metadata is found?",
+      question: "Why can AI Info remain when no supported metadata is found?",
       answer:
-        "The label may come from disclosure requirements, platform-side inference, or unsupported metadata formats.",
+        "The notice may involve a disclosure, a platform classifier, another non-file signal, or an unsupported metadata format. A local scan covers only the fields listed on this site.",
     },
     {
       question: "Will removing metadata make a photo look more natural?",
       answer:
         "No. Metadata cleanup does not change skin, lighting, hands, texture, or other visible artifacts.",
+    },
+    {
+      question: "Can this tool tell whether a photo is authentic?",
+      answer:
+        "No. It reports supported file metadata and verifies a cleanup copy. It does not authenticate the depicted event, identify every editing step, or judge the creator's disclosure.",
     },
   ],
   "c2pa-ai-label": [
@@ -130,6 +150,11 @@ export const pageFaqs: Record<string, FaqItem[]> = {
       question: "What is lost when embedded Content Credentials are removed?",
       answer:
         "You lose the embedded provenance package and the editing history that can travel with that file copy.",
+    },
+    {
+      question: "Does removing an embedded credential delete a cloud copy?",
+      answer:
+        "No. Removing a supported embedded package changes only the new local file. A credential stored in Adobe's cloud or another external service is outside this tool's control.",
     },
     {
       question: "Does this tool touch SynthID or invisible pixel watermarks?",
@@ -152,6 +177,11 @@ export const pageFaqs: Record<string, FaqItem[]> = {
       question: "Does WebP cleaning ship by default?",
       answer:
         "No. This build keeps WebP inspect-only until the complete real-image and decoded-pixel release gate has passed.",
+    },
+    {
+      question: "Should I keep ComfyUI prompt and workflow metadata?",
+      answer:
+        "Keep the original when you want to reload or share the workflow. Create a separate cleaned copy when supported prompt or node data should not travel with a client or public file.",
     },
     {
       question: "What stays preserved by default?",
