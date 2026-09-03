@@ -10,6 +10,17 @@ afterEach(() => {
 });
 
 describe("home page shell", () => {
+  it("renders the selected Precision Clean symbol in the accessible brand link", () => {
+    render(<HomePage />);
+
+    const header = screen.getByRole("banner");
+    const brandLink = within(header).getByRole("link", { name: "Remove AI Label" });
+    const brandSymbol = brandLink.querySelector("[data-brand-symbol='precision-clean']");
+
+    expect(brandSymbol).toBeInTheDocument();
+    expect(brandSymbol).toHaveAttribute("aria-hidden", "true");
+  });
+
   it("imports the root design tokens at the top of globals.css", () => {
     const globalsPath = path.resolve(process.cwd(), "app/globals.css");
     const globalsCss = fs.readFileSync(globalsPath, "utf8");

@@ -2,6 +2,7 @@
 
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
+import { BrandSymbol } from "@/components/brand/BrandSymbol";
 import { headerNavigation } from "@/content/navigation";
 import { AppLink } from "./AppLink";
 
@@ -25,6 +26,7 @@ export function Header() {
     <header className="site-header" data-home-section="header">
       <div className="shell site-header-inner">
         <AppLink href="/" className="brand-mark">
+          <BrandSymbol className="brand-symbol" />
           Remove AI Label
         </AppLink>
         {mobile ? (

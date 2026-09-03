@@ -1,3 +1,4 @@
+import { BrandSymbol } from "@/components/brand/BrandSymbol";
 import { footerGuideLinks, footerSiteLinks } from "@/content/navigation";
 import { AppLink } from "./AppLink";
 
@@ -10,6 +11,7 @@ export function Footer() {
       <div className="shell footer-grid">
         <div>
           <AppLink href="/" className="brand-mark">
+            <BrandSymbol className="brand-symbol" />
             Remove AI Label
           </AppLink>
           <p className="body-copy">

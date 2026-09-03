@@ -117,8 +117,18 @@ button {
 }
 
 .brand-mark {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
   font-size: var(--Typography-body);
   font-weight: 600;
+}
+
+.brand-symbol {
+  color: var(--Colors-accent);
+  flex: 0 0 auto;
+  height: 28px;
+  width: 28px;
 }
 
 .page-shell {
