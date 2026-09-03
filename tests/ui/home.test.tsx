@@ -3,6 +3,7 @@ import path from "node:path";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import HomePage from "@/app/page";
+import { metadata } from "@/app/page";
 
 afterEach(() => {
   cleanup();
@@ -25,7 +26,7 @@ describe("home page shell", () => {
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "Check and Clean Supported AI-Related Metadata Before You Post",
+        name: "Check and Remove AI Label Metadata Before You Post",
       }),
     ).toBeInTheDocument();
 
@@ -33,7 +34,7 @@ describe("home page shell", () => {
     expect(sections).toHaveLength(12);
 
     expect(
-      within(main).getByRole("heading", { level: 2, name: "What This Tool Checks" }),
+      within(main).getByRole("heading", { level: 2, name: "What the Remove AI Label Tool Checks" }),
     ).toBeInTheDocument();
     expect(
       within(main).getByRole("heading", { level: 2, name: "What It Preserves" }),
@@ -42,12 +43,32 @@ describe("home page shell", () => {
       within(main).getByRole("heading", { level: 2, name: "What It Cannot Guarantee" }),
     ).toBeInTheDocument();
     expect(
-      within(main).getByRole("heading", { level: 2, name: "How It Works" }),
+      within(main).getByRole("heading", { level: 2, name: "How to Remove AI Label Metadata from an Image" }),
     ).toBeInTheDocument();
     expect(within(main).getByRole("heading", { level: 2, name: "FAQ" })).toBeInTheDocument();
 
     expect(container.querySelectorAll("[data-surface='navy']")).toHaveLength(1);
     expect(screen.queryByText("Uploading")).not.toBeInTheDocument();
+  });
+
+  it("keeps the homepage focused on the Remove AI Label search intent", () => {
+    const { container } = render(<HomePage />);
+    const main = screen.getByRole("main");
+    const words = main.textContent?.match(/[A-Za-z0-9]+(?:[’'-][A-Za-z0-9]+)*/g) ?? [];
+
+    expect(metadata.title).toBe("Remove AI Label from Images — Free & Private Tool");
+    expect(metadata.description).toBe(
+      "Check and remove supported C2PA, XMP and AI label metadata from JPG and PNG images locally in your browser. Free, private and no account.",
+    );
+    expect(
+      screen.getByRole("heading", { level: 2, name: "What the Remove AI Label Tool Checks" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "How to Remove AI Label Metadata from an Image" }),
+    ).toBeInTheDocument();
+    expect(words.length).toBeGreaterThanOrEqual(1200);
+    expect(words.length).toBeLessThanOrEqual(1800);
+    expect(container.querySelectorAll("h1")).toHaveLength(1);
   });
 
   it("renders a static example verification report and a complete final CTA", () => {

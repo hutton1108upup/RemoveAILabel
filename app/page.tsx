@@ -127,15 +127,36 @@ export default function HomePage() {
 
           <div className="shell section-stack">
             <div data-home-section="checks">
-              <ChecksGrid title="What This Tool Checks" items={homePageContent.checks} />
+              <section>
+                <h2>What the Remove AI Label Tool Checks</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.checks.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <ChecksGrid items={homePageContent.checks} />
+              </section>
             </div>
 
             <div data-home-section="preserves">
-              <PreserveCard title="What It Preserves" items={homePageContent.preserves} />
+              <section>
+                <h2>What It Preserves</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.preserves.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <PreserveCard items={homePageContent.preserves} />
+              </section>
             </div>
 
             <section data-home-section="limits" data-surface="navy" className="capability-wrap">
               <h2>What It Cannot Guarantee</h2>
+              <div className="section-copy section-copy-dark">
+                {homePageContent.sectionCopy.limits.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
               <CapabilitySplit
                 dark
                 canTitle="What this tool can do"
@@ -162,15 +183,36 @@ export default function HomePage() {
             </section>
 
             <div data-home-section="scenarios">
-              <ScenarioGrid title="Who This Helps" items={homePageContent.scenarios} />
+              <section>
+                <h2>Who This Helps</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.scenarios.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <ScenarioGrid items={homePageContent.scenarios} />
+              </section>
             </div>
 
             <div data-home-section="how-it-works" id="how-it-works">
-              <StepList title="How It Works" steps={homePageContent.workflow} />
+              <section>
+                <h2>How to Remove AI Label Metadata from an Image</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.workflow.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <StepList steps={homePageContent.workflow} />
+              </section>
             </div>
 
             <section data-home-section="report">
               <h2>Before / After Report</h2>
+              <div className="section-copy">
+                {homePageContent.sectionCopy.report.map((paragraph) => (
+                  <p key={paragraph} className="body-copy">{paragraph}</p>
+                ))}
+              </div>
               <article className="card result-card">
                 <h3>Example verification report</h3>
                 <VerificationTable result={exampleResult} />
@@ -186,19 +228,35 @@ export default function HomePage() {
             </section>
 
             <div data-home-section="guides">
-              <GuideCardGrid title="Start with a Specific Guide" items={homePageContent.entryCards} />
+              <section>
+                <h2>Start with a Specific Guide</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.guides.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <GuideCardGrid items={homePageContent.entryCards} />
+              </section>
             </div>
 
             <div data-home-section="faq">
-              <FaqAccordion items={homePageContent.faqs} />
+              <section>
+                <h2>FAQ</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.faq.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <FaqAccordion items={homePageContent.faqs} showTitle={false} />
+              </section>
             </div>
 
             <section data-home-section="cta">
               <div className="cta-section">
                 <h2>Check a File Before You Post</h2>
-                <p className="body-large">
-                  Inspect supported file-level metadata in your browser. Create a separate copy only when the result supports cleanup, then verify it before downloading.
-                </p>
+                {homePageContent.sectionCopy.cta.map((paragraph) => (
+                  <p key={paragraph} className="body-large">{paragraph}</p>
+                ))}
                 <AppLink href="/#use-free-tool" className="button button-primary">
                   Check a File
                 </AppLink>

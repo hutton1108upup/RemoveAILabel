@@ -6,14 +6,15 @@ import type { FaqItem } from "@/content/faqs";
 
 interface FaqAccordionProps {
   items: FaqItem[];
+  showTitle?: boolean;
 }
 
-export function FaqAccordion({ items }: FaqAccordionProps) {
+export function FaqAccordion({ items, showTitle = true }: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
     <section>
-      <h2>FAQ</h2>
+      {showTitle ? <h2>FAQ</h2> : null}
       <div className="faq-shell">
         {items.map((item, index) => {
           const expanded = openIndex === index;

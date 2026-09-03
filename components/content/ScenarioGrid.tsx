@@ -1,12 +1,12 @@
 interface ScenarioGridProps {
-  title: string;
+  title?: string;
   items: ReadonlyArray<{ title: string; description: string }>;
 }
 
 export function ScenarioGrid({ title, items }: ScenarioGridProps) {
   return (
     <section>
-      <h2>{title}</h2>
+      {title ? <h2>{title}</h2> : null}
       <div className="card-grid card-grid-four">
         {items.map((item) => (
           <article key={item.title} className="card">

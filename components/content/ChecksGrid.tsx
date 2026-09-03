@@ -1,7 +1,7 @@
 import { BadgeCheck, FileCode2, ScanSearch, Shield } from "lucide-react";
 
 interface ChecksGridProps {
-  title: string;
+  title?: string;
   items: ReadonlyArray<{ title: string; description: string }>;
 }
 
@@ -10,7 +10,7 @@ export function ChecksGrid({ title, items }: ChecksGridProps) {
 
   return (
     <section>
-      <h2>{title}</h2>
+      {title ? <h2>{title}</h2> : null}
       <div className="card-grid card-grid-four">
         {items.map((item, index) => {
           const Icon = icons[index % icons.length];

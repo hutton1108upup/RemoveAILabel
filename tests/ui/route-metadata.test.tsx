@@ -19,8 +19,8 @@ afterEach(() => cleanup());
 const expectedRoutes = [
   {
     path: "/",
-    title: "Check and Clean AI Label Metadata | Free Local Tool",
-    h1: "Check and Clean Supported AI-Related Metadata Before You Post",
+    title: "Remove AI Label from Images — Free & Private Tool",
+    h1: "Check and Remove AI Label Metadata Before You Post",
     metadata: homeMetadata,
     Page: HomePage,
   },
@@ -87,13 +87,13 @@ describe("route metadata and static seo", () => {
       expect(route.metadata.title).toBe(route.title);
       expect(route.metadata.alternates?.canonical).toBe(
         route.path === "/"
-          ? "https://removeailabel.com/"
-          : `https://removeailabel.com${route.path}/`,
+          ? "https://removeailabel.app/"
+          : `https://removeailabel.app${route.path}/`,
       );
       expect(route.metadata.openGraph?.url).toBe(
         route.path === "/"
-          ? "https://removeailabel.com/"
-          : `https://removeailabel.com${route.path}/`,
+          ? "https://removeailabel.app/"
+          : `https://removeailabel.app${route.path}/`,
       );
       expect(
         route.metadata.twitter && "card" in route.metadata.twitter
@@ -214,21 +214,21 @@ describe("route metadata and static seo", () => {
     const robotsConfig = robots();
     const sitemapEntries = await sitemap();
 
-    expect(robotsConfig.host).toBe("https://removeailabel.com");
-    expect(robotsConfig.sitemap).toBe("https://removeailabel.com/sitemap.xml");
+    expect(robotsConfig.host).toBe("https://removeailabel.app");
+    expect(robotsConfig.sitemap).toBe("https://removeailabel.app/sitemap.xml");
     expect(sitemapEntries).toHaveLength(11);
     expect(sitemapEntries.map((entry) => entry.url)).toEqual([
-      "https://removeailabel.com/",
-      "https://removeailabel.com/instagram-ai-info/",
-      "https://removeailabel.com/facebook-ai-info/",
-      "https://removeailabel.com/photoshop-ai-label/",
-      "https://removeailabel.com/why-does-my-photo-say-ai-info/",
-      "https://removeailabel.com/c2pa-ai-label/",
-      "https://removeailabel.com/supported-formats/",
-      "https://removeailabel.com/guides/",
-      "https://removeailabel.com/about/",
-      "https://removeailabel.com/privacy/",
-      "https://removeailabel.com/terms/",
+      "https://removeailabel.app/",
+      "https://removeailabel.app/instagram-ai-info/",
+      "https://removeailabel.app/facebook-ai-info/",
+      "https://removeailabel.app/photoshop-ai-label/",
+      "https://removeailabel.app/why-does-my-photo-say-ai-info/",
+      "https://removeailabel.app/c2pa-ai-label/",
+      "https://removeailabel.app/supported-formats/",
+      "https://removeailabel.app/guides/",
+      "https://removeailabel.app/about/",
+      "https://removeailabel.app/privacy/",
+      "https://removeailabel.app/terms/",
     ]);
   });
 });
