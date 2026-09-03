@@ -488,7 +488,11 @@ export function RemoveAiLabelTool() {
   const unsupported = entries.filter((entry) => entry.status === "unsupported").length;
 
   return (
-    <section className="tool-shell" aria-label="Remove AI label tool">
+    <section
+      className="tool-shell"
+      aria-label="Remove AI label tool"
+      data-clarity-mask="true"
+    >
       <div data-testid="tool-status-live" aria-live="polite" className="visually-hidden">
         {statusSummary(entries)}
       </div>

@@ -20,6 +20,7 @@ describe("home page shell", () => {
   it("renders the 12 required homepage sections and only one navy section", () => {
     const { container } = render(<HomePage />);
     const main = screen.getByRole("main");
+    const tool = screen.getByRole("region", { name: "Remove AI label tool" });
 
     expect(screen.getByRole("banner")).toBeInTheDocument();
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
@@ -49,6 +50,7 @@ describe("home page shell", () => {
 
     expect(container.querySelectorAll("[data-surface='navy']")).toHaveLength(1);
     expect(screen.queryByText("Uploading")).not.toBeInTheDocument();
+    expect(tool).toHaveAttribute("data-clarity-mask", "true");
   });
 
   it("keeps the homepage focused on the Remove AI Label search intent", () => {

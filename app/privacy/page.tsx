@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <main className="main-shell" role="main">
         <div className="shell narrow-page legal-stack" data-page-width="narrow">
           <h1>Privacy Policy</h1>
-          <p className="evidence-note">Last updated: September 3, 2026</p>
+          <p className="evidence-note">Last updated: September 4, 2026</p>
 
           <section className="legal-section">
             <h2>Selected Images Are Processed in Your Browser</h2>
@@ -40,12 +40,22 @@ export default function PrivacyPage() {
           </section>
 
           <section className="legal-section">
-            <h2>Analytics in This Version</h2>
+            <h2>Microsoft Clarity Analytics</h2>
             <p>
-              This version sends no tool events to an analytics provider. If analytics is added later,
-              it must not include image bytes,
-              file names, prompts, workflow contents, GPS, raw metadata, hashes, or thumbnails, and
-              this policy must be updated before that change is enabled.
+              This site uses Microsoft Clarity to understand page views and interactions such as
+              clicks and scrolling so we can improve the site. Clarity is initialized with analytics
+              and ad storage denied by default, so it does not use Clarity cookies to link visits into
+              a continuous cross-page session.
+            </p>
+            <p>
+              The local processing tool is explicitly masked from Clarity. Selected image bytes,
+              file names, prompts, workflow contents, GPS, raw metadata, hashes, and thumbnails are
+              never included in Clarity analytics. Microsoft processes the remaining limited
+              analytics data under the{` `}
+              <a href="https://privacy.microsoft.com/en-us/privacystatement">
+                Microsoft Privacy Statement
+              </a>
+              .
             </p>
           </section>
 
