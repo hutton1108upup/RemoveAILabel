@@ -25,6 +25,16 @@ describe("footer", () => {
     }
   });
 
+  it("renders the selected Precision Clean symbol without changing the brand link name", () => {
+    render(<Footer />);
+
+    const brandLink = screen.getByRole("link", { name: "Remove AI Label" });
+    const brandSymbol = brandLink.querySelector("[data-brand-symbol='precision-clean']");
+
+    expect(brandSymbol).toBeInTheDocument();
+    expect(brandSymbol).toHaveAttribute("aria-hidden", "true");
+  });
+
   it("does not expose a companion placeholder when Site B is not configured", () => {
     render(<Footer />);
 
