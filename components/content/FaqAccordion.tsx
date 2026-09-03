@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import type { FaqItem } from "@/content/faqs";
 
 interface FaqAccordionProps {
@@ -25,7 +26,12 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
                 onClick={() => setOpenIndex(expanded ? -1 : index)}
               >
                 <span>{item.question}</span>
-                <span aria-hidden="true">{expanded ? "−" : "+"}</span>
+                <ChevronDown
+                  size={20}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className={`faq-chevron${expanded ? " is-open" : ""}`}
+                />
               </button>
               {expanded ? <p className="faq-answer">{item.answer}</p> : null}
             </div>

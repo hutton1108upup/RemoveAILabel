@@ -15,6 +15,7 @@ import { RemoveAiLabelTool } from "@/components/tool/RemoveAiLabelTool";
 import type { ProcessFileResult } from "@/lib/metadata/types";
 import { VerificationTable } from "@/components/tool/VerificationTable";
 import { AppLink } from "@/components/layout/AppLink";
+import { ExternalLink } from "lucide-react";
 
 const page = {
   path: "/",
@@ -142,17 +143,19 @@ export default function HomePage() {
                 cannotTitle="What it cannot do"
                 cannotItems={homePageContent.cannotDo}
               />
-              <div className="card-grid card-grid-four source-grid">
+              <div className="evidence-source-list" aria-label="Evidence sources">
                 {homePageContent.evidenceSources.map((source) => (
                   <a
                     key={source.href}
                     href={source.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="card source-card"
+                    className="evidence-source-link"
+                    data-home-evidence-link
+                    title={source.note}
                   >
-                    <h3>{source.label}</h3>
-                    <p>Official reference</p>
+                    <span>{source.label}</span>
+                    <ExternalLink size={14} strokeWidth={1.5} aria-hidden="true" />
                   </a>
                 ))}
               </div>
@@ -171,9 +174,14 @@ export default function HomePage() {
               <article className="card result-card">
                 <h3>Example verification report</h3>
                 <VerificationTable result={exampleResult} />
-                <button type="button" className="button button-secondary" disabled>
+                <a
+                  href="/example-report.txt"
+                  download="remove-ai-label-example-report.txt"
+                  className="button button-secondary"
+                  data-prefetch="false"
+                >
                   Download example report
-                </button>
+                </a>
               </article>
             </section>
 
@@ -187,14 +195,14 @@ export default function HomePage() {
 
             <section data-home-section="cta">
               <div className="cta-section">
-                <h2>Use the Free Tool Before You Post</h2>
+                <h2>Check a File Before You Post</h2>
                 <p className="body-large">
-                  Inspect supported file-level AI label metadata locally, create a cleaned copy, and verify the result before you publish.
+                  Inspect supported file-level metadata in your browser. Create a separate copy only when the result supports cleanup, then verify it before downloading.
                 </p>
                 <AppLink href="/#use-free-tool" className="button button-primary">
-                  Use Free Tool
+                  Check a File
                 </AppLink>
-                <p className="mono-copy">No sign-up · No upload · Works offline</p>
+                <p className="mono-copy">No account · No image upload · Original stays unchanged</p>
               </div>
             </section>
           </div>

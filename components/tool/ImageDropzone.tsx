@@ -7,6 +7,8 @@ interface ImageDropzoneProps {
   dragging: boolean;
   onSelect: (files: FileList | File[]) => void;
   onPasteFiles: (files: File[]) => void;
+  onTrySample: () => void;
+  sampleBusy?: boolean;
   onDragChange: (dragging: boolean) => void;
 }
 
@@ -14,6 +16,8 @@ export function ImageDropzone({
   dragging,
   onSelect,
   onPasteFiles,
+  onTrySample,
+  sampleBusy = false,
   onDragChange,
 }: ImageDropzoneProps) {
   const inputId = useId();
@@ -28,7 +32,7 @@ export function ImageDropzone({
       role="button"
       tabIndex={0}
       className={`card tool-dropzone${dragging ? " is-dragging" : ""}`}
-      aria-label="Drop images here, paste from your clipboard, or choose files"
+      aria-label="Image file dropzone"
       onClick={openFilePicker}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -64,8 +68,8 @@ export function ImageDropzone({
       }}
     >
       <Upload size={48} strokeWidth={1.5} color="var(--Colors-accent)" aria-hidden="true" />
-      <p className="body-large">Drop images here, paste from your clipboard, or choose files</p>
-      <p className="mono-copy">JPG & PNG · WebP beta · Up to 25MB each · No upload</p>
+      <p className="body-large">Drop, paste, or choose image files</p>
+      <p className="mono-copy">JPG & PNG · WebP inspection only · Up to 25 MB each · No image upload</p>
       <button
         type="button"
         className="button button-secondary"
@@ -74,8 +78,23 @@ export function ImageDropzone({
           openFilePicker();
         }}
       >
-        Choose files
+        Choose images
       </button>
+      <p className="sample-prompt">
+        <span>No file handy? </span>
+        <button
+          type="button"
+          className="sample-link"
+          aria-label="Try a sample image"
+          disabled={sampleBusy}
+          onClick={(event) => {
+            event.stopPropagation();
+            onTrySample();
+          }}
+        >
+          {sampleBusy ? "Loading sample…" : "Try a sample image"}
+        </button>
+      </p>
       <label htmlFor={inputId} className="hidden-input">
         Choose image files
       </label>

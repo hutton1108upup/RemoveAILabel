@@ -138,7 +138,7 @@ describe("remove-ai-label tool behavior", () => {
     expect(worker).toBeTruthy();
     expect(screen.queryByText("Uploading")).not.toBeInTheDocument();
     expect(
-      screen.queryByText("Validating") ?? screen.getByText("Scanning"),
+      screen.queryByText("Reading file") ?? screen.getByText("Scanning metadata"),
     ).toBeInTheDocument();
 
     await waitFor(() => {
@@ -153,12 +153,12 @@ describe("remove-ai-label tool behavior", () => {
     expect(request.file.options).toMatchObject(RECOMMENDED_CLEANUP_OPTIONS);
     const fileId = request.file.id;
     expect(worker?.transfers.at(0)).toHaveLength(1);
-    expect(screen.getByText("Scanning")).toBeInTheDocument();
+    expect(screen.getByText("Scanning metadata")).toBeInTheDocument();
     expect(screen.queryByText("Checking 1 of 1 files…")).not.toBeInTheDocument();
-    expect(screen.getByText("Checking 0 of 1 files…")).toBeInTheDocument();
+    expect(screen.getByText("Checking 0 of 1 file…")).toBeInTheDocument();
 
     worker?.emit({ type: "progress", requestId: `request-${fileId}`, fileId, status: "scanning" });
-    expect(await screen.findAllByText("Scanning")).toHaveLength(1);
+    expect(await screen.findAllByText("Scanning metadata")).toHaveLength(1);
 
     worker?.emit(createReadyResponse(fileId, false));
     await waitFor(() => {
@@ -169,6 +169,48 @@ describe("remove-ai-label tool behavior", () => {
     worker?.emit(createReadyResponse(fileId, true));
     expect(await screen.findByRole("link", { name: "Download Cleaned Image" })).toBeInTheDocument();
     expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
+    expect(screen.getByText("Checked 1 file")).toBeInTheDocument();
+    expect(screen.queryByText("Checking 1 of 1 files…")).not.toBeInTheDocument();
+    expect(screen.queryByText("verified copies ready")).not.toBeInTheDocument();
+  });
+
+  it("loads the built-in sample image into the local processing queue", async () => {
+    const user = userEvent.setup();
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      blob: async () => new Blob([blobPart(buildJpeg())], { type: "image/jpeg" }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<RemoveAiLabelTool />);
+
+    await user.click(screen.getByRole("button", { name: "Try a sample image" }));
+
+    await waitFor(() => {
+      expect(FakeWorker.instances.at(0)?.messages).toHaveLength(1);
+    });
+    expect(fetchMock).toHaveBeenCalledWith("/samples/adobe-20220124-CA.jpg", { cache: "force-cache" });
+    expect(
+      (FakeWorker.instances.at(0)?.messages.at(0) as { file: { fileName: string } }).file.fileName,
+    ).toBe("sample-adobe-export.jpg");
+  });
+
+  it("uses plural labels and only shows non-zero batch outcomes", async () => {
+    const user = userEvent.setup();
+    const first = new File([blobPart(buildJpeg())], "first.jpg", { type: "image/jpeg" });
+    const second = new File([blobPart(buildPng())], "second.png", { type: "image/png" });
+    render(<RemoveAiLabelTool />);
+
+    await user.upload(screen.getByLabelText("Choose image files"), [first, second]);
+    const worker = FakeWorker.instances.at(0);
+    await waitFor(() => expect(worker?.messages).toHaveLength(2));
+    const fileIds = worker?.messages.map((message) => (message as { file: { id: string } }).file.id) ?? [];
+
+    fileIds.forEach((fileId) => worker?.emit(createReadyResponse(fileId, true)));
+
+    expect(await screen.findByText("2 files checked · 2 verified copies ready")).toBeInTheDocument();
+    expect(screen.queryByText(/0 already clean/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/0 review needed/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/0 unsupported/)).not.toBeInTheDocument();
   });
 
   it("keeps WebP cleaning sealed in this build even when the public flag is set", async () => {
@@ -199,10 +241,9 @@ describe("remove-ai-label tool behavior", () => {
     const downloadLink = await screen.findByRole("link", { name: "Download Cleaned Image" });
     downloadLink.addEventListener("click", (event) => event.preventDefault());
     await user.click(downloadLink);
-    expect(screen.queryByRole("link", { name: "Make the Image Look More Natural" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Check Visible AI Artifacts" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Review visible artifacts" })).not.toBeInTheDocument();
     expect(
-      screen.queryByText("File metadata is clean. This does not change visible skin, lighting, hands, textures or other image artifacts."),
+      screen.queryByText("Supported file metadata was removed from the new copy. This does not change visible skin, lighting, hands, textures, or other image artifacts."),
     ).not.toBeInTheDocument();
   });
 
@@ -216,15 +257,18 @@ describe("remove-ai-label tool behavior", () => {
     const worker = FakeWorker.instances.at(0);
     worker?.emit(createReadyResponse("a", true));
 
-    expect(screen.queryByRole("link", { name: "Make the Image Look More Natural" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Review visible artifacts" })).not.toBeInTheDocument();
 
     const downloadLink = await screen.findByRole("link", { name: "Download Cleaned Image" });
     downloadLink.addEventListener("click", (event) => event.preventDefault());
     await user.click(downloadLink);
-    expect(await screen.findByRole("link", { name: "Make the Image Look More Natural" })).toHaveAttribute(
+    const siteBLink = await screen.findByRole("link", { name: "Review visible artifacts" });
+    expect(siteBLink).toHaveAttribute(
       "href",
       expect.stringContaining("utm_source=remove-ai-label"),
     );
+    expect(siteBLink).not.toHaveClass("button");
+    expect(siteBLink.closest("aside")?.previousElementSibling).toHaveClass("result-card");
 
     worker?.emit({
       type: "result",
@@ -254,7 +298,40 @@ describe("remove-ai-label tool behavior", () => {
       },
     });
 
-    expect(await screen.findByRole("link", { name: "Check Visible AI Artifacts" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "Review visible artifacts" })).toBeInTheDocument();
+  });
+
+  it("does not promise a cleaned C2PA copy when the file needs review", async () => {
+    const user = userEvent.setup();
+    const file = new File([blobPart(buildJpeg())], "review.jpg", { type: "image/jpeg" });
+    render(<RemoveAiLabelTool />);
+
+    await user.upload(screen.getByLabelText("Choose image files"), file);
+    const worker = FakeWorker.instances.at(0);
+    await waitFor(() => expect(worker?.messages).toHaveLength(1));
+    const fileId = (worker?.messages.at(0) as { file: { id: string } }).file.id;
+    const response = createReadyResponse(fileId, true);
+    if (response.type !== "result") {
+      throw new Error("Expected a result response fixture");
+    }
+
+    worker?.emit({
+      type: "result",
+      requestId: response.requestId,
+      result: {
+        ...response.result,
+        status: "review-needed",
+        cleanedBytes: undefined,
+        cleanedFileName: undefined,
+        verification: undefined,
+        errorMessage: "Metadata may be related to an AI signal, but this file cannot be cleaned safely. No clean copy was created.",
+      },
+    });
+
+    expect(
+      await screen.findByText("This file contains an embedded Content Credential. If cleanup succeeds, the downloaded copy will not carry it. Keep the original master file."),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("The cleaned copy will no longer carry that embedded credential.")).not.toBeInTheDocument();
   });
 
   it("locks preservation checkboxes and only leaves supported cleanup controls editable", async () => {
@@ -273,17 +350,20 @@ describe("remove-ai-label tool behavior", () => {
 
     await user.click(await screen.findByRole("button", { name: "Advanced Options" }));
 
-    expect(screen.getByLabelText("Remove embedded C2PA credentials")).toBeEnabled();
-    expect(screen.getByLabelText("Remove confirmed AI-related XMP packets")).toBeEnabled();
-    expect(screen.getByLabelText("Remove prompt and workflow text fields")).toBeEnabled();
-    expect(screen.getByLabelText("Remove EXIF, GPS, device, and date metadata")).toBeEnabled();
+    expect(screen.getByLabelText("Remove embedded Content Credentials (C2PA)")).toBeEnabled();
+    expect(screen.getByLabelText("Remove confirmed AI-related XMP")).toBeEnabled();
+    expect(screen.getByLabelText("Remove prompt and workflow fields")).toBeEnabled();
+    expect(screen.getByLabelText("Remove GPS, device, date, and other EXIF details")).toBeEnabled();
 
-    expect(screen.getByLabelText("Preserve camera EXIF")).toBeDisabled();
-    expect(screen.getByLabelText("Preserve creator and copyright when separable")).toBeDisabled();
-    expect(screen.getByLabelText("Preserve ICC color profile")).toBeDisabled();
-    expect(screen.getByLabelText("Preserve orientation")).toBeDisabled();
+    expect(screen.getByLabelText("Keep camera EXIF")).toBeDisabled();
+    expect(screen.getByLabelText("Keep creator and copyright when possible")).toBeDisabled();
+    expect(screen.getByLabelText("Keep ICC color profile")).toBeDisabled();
+    expect(screen.getByLabelText("Keep image orientation")).toBeDisabled();
     expect(
-      screen.getByText("These preservation rules are enforced by the safe cleanup engine and cannot be changed here."),
+      screen.getByText("These preservation choices protect the image and cannot be changed here."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("This can also remove camera details and some copyright data. Your original stays unchanged."),
     ).toBeInTheDocument();
   });
 
@@ -308,7 +388,7 @@ describe("remove-ai-label tool behavior", () => {
 
   it("supports drag-drop and clipboard paste with local file bytes only", async () => {
     render(<RemoveAiLabelTool />);
-    const dropzone = screen.getByRole("button", { name: "Drop images here, paste from your clipboard, or choose files" });
+    const dropzone = screen.getByRole("button", { name: "Image file dropzone" });
     expect(dropzone).not.toHaveClass("is-dragging");
 
     fireEvent.dragEnter(dropzone, {
@@ -353,7 +433,7 @@ describe("remove-ai-label tool behavior", () => {
     await user.upload(screen.getByLabelText("Choose image files"), [brokenFile, goodFile]);
 
     await waitFor(() => {
-      expect(screen.getByText(/Failed\./)).toBeInTheDocument();
+      expect(screen.getByText(/Processing failed\./)).toBeInTheDocument();
       expect(FakeWorker.instances.at(0)?.messages).toHaveLength(1);
     });
   });
@@ -379,8 +459,8 @@ describe("remove-ai-label tool behavior", () => {
     worker?.emit(createReadyResponse(fileId, true));
 
     await user.click(await screen.findByRole("button", { name: "Advanced Options" }));
-    await user.click(screen.getByRole("button", { name: "Regenerate Clean Copy" }));
+    await user.click(screen.getByRole("button", { name: "Create New Clean Copy" }));
 
-    expect(await screen.findByText("Failed. regenerate read failed")).toBeInTheDocument();
+    expect(await screen.findByText("Processing failed. regenerate read failed")).toBeInTheDocument();
   });
 });

@@ -40,43 +40,50 @@ export function FileResultCard({
 }: FileResultCardProps) {
   if (result.status === "ready") {
     return (
-      <article className="card result-card">
-        <div className="result-header">
-          <h3>{result.cleanedFileName ?? result.fileName}</h3>
-          <span className="status-chip status-chip-ready">Clean copy ready</span>
-        </div>
-        <VerificationTable result={result} />
-        <DownloadActions
-          href={downloadHref}
-          downloadName={downloadName}
-          onDownload={onDownload}
-          onToggleVisual={onToggleVisual}
-          onCheckAnother={onCheckAnother}
-        />
-        <AdvancedOptions
-          options={options}
-          expanded={advancedExpanded}
-          onToggle={onToggleAdvanced}
-          onChange={onOptionsChange}
-          onRegenerate={onRegenerate}
-        />
+      <>
+        <article className="card result-card">
+          <div className="result-header">
+            <h3>{result.cleanedFileName ?? result.fileName}</h3>
+            <span className="status-chip status-chip-ready">File-level clean copy ready</span>
+          </div>
+          <VerificationTable result={result} />
+          <p className="body-copy result-note">
+            Supported fields were removed and verified. This result describes the file, not the platform&apos;s decision.
+          </p>
+          <DownloadActions
+            href={downloadHref}
+            downloadName={downloadName}
+            onDownload={onDownload}
+            onToggleVisual={onToggleVisual}
+            onCheckAnother={onCheckAnother}
+          />
+          <AdvancedOptions
+            options={options}
+            expanded={advancedExpanded}
+            onToggle={onToggleAdvanced}
+            onChange={onOptionsChange}
+            onRegenerate={onRegenerate}
+          />
+        </article>
         {showSiteB && siteBUrl ? <SiteBUpsell href={siteBUrl} variant="post-clean" /> : null}
         {!showSiteB && visualExpanded && siteBUrl ? <SiteBUpsell href={siteBUrl} variant="post-clean" /> : null}
-      </article>
+      </>
     );
   }
 
   if (result.status === "already-clean") {
     return (
-      <article className="card result-card">
-        <h3>No supported AI label metadata was found.</h3>
-        <p>The original file was not rewritten.</p>
-        <p>A platform may still use other signals or disclosure rules.</p>
-        <button type="button" className="button button-secondary" onClick={onCheckAnother}>
-          Check Another Image
-        </button>
+      <>
+        <article className="card result-card">
+          <h3>No supported AI-label fields were found in this file.</h3>
+          <p>The original file was not rewritten.</p>
+          <p>A platform may still use other signals or disclosure rules.</p>
+          <button type="button" className="button button-secondary" onClick={onCheckAnother}>
+            Check Another Image
+          </button>
+        </article>
         {showSiteB && siteBUrl ? <SiteBUpsell href={siteBUrl} variant="already-clean" /> : null}
-      </article>
+      </>
     );
   }
 
@@ -89,7 +96,7 @@ export function FileResultCard({
         </div>
         <div className="warning-banner warning-banner-inline">
           <AlertTriangle size={18} strokeWidth={1.5} aria-hidden="true" />
-          <span>{result.errorMessage ?? "Possible related metadata found. Review before cleaning."}</span>
+          <span>{result.errorMessage ?? "Metadata may be related to an AI signal, but this file cannot be cleaned safely. No clean copy was created."}</span>
         </div>
       </article>
     );
@@ -99,7 +106,7 @@ export function FileResultCard({
     return (
       <article className="error-banner">
         <CircleX size={18} strokeWidth={1.5} aria-hidden="true" />
-        <span>{`${result.status === "unsupported" ? "Unsupported." : "Failed."} ${result.errorMessage ?? ""}`.trim()}</span>
+        <span>{`${result.status === "unsupported" ? "Unsupported file." : "Processing failed."} ${result.errorMessage ?? ""}`.trim()}</span>
       </article>
     );
   }

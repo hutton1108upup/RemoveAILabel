@@ -1,0 +1,14 @@
+Remove AI Label — Example verification report
+
+File: example.jpg
+Status: File-level clean copy ready
+
+Embedded C2PA: Found → Removed
+AI-related XMP: Found → Removed
+Prompt / workflow: Found → Removed
+Camera EXIF: Found → Preserved
+Creator / copyright: Found → Preserved when separable
+ICC profile: Found → Preserved
+Image payload: Not re-encoded
+
+This report describes supported file metadata only. It does not predict a platform's decision.
