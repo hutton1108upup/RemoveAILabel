@@ -330,6 +330,10 @@ h3 {
   gap: 48px;
 }
 
+.route-stack {
+  padding-top: 24px;
+}
+
 .capability-wrap {
   background: var(--Colors-navy);
   color: #fff;
@@ -550,6 +554,19 @@ h3 {
 .button-secondary:hover {
   border-color: var(--Colors-accent);
   color: var(--Colors-accent);
+}
+
+.button-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--Colors-accent);
+  box-shadow: none;
+}
+
+.button-ghost:hover {
+  color: var(--Colors-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .status-chip-validating,
@@ -850,6 +867,10 @@ h3 {
   .section-stack > section,
   .site-footer {
     padding-block: 64px;
+  }
+
+  .route-stack {
+    padding-top: 16px;
   }
 
   .site-header-inner {

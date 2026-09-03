@@ -1,12 +1,9 @@
 import { footerGuideLinks, footerSiteLinks } from "@/content/navigation";
 import { AppLink } from "./AppLink";
 
-interface FooterProps {
-  siteBLabel?: string;
-}
-
-export function Footer({ siteBLabel = "Review visible image artifacts" }: FooterProps) {
+export function Footer() {
   const siteBUrl = process.env.NEXT_PUBLIC_SITE_B_URL?.trim();
+  const siteBBrand = process.env.NEXT_PUBLIC_SITE_B_BRAND?.trim();
 
   return (
     <footer className="site-footer" data-home-section="footer">
@@ -40,11 +37,11 @@ export function Footer({ siteBLabel = "Review visible image artifacts" }: Footer
             ))}
           </ul>
         </div>
-        {siteBUrl && siteBLabel ? (
+        {siteBUrl && siteBBrand ? (
           <div>
             <h3>Companion</h3>
             <a href={siteBUrl} className="text-link" target="_blank" rel="noreferrer">
-              {siteBLabel}
+              {siteBBrand}
             </a>
           </div>
         ) : null}

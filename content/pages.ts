@@ -260,7 +260,6 @@ export const homePageContent = {
   ],
   entryCards: guideCards,
   faqs: homeFaqs,
-  footerSiteBLabel: "Review visible image artifacts",
 } as const;
 
 export const launchPages: Record<string, PageContent> = {
