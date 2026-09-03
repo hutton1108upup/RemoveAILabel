@@ -44,7 +44,7 @@ export function Header() {
                   </AppLink>
                 ))}
                 <AppLink href="/#use-free-tool" className="button button-primary">
-                  Use Free Tool
+                  Check a File
                 </AppLink>
               </nav>
             ) : null}
@@ -57,7 +57,7 @@ export function Header() {
               </AppLink>
             ))}
             <AppLink href="/#use-free-tool" className="button button-primary">
-              Use Free Tool
+              Check a File
             </AppLink>
           </nav>
         )}

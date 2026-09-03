@@ -169,7 +169,7 @@ export async function scanBytes(
     findings.push(finding(`${format}-c2pa-possible`, {
       category: "c2pa",
       source: format === "webp" ? "WEBP_CHUNK" : "C2PA",
-      label: "Possible related metadata",
+      label: "Possible C2PA-related metadata",
       level: "possible",
       removable: false,
       autoRemoveEligible: false,

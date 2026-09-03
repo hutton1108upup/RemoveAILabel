@@ -12,7 +12,7 @@ export const homeFaqs: FaqItem[] = [
   {
     question: "Are my images uploaded?",
     answer:
-      "No. Files are read locally in your browser, sent to a local Web Worker for processing, and are not uploaded to a server by this tool.",
+      "No. The selected file is processed in your browser by a local Web Worker. This tool does not upload it to an application server.",
   },
   {
     question: "Can this remove AI Info from an existing post?",
@@ -22,12 +22,12 @@ export const homeFaqs: FaqItem[] = [
   {
     question: "Does cleaning metadata guarantee no AI label?",
     answer:
-      "No. Platforms may still use other signals, disclosure rules, or policy systems that this tool cannot control.",
+      "No. Cleaning file metadata does not determine the platform result. A platform may use other signals, disclosure rules, or policy systems.",
   },
   {
     question: "Does the tool reduce image quality?",
     answer:
-      "On supported JPG and PNG files, the tool is designed to keep the encoded image payload unchanged rather than re-encoding the image.",
+      "On supported JPG and PNG files, the image data is not re-encoded. Other metadata may change depending on the cleanup options you choose.",
   },
   {
     question: "What is C2PA?",
@@ -37,12 +37,12 @@ export const homeFaqs: FaqItem[] = [
   {
     question: "Will camera EXIF and copyright be preserved?",
     answer:
-      "They are preserved by default when they are separable from the metadata packet being removed. If a copyright field lives inside the same removable packet, it cannot be preserved independently.",
+      "They are kept by default when they are separate from the fields being removed. Privacy cleanup can remove camera details and some copyright data, and a copyright field inside a removed packet cannot be preserved separately.",
   },
   {
     question: "Can it remove PNG prompts and ComfyUI workflows?",
     answer:
-      "Yes, for supported PNG text chunks and XMP packets that contain confirmed prompt, workflow, model, or seed-style fields.",
+      "Yes, when supported PNG text chunks or XMP packets contain confirmed prompt, workflow, model, or seed fields.",
   },
   {
     question: "Why was no metadata found?",
@@ -52,7 +52,7 @@ export const homeFaqs: FaqItem[] = [
   {
     question: "Is the tool free?",
     answer:
-      "Yes. The MVP is free, requires no account, and does not gate downloads behind a paywall.",
+      "Yes. It is free to use, requires no account, and does not charge for downloads.",
   },
 ];
 
@@ -61,7 +61,7 @@ export const pageFaqs: Record<string, FaqItem[]> = {
     {
       question: "Does Instagram AI Info mean the whole photo was generated?",
       answer:
-        "No. The notice can reflect an industry-shared signal or disclosure that AI was involved, but it does not state what percentage of the image was generated rather than photographed.",
+        "No. The notice can reflect an industry signal or a disclosure that AI was involved. It does not say what percentage of the image was generated rather than photographed.",
     },
     {
       question: "Can this remove AI Info from an Instagram post that is already live?",
@@ -93,7 +93,7 @@ export const pageFaqs: Record<string, FaqItem[]> = {
     {
       question: "Can I check a batch of product or campaign images?",
       answer:
-        "Yes. Add the final files together and review each result. One failed or unsupported file does not block verified clean copies from the rest of the batch.",
+        "Yes. Add the final files together and review each result. One failed or unsupported file does not stop the other checks.",
     },
     {
       question: "Can a cleaned file still receive AI Info on Facebook?",
@@ -127,7 +127,7 @@ export const pageFaqs: Record<string, FaqItem[]> = {
     {
       question: "Can a software name prove that my photo was AI-generated?",
       answer:
-        "No. A general software tag such as Photoshop is not enough to show that the entire image was generated, which is why the scanner separates confirmed targets from general metadata.",
+        "No. A software tag such as Photoshop does not show that the whole image was generated. The scanner keeps confirmed targets separate from general metadata.",
     },
     {
       question: "Why can AI Info remain when no supported metadata is found?",
@@ -142,7 +142,7 @@ export const pageFaqs: Record<string, FaqItem[]> = {
     {
       question: "Can this tool tell whether a photo is authentic?",
       answer:
-        "No. It reports supported file metadata and verifies a cleanup copy. It does not authenticate the depicted event, identify every editing step, or judge the creator's disclosure.",
+        "No. It reports supported file metadata and verifies a cleanup copy. It does not authenticate the event shown, identify every edit, or judge the creator's disclosure.",
     },
   ],
   "c2pa-ai-label": [
@@ -171,12 +171,12 @@ export const pageFaqs: Record<string, FaqItem[]> = {
     {
       question: "Which formats can the MVP clean today?",
       answer:
-        "JPG and PNG are the primary supported cleanup formats. WebP is beta inspect-only in this build while its complete real-image release gate remains unfinished.",
+        "JPG and PNG are the supported cleanup formats. WebP can be inspected but not cleaned in this version.",
     },
     {
       question: "Does WebP cleaning ship by default?",
       answer:
-        "No. This build keeps WebP inspect-only until the complete real-image and decoded-pixel release gate has passed.",
+        "No. This version can inspect WebP metadata but does not create cleaned WebP files.",
     },
     {
       question: "Should I keep ComfyUI prompt and workflow metadata?",

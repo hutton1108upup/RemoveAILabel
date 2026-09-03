@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: "Remove AI Label",
     template: "%s | Remove AI Label",
   },
-  description: "Local image metadata cleanup for supported AI label signals.",
+  description: "Check and clean supported AI-related image metadata in your browser.",
 };
 
 export default function RootLayout({

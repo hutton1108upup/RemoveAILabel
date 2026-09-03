@@ -61,7 +61,7 @@ describe("tool accessibility", () => {
     render(<RemoveAiLabelTool />);
 
     const dropzone = screen.getByRole("button", {
-      name: "Drop images here, paste from your clipboard, or choose files",
+      name: "Image file dropzone",
     });
 
     dropzone.focus();
@@ -165,11 +165,11 @@ describe("tool accessibility", () => {
 
     expect(
       await screen.findByText(
-        "Content Credentials can contain verifiable provenance and editing history. The cleaned copy will no longer carry that embedded credential. Keep your original master file.",
+        "This file contains an embedded Content Credential. If cleanup succeeds, the downloaded copy will not carry it. Keep the original master file.",
       ),
     ).toBeInTheDocument();
     expect(
-      screen.getAllByText(/Content Credentials can contain verifiable provenance and editing history\./),
+      screen.getAllByText(/This file contains an embedded Content Credential\./),
     ).toHaveLength(1);
   });
 
@@ -210,7 +210,7 @@ describe("tool accessibility", () => {
 
     const button = await screen.findByRole("button", { name: "Check Another Image" });
     await userEvent.click(button);
-    expect(screen.queryByText("No supported AI label metadata was found.")).not.toBeInTheDocument();
+    expect(screen.queryByText("No supported AI-label fields were found in this file.")).not.toBeInTheDocument();
   });
 
   it("collapses the mobile navigation behind a menu trigger instead of showing the full link list by default", async () => {

@@ -19,31 +19,31 @@ export default function PrivacyPage() {
           <p className="evidence-note">Last updated: September 3, 2026</p>
 
           <section className="legal-section">
-            <h2>Your Images Stay in Your Browser</h2>
+            <h2>Selected Images Are Processed in Your Browser</h2>
             <p>
-              Image scanning, cleanup, verification, and ZIP preparation run locally in your
-              browser. The original file is not overwritten. When cleanup succeeds, the browser
-              creates a separate downloadable copy.
+              Image scanning, cleanup, verification, and ZIP preparation run locally in your browser.
+              This tool does not upload selected images. The original file is not overwritten; when
+              cleanup succeeds, the browser creates a separate downloadable copy.
             </p>
           </section>
 
           <section className="legal-section">
-            <h2>Data This Build Does Not Send</h2>
+            <h2>What This Version Does Not Send</h2>
             <p>
-              This build does not upload selected image bytes, file names, prompts, workflow JSON,
+              This version does not send selected image bytes, file names, prompts, workflow JSON,
               GPS, raw EXIF, raw XMP, image hashes, or thumbnails to an application server.
             </p>
             <p>
-              File processing runs through a local Web Worker. Selected-file data is not placed in
-              cookies, localStorage, sessionStorage, or IndexedDB by this codebase.
+              File processing runs through a local Web Worker. The tool does not save selected-file
+              data in cookies, localStorage, sessionStorage, or IndexedDB.
             </p>
           </section>
 
           <section className="legal-section">
-            <h2>Analytics in the Current Build</h2>
+            <h2>Analytics in This Version</h2>
             <p>
-              The current analytics adapter is a no-op, so tool events are not sent to an analytics
-              provider in this build. If analytics is added later, it must not include image bytes,
+              This version sends no tool events to an analytics provider. If analytics is added later,
+              it must not include image bytes,
               file names, prompts, workflow contents, GPS, raw metadata, hashes, or thumbnails, and
               this policy must be updated before that change is enabled.
             </p>

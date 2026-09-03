@@ -26,10 +26,10 @@ export default function OpenGraphImage() {
           fontWeight: 600,
         }}
       >
-        <div style={{ color: "#0D9487", fontSize: 20, marginBottom: 20 }}>Free local image tool</div>
+        <div style={{ color: "#0D9487", fontSize: 20, marginBottom: 20 }}>Free browser-based image tool</div>
         <div>Remove AI Label</div>
         <div style={{ fontSize: 28, fontWeight: 400, marginTop: 20 }}>
-          Check and clean supported AI label metadata before you post.
+          Check and clean supported AI-related metadata before you post.
         </div>
       </div>
     ),

@@ -17,12 +17,10 @@ export default function TermsPage() {
           <h1>Terms of Use</h1>
           <p>
             The tool creates a new local file copy when supported cleanup succeeds. It does not edit
-            a third-party post, guarantee platform classification, or promise that visible AI
-            artifacts will disappear.
+            a third-party post, determine platform classification, or remove visible AI artifacts.
           </p>
           <p>
-            Keep your original file if you need provenance, Content Credentials, or the original
-            export record.
+            Keep the original file when you need its provenance, Content Credentials, or export record.
           </p>
         </div>
       </main>

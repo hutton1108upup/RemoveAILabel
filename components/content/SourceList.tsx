@@ -7,10 +7,10 @@ interface SourceListProps {
 export function SourceList({ items }: SourceListProps) {
   return (
     <section className="source-list-section">
-      <h2>Sources and evidence</h2>
+      <h2>Sources</h2>
       <p className="body-copy source-intro">
-        Official sources support the factual claims on this page. User discussions show the
-        questions people ask; they are not proof of platform behavior.
+        Official documentation supports the platform and file-format claims below. Community posts
+        show reported questions, not proof of platform behavior.
       </p>
       <div className="source-list-grid">
         {items.map((item) => (
