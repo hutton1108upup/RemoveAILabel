@@ -1,0 +1,45 @@
+/* RemoveAILabel Design Tokens — exported from design file
+   直接引入全局 CSS，Tailwind 中用 var(--*) 或按规范文档映射到 theme */
+:root {
+  /* Colors */
+  --Colors-canvas: #FAFAF7;
+  --Colors-surface: #FFFFFF;
+  --Colors-ink: #1C1A17;
+  --Colors-ink-secondary: #57544F;
+  --Colors-ink-tertiary: #A8A39E;
+  --Colors-accent: #0D9487;
+  --Colors-accent-hover: #0F756E;
+  --Colors-accent-soft: #F0FCFA;
+  --Colors-accent-border: #99F5E3;
+  --Colors-border: #E8E5E3;
+  --Colors-success: #17A34A;
+  --Colors-success-soft: #DBFCE8;
+  --Colors-warning: #D97805;
+  --Colors-warning-soft: #FFF2C7;
+  --Colors-danger: #DB2626;
+  --Colors-danger-soft: #FFE3E3;
+  --Colors-navy: #0A1426;
+  --Colors-navy-card: #17243B;
+  --Colors-navy-text: #CCD6E0;
+
+  /* Typography (font-size) */
+  --Typography-display: 56px;
+  --Typography-h2: 36px;
+  --Typography-h3: 22px;
+  --Typography-body-lg: 17px;
+  --Typography-body: 15px;
+  --Typography-small: 13px;
+  --Typography-caption: 12px;
+
+  /* Radius */
+  --Radius-card: 16px;
+  --Radius-button: 12px;
+  --Radius-chip: 999px;
+
+  /* Spacing */
+  --Spacing-section-y: 96px;
+  --Spacing-gutter: 120px;
+  --Spacing-gap-lg: 32px;
+  --Spacing-gap-md: 20px;
+  --Spacing-gap-sm: 12px;
+}

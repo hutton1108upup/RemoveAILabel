@@ -1,0 +1,26 @@
+import type { Metadata } from "next";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import { getSiteOrigin } from "@/lib/seo/metadata";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(getSiteOrigin()),
+  title: {
+    default: "Remove AI Label",
+    template: "%s | Remove AI Label",
+  },
+  description: "Local image metadata cleanup for supported AI label signals.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
