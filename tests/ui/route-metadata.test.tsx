@@ -19,8 +19,8 @@ afterEach(() => cleanup());
 const expectedRoutes = [
   {
     path: "/",
-    title: "Remove AI Label from Images - Free & Private Tool",
-    h1: "Check and Remove AI Label Metadata Before You Post",
+    title: "Check and Clean AI Label Metadata | Free Local Tool",
+    h1: "Check and Clean Supported AI-Related Metadata Before You Post",
     metadata: homeMetadata,
     Page: HomePage,
   },
@@ -115,12 +115,12 @@ describe("route metadata and static seo", () => {
     const pages = [
       {
         Page: PhotoshopPage,
-        heading: "Check the Export, Not Just the Tool Name",
+        heading: "What to Check in the Export",
         officialSource: "Adobe: Export images with Content Credentials",
       },
       {
         Page: InstagramPage,
-        heading: "What Instagram AI Info Does—and Does Not—Mean",
+        heading: "What Instagram AI Info Tells You",
         officialSource: "Meta: How AI labels work on Facebook and Instagram",
       },
       {
@@ -130,12 +130,12 @@ describe("route metadata and static seo", () => {
       },
       {
         Page: WhyAiInfoPage,
-        heading: "Where an AI Info Signal Can Come From",
+        heading: "Where AI Info Can Come From",
         officialSource: "Meta: How AI labels work on Facebook and Instagram",
       },
       {
         Page: C2paPage,
-        heading: "Before You Remove Content Credentials",
+        heading: "What Changes in the Cleaned Copy",
         officialSource: "C2PA: Content Credentials specification",
       },
       {
@@ -178,11 +178,11 @@ describe("route metadata and static seo", () => {
   it("states the current local-processing privacy boundary without aspirational wording", () => {
     render(<PrivacyPage />);
 
-    expect(screen.getByRole("heading", { level: 2, name: "Your Images Stay in Your Browser" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Selected Images Are Processed in Your Browser" })).toBeInTheDocument();
     expect(
-      screen.getByText(/This build does not upload selected image bytes, file names, prompts, workflow JSON, GPS, raw EXIF, raw XMP, image hashes, or thumbnails/i),
+      screen.getByText(/This version does not send selected image bytes, file names, prompts, workflow JSON, GPS, raw EXIF, raw XMP, image hashes, or thumbnails/i),
     ).toBeInTheDocument();
-    expect(screen.getByText(/The current analytics adapter is a no-op/i)).toBeInTheDocument();
+    expect(screen.getByText(/This version sends no tool events to an analytics provider/i)).toBeInTheDocument();
     expect(screen.queryByText(/should not upload/i)).not.toBeInTheDocument();
   });
 

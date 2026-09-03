@@ -16,13 +16,12 @@ export default function AboutPage() {
         <div className="shell narrow-page legal-stack" data-page-width="narrow">
           <h1>About Remove AI Label</h1>
           <p>
-            Remove AI Label is a local browser tool for checking and cleaning supported AI label
+            Remove AI Label is a browser-based tool for checking and cleaning supported AI-related
             metadata before you post or deliver an image.
           </p>
           <p>
-            The tool focuses on supported file-level metadata such as embedded C2PA credentials,
-            AI-related XMP, and supported prompt or workflow fields. It does not promise platform
-            outcomes or alter visible pixels.
+            It checks file-level data such as embedded C2PA credentials, AI-related XMP, and supported
+            prompt or workflow fields. It does not change visible pixels or promise a platform result.
           </p>
         </div>
       </main>

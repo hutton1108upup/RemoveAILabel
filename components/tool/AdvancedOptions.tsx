@@ -52,14 +52,14 @@ export function AdvancedOptions({
       {expanded ? (
         <div className="route-stack">
           <div>
-            <h3>Recommended AI Label Clean</h3>
+            <h3>Recommended cleanup</h3>
             <label>
               <input
                 type="checkbox"
                 checked={options.removeEmbeddedC2pa}
                 onChange={(event) => setOption("removeEmbeddedC2pa", event.target.checked)}
               />
-              Remove embedded C2PA credentials
+              Remove embedded Content Credentials (C2PA)
             </label>
             <label>
               <input
@@ -67,7 +67,7 @@ export function AdvancedOptions({
                 checked={options.removeConfirmedAiXmp}
                 onChange={(event) => setOption("removeConfirmedAiXmp", event.target.checked)}
               />
-              Remove confirmed AI-related XMP packets
+              Remove confirmed AI-related XMP
             </label>
             <label>
               <input
@@ -75,7 +75,7 @@ export function AdvancedOptions({
                 checked={options.removePromptWorkflowFields}
                 onChange={(event) => setOption("removePromptWorkflowFields", event.target.checked)}
               />
-              Remove prompt and workflow text fields
+              Remove prompt and workflow fields
             </label>
             <label>
               <input
@@ -84,7 +84,7 @@ export function AdvancedOptions({
                 disabled
                 onChange={(event) => setOption("preserveCameraExif", event.target.checked)}
               />
-              Preserve camera EXIF
+              Keep camera EXIF
             </label>
             <label>
               <input
@@ -93,7 +93,7 @@ export function AdvancedOptions({
                 disabled
                 onChange={(event) => setOption("preserveCopyrightWhenSeparable", event.target.checked)}
               />
-              Preserve creator and copyright when separable
+              Keep creator and copyright when possible
             </label>
             <label>
               <input
@@ -102,7 +102,7 @@ export function AdvancedOptions({
                 disabled
                 onChange={(event) => setOption("preserveIccProfile", event.target.checked)}
               />
-              Preserve ICC color profile
+              Keep ICC color profile
             </label>
             <label>
               <input
@@ -111,25 +111,28 @@ export function AdvancedOptions({
                 disabled
                 onChange={(event) => setOption("preserveOrientation", event.target.checked)}
               />
-              Preserve orientation
+              Keep image orientation
             </label>
             <p className="body-copy">
-              These preservation rules are enforced by the safe cleanup engine and cannot be changed here.
+              These preservation choices protect the image and cannot be changed here.
             </p>
           </div>
           <div>
-            <h3>Privacy Clean</h3>
+            <h3>Privacy cleanup</h3>
             <label>
               <input
                 type="checkbox"
                 checked={options.removeExifPrivacyData}
                 onChange={(event) => setOption("removeExifPrivacyData", event.target.checked)}
               />
-              Remove EXIF, GPS, device, and date metadata
+              Remove GPS, device, date, and other EXIF details
             </label>
+            <p className="body-copy">
+              This can also remove camera details and some copyright data. Your original stays unchanged.
+            </p>
           </div>
           <button type="button" className="button button-secondary" onClick={onRegenerate}>
-            Regenerate Clean Copy
+            Create New Clean Copy
           </button>
         </div>
       ) : null}

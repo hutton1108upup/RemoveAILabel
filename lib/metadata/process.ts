@@ -81,7 +81,7 @@ export async function processFile(
             : "SAFE_REWRITE_NOT_SUPPORTED",
         errorMessage: before.rewriteSafe
           ? undefined
-          : "Metadata was detected, but its byte range cannot be rewritten safely.",
+          : "Metadata may be related to an AI signal, but this file cannot be cleaned safely. No clean copy was created.",
       };
     }
     if (confirmedTargets.length === 0 && !options.removeExifPrivacyData) {
@@ -99,7 +99,7 @@ export async function processFile(
         status: "review-needed",
         scan: before,
         errorCode: "SAFE_REWRITE_NOT_SUPPORTED",
-        errorMessage: "WebP cleaning remains inspect-only until its release gate is enabled.",
+        errorMessage: "WebP can be inspected but not cleaned in this version.",
       };
     }
     const cleaned = cleanByFormat(
@@ -129,7 +129,7 @@ export async function processFile(
         scan: before,
         verification,
         errorCode: "VERIFICATION_FAILED",
-        errorMessage: "The clean copy did not pass verification, so it was not offered for download.",
+        errorMessage: "We could not verify the new copy, so it is not available for download. Your original file is unchanged.",
       };
     }
     return {

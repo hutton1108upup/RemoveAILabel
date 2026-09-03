@@ -26,7 +26,7 @@ export function DownloadActions({
         </a>
       ) : null}
       <button type="button" className="button button-secondary" onClick={onToggleVisual}>
-        Image still looks AI-generated?
+        Still seeing visible artifacts?
       </button>
       {onCheckAnother ? (
         <button type="button" className="button button-secondary" onClick={onCheckAnother}>
