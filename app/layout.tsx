@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
+import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
 import { getSiteOrigin } from "@/lib/seo/metadata";
 import "./globals.css";
 
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <MicrosoftClarity />
+      </body>
     </html>
   );
 }

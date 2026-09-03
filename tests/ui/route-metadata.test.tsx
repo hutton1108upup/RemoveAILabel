@@ -175,14 +175,21 @@ describe("route metadata and static seo", () => {
     ).toBeInTheDocument();
   });
 
-  it("states the current local-processing privacy boundary without aspirational wording", () => {
+  it("discloses Clarity analytics without weakening the local-processing boundary", () => {
     render(<PrivacyPage />);
 
     expect(screen.getByRole("heading", { level: 2, name: "Selected Images Are Processed in Your Browser" })).toBeInTheDocument();
     expect(
       screen.getByText(/This version does not send selected image bytes, file names, prompts, workflow JSON, GPS, raw EXIF, raw XMP, image hashes, or thumbnails/i),
     ).toBeInTheDocument();
-    expect(screen.getByText(/This version sends no tool events to an analytics provider/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Microsoft Clarity Analytics" })).toBeInTheDocument();
+    expect(screen.getByText(/page views and interactions such as clicks and scrolling/i)).toBeInTheDocument();
+    expect(screen.getByText(/analytics and ad storage denied by default/i)).toBeInTheDocument();
+    expect(screen.getByText(/Selected image bytes, file names, prompts, workflow contents, GPS, raw metadata, hashes, and thumbnails are never included/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Microsoft Privacy Statement" })).toHaveAttribute(
+      "href",
+      "https://privacy.microsoft.com/en-us/privacystatement",
+    );
     expect(screen.queryByText(/should not upload/i)).not.toBeInTheDocument();
   });
 
