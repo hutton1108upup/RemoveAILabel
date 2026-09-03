@@ -1,11 +1,13 @@
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { CapabilitySplit } from "@/components/content/CapabilitySplit";
 import { EvidenceNote } from "@/components/content/EvidenceNote";
+import { EditorialSection } from "@/components/content/EditorialSection";
 import { FaqAccordion } from "@/components/content/FaqAccordion";
 import { GuideCardGrid } from "@/components/content/GuideCardGrid";
 import { QuickAnswerCard } from "@/components/content/QuickAnswerCard";
 import { RouteHero } from "@/components/content/RouteHero";
 import { StepList } from "@/components/content/StepList";
+import { SourceList } from "@/components/content/SourceList";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { RemoveAiLabelTool } from "@/components/tool/RemoveAiLabelTool";
@@ -18,12 +20,15 @@ export function renderContentPage(page: PageContent) {
       <main className="main-shell" role="main">
         <div className="shell route-stack">
           {page.breadcrumbs ? <Breadcrumbs items={page.breadcrumbs} /> : null}
-          <RouteHero heading={page.h1} description={page.description} />
+          <RouteHero heading={page.h1} description={page.heroDescription ?? page.description} />
           {page.quickAnswer ? <QuickAnswerCard answer={page.quickAnswer} /> : null}
           <div className="route-tool">
             <RemoveAiLabelTool />
           </div>
           {page.evidenceLabel ? <EvidenceNote text={page.evidenceLabel} /> : null}
+          {page.editorialSections?.map((section) => (
+            <EditorialSection key={section.title} section={section} />
+          ))}
           {page.whyTitle && page.whyPoints ? (
             <section>
               <h2>{page.whyTitle}</h2>
@@ -36,18 +41,21 @@ export function renderContentPage(page: PageContent) {
           ) : null}
           {page.canCheck && page.cannotChange ? (
             <CapabilitySplit
-              canTitle="What the Tool Can Check"
+              canTitle={page.canTitle ?? "What the Tool Can Check"}
               canItems={page.canCheck}
-              cannotTitle="What the Tool Cannot Change"
+              cannotTitle={page.cannotTitle ?? "What the Tool Cannot Change"}
               cannotItems={page.cannotChange}
             />
           ) : null}
           {page.workflow ? (
-            <StepList title="Step-by-Step Pre-Publish Workflow" steps={page.workflow} />
+            <StepList
+              title={page.workflowTitle ?? "Step-by-Step Pre-Publish Workflow"}
+              steps={page.workflow}
+            />
           ) : null}
           {page.verifySteps ? (
             <section>
-              <h2>How to Verify the Cleaned File</h2>
+              <h2>{page.verifyTitle ?? "How to Verify the Cleaned File"}</h2>
               <ul className="plain-list">
                 {page.verifySteps.map((step) => (
                   <li key={step}>{step}</li>
@@ -57,7 +65,7 @@ export function renderContentPage(page: PageContent) {
           ) : null}
           {page.misunderstandings ? (
             <section>
-              <h2>Common Misunderstandings</h2>
+              <h2>{page.misunderstandingsTitle ?? "Common Misunderstandings"}</h2>
               <ul className="plain-list">
                 {page.misunderstandings.map((item) => (
                   <li key={item}>{item}</li>
@@ -65,6 +73,7 @@ export function renderContentPage(page: PageContent) {
               </ul>
             </section>
           ) : null}
+          {page.sources?.length ? <SourceList items={page.sources} /> : null}
           <FaqAccordion items={page.faqs} />
           {page.relatedGuides ? <GuideCardGrid title="Related Guides" items={page.relatedGuides} /> : null}
         </div>

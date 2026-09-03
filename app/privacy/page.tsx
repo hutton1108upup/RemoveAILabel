@@ -5,7 +5,8 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata = buildMetadata({
   path: "/privacy",
   title: "Privacy Policy",
-  description: "Review the local-processing and no-upload privacy boundaries for Remove AI Label.",
+  description:
+    "Read how Remove AI Label processes images locally, what data is not transmitted, and how temporary downloads are handled.",
 });
 
 export default function PrivacyPage() {
@@ -15,15 +16,58 @@ export default function PrivacyPage() {
       <main className="main-shell" role="main">
         <div className="shell narrow-page legal-stack" data-page-width="narrow">
           <h1>Privacy Policy</h1>
-          <p>
-            The tool is designed for local processing. It should not upload image bytes, file names,
-            prompts, GPS, raw EXIF, or raw XMP to a server.
-          </p>
-          <p>
-            Optional analytics are limited to anonymous enum-style event data such as page slug,
-            format bucket, and result bucket, and default to a no-op adapter when no provider is
-            configured.
-          </p>
+          <p className="evidence-note">Last updated: September 3, 2026</p>
+
+          <section className="legal-section">
+            <h2>Your Images Stay in Your Browser</h2>
+            <p>
+              Image scanning, cleanup, verification, and ZIP preparation run locally in your
+              browser. The original file is not overwritten. When cleanup succeeds, the browser
+              creates a separate downloadable copy.
+            </p>
+          </section>
+
+          <section className="legal-section">
+            <h2>Data This Build Does Not Send</h2>
+            <p>
+              This build does not upload selected image bytes, file names, prompts, workflow JSON,
+              GPS, raw EXIF, raw XMP, image hashes, or thumbnails to an application server.
+            </p>
+            <p>
+              File processing runs through a local Web Worker. Selected-file data is not placed in
+              cookies, localStorage, sessionStorage, or IndexedDB by this codebase.
+            </p>
+          </section>
+
+          <section className="legal-section">
+            <h2>Analytics in the Current Build</h2>
+            <p>
+              The current analytics adapter is a no-op, so tool events are not sent to an analytics
+              provider in this build. If analytics is added later, it must not include image bytes,
+              file names, prompts, workflow contents, GPS, raw metadata, hashes, or thumbnails, and
+              this policy must be updated before that change is enabled.
+            </p>
+          </section>
+
+          <section className="legal-section">
+            <h2>Browser Memory and Downloads</h2>
+            <p>
+              Files are held in browser memory while they are being checked. Download links use
+              temporary browser object URLs and are revoked when a result is removed, replaced, or
+              the tool is closed. Saving a downloaded copy places it wherever your browser normally
+              saves files.
+            </p>
+          </section>
+
+          <section className="legal-section">
+            <h2>Ordinary Website Requests</h2>
+            <p>
+              Your browser still requests the HTML, fonts, scripts, styles, and local C2PA files
+              needed to load this static site. A hosting provider may receive ordinary request data,
+              such as an IP address or browser headers, according to its own infrastructure and
+              retention rules. Those requests do not include the images you select for processing.
+            </p>
+          </section>
         </div>
       </main>
       <Footer />
