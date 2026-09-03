@@ -124,7 +124,7 @@ const webpSpecificationSource: SourceLink = {
   label: "Google: WebP RIFF container specification",
   href: "https://developers.google.com/speed/webp/docs/riff_container",
   kind: "Official source",
-  note: "Documents the WebP RIFF container and metadata chunks; cleanup remains disabled in this build.",
+  note: "Documents the WebP RIFF container and metadata chunks; cleanup remains disabled in this version.",
 };
 
 const adobeCommunitySource: SourceLink = {
@@ -156,34 +156,35 @@ const comfyUiDiscussionSource: SourceLink = {
 };
 
 export const homePageContent = {
-  title: "Remove AI Label from Images - Free & Private Tool",
+  title: "Check and Clean AI Label Metadata | Free Local Tool",
   description:
-    "Check and remove supported C2PA, XMP and AI label metadata from JPG and PNG images locally in your browser. Free, private and no account.",
-  h1: "Check and Remove AI Label Metadata Before You Post",
+    "Inspect and clean supported C2PA, XMP and workflow metadata in JPG and PNG files in your browser. No account or image upload.",
+  h1: "Check and Clean Supported AI-Related Metadata Before You Post",
   subtitle:
-    "Create a cleaned local copy by removing supported C2PA, XMP and AI workflow metadata. Your images never leave your browser.",
+    "Inspect a JPG or PNG in your browser. If confirmed fields are found, create a separate copy and verify it before downloading. Selected files are not uploaded.",
   trustBadges: [
-    "Local-only processing",
+    "Processed in your browser",
     "No account",
-    "Original file untouched",
-    "No image re-encoding on supported files",
+    "Original stays unchanged",
+    "No re-encoding",
   ],
   checks: [
     {
       title: "Embedded C2PA Credentials",
-      description: "Inspect embedded Content Credentials and remove confirmed C2PA payloads when safe.",
+      description: "Inspect embedded Content Credentials. Remove a confirmed C2PA package when safe.",
     },
     {
       title: "AI-related XMP Fields",
-      description: "Identify confirmed XMP packets that describe supported generative AI workflows.",
+      description: "Find confirmed AI-related fields in XMP metadata.",
     },
     {
       title: "Prompt and Workflow Data",
-      description: "Scan supported PNG and XMP fields for prompt, workflow, model, and seed-style metadata.",
+      description: "Check supported PNG and XMP fields for prompts, models, seeds, and workflow data.",
     },
     {
       title: "Optional Privacy Metadata",
-      description: "Optionally regenerate a clean copy without EXIF privacy fields such as GPS or device details.",
+      description:
+        "Optionally remove EXIF details such as GPS, device data, and dates. Some camera and copyright fields may also be removed.",
     },
   ],
   preserves: [
@@ -208,53 +209,58 @@ export const homePageContent = {
   ],
   evidenceSources: [
     {
-      label: "Meta labeling policy",
+      label: "Meta labeling approach",
       href: "https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/",
+      note: "How Meta describes industry signals and disclosure.",
     },
     {
       label: "Adobe export settings",
       href: "https://helpx.adobe.com/photoshop/desktop/save-and-export/metadata-content-credentials/export-your-work-with-content-credentials.html",
+      note: "How Content Credentials are handled during export.",
     },
     {
       label: "Adobe Content Credentials overview",
       href: "https://helpx.adobe.com/firefly/web/get-started/learn-the-basics/content-credentials-overview.html",
+      note: "What Content Credentials can record about a file.",
     },
     {
-      label: "C2PA Content Credentials spec",
+      label: "C2PA provenance standard",
       href: "https://spec.c2pa.org/specifications/specifications/2.4/specs/ContentCredentials.html",
+      note: "The standard behind embedded Content Credentials.",
     },
     {
       label: "SynthID reference",
       href: "https://deepmind.google/models/synthid/",
+      note: "Why pixel-level watermarking is outside this tool.",
     },
   ],
   scenarios: [
     {
       title: "Real Photos Lightly Edited with AI",
-      description: "Create a publish-ready copy after AI-assisted retouching, expand, or object cleanup.",
+      description: "Create a separate copy after reviewing the file-level result.",
     },
     {
-      title: "Social Media Image Preflight",
-      description: "Run a fast local check before posting to Instagram, Facebook, or another social platform.",
+      title: "Social Media Preflight",
+      description: "Check a final file in your browser before posting to Instagram, Facebook, or another platform.",
     },
     {
-      title: "Authentic Product Photo Delivery",
-      description: "Prepare client or marketplace copies while preserving color and ordinary camera metadata.",
+      title: "Product Photo Delivery",
+      description: "Prepare client or marketplace copies while keeping supported color and camera data.",
     },
     {
-      title: "Clean Client Copies",
-      description: "Remove supported prompt or workflow traces before delivering a derivative file to a client.",
+      title: "Client Delivery Copies",
+      description: "Remove supported prompt or workflow fields before sending a derivative file.",
     },
   ],
   workflow: [
     "Add files",
-    "Scan locally",
-    "Prepare a recommended clean copy",
+    "Scan in your browser",
+    "Create a separate copy",
     "Verify and download",
   ],
   entryCards: guideCards,
   faqs: homeFaqs,
-  footerSiteBLabel: "Explore the companion visual cleanup site",
+  footerSiteBLabel: "Review visible image artifacts",
 } as const;
 
 export const launchPages: Record<string, PageContent> = {
@@ -277,19 +283,19 @@ export const launchPages: Record<string, PageContent> = {
     heroDescription:
       "Posted a real or lightly retouched photo and saw AI Info? Check the original JPG or PNG for supported embedded signals before deciding what to do next.",
     quickAnswer:
-      "AI Info does not, by itself, prove that an entire photo was generated. Meta says its labels can use industry-shared signals and disclosure, while platform systems may also act outside the file. This tool reports only the supported metadata in the local file you select.",
+      "AI Info alone does not prove that the whole photo was generated. Meta describes industry signals and disclosure as possible inputs, and the platform may use information outside the file. This tool reports only supported metadata in the file you select.",
     evidenceLabel:
-      "Last reviewed: 2026-09-03\nFacts: official Meta documentation + local file-format testing\nUser discussions: used to identify questions, not platform facts",
+      "Reviewed September 3, 2026\nPlatform claims: official Meta documentation\nFile behavior: local format tests\nCommunity discussions: question discovery only",
     editorialSections: [
       {
-        title: "What Instagram AI Info Does—and Does Not—Mean",
+        title: "What Instagram AI Info Tells You",
         paragraphs: [
           "The notice signals that AI-related information or disclosure may be associated with a post. It is not a percentage score, and it does not tell viewers how much of the image was generated rather than photographed.",
           "A real photo can still carry an embedded credential or editing record after an AI-assisted retouch. The scan can show supported file metadata, but it cannot explain Instagram's complete decision.",
         ],
       },
       {
-        title: "Already Posted? Start With the Original File",
+        title: "If the Post Is Already Live",
         paragraphs: [
           "This tool cannot edit, appeal, or relabel a live Instagram post. If you plan to publish another copy, start with the local source or final export instead of downloading the social-media version.",
           "For a carousel, inspect each original file separately. A file-by-file result is more useful than guessing which image or non-file signal affected the post.",
@@ -299,7 +305,7 @@ export const launchPages: Record<string, PageContent> = {
     sources: [metaLabelingSource, adobeCommunitySource, photoshopRedditSource],
     whyTitle: "Why a Real or Lightly Edited Photo Can Show AI Info",
     whyPoints: [
-      "Meta describes industry-shared signals and creator disclosure as inputs to its labeling approach.",
+      "Meta describes industry signals and creator disclosure as possible inputs to its labeling approach.",
       "An editing app can attach Content Credentials or AI-related XMP to the exported file.",
       "Instagram can use platform-side systems that are not visible to a local metadata scanner.",
     ],
@@ -322,13 +328,13 @@ export const launchPages: Record<string, PageContent> = {
       "Read the result: ready, already clean, review needed, unsupported, or failed.",
       "Use a verified cleaned copy when appropriate, keep the original, and follow any disclosure rules that apply.",
     ],
-    verifyTitle: "How to Read the Instagram Preflight Result",
+      verifyTitle: "What Each Instagram Result Means",
     verifySteps: [
-      "Clean copy ready means the supported targets were removed and the new file passed the local verification step.",
+      "File-level clean copy ready means the confirmed targets were removed and the new file passed local verification.",
       "Already clean means no supported target was found; it is not a prediction about Instagram.",
       "Review needed or failed means the tool did not produce a downloadable clean copy.",
     ],
-    misunderstandingsTitle: "What a Clean Result Does Not Promise",
+    misunderstandingsTitle: "Limits of a Clean File Result",
     misunderstandings: [
       "It does not remove AI Info from a post that is already live.",
       "It does not prove that Instagram has no other signals or disclosures.",
@@ -353,22 +359,22 @@ export const launchPages: Record<string, PageContent> = {
     heroDescription:
       "Preparing a real photo, product image, or campaign asset for Facebook? Scan the exported JPG or PNG for supported AI-related metadata before posting.",
     quickAnswer:
-      "Facebook AI Info can reflect industry-shared signals or disclosure, but it does not explain every platform decision. This local scan can identify supported fields in your file; it cannot remove a label from a live post or guarantee how Facebook will treat a new upload.",
+      "Facebook AI Info can reflect an industry signal or disclosure, but it does not explain every platform decision. This scan identifies supported fields in your file; it cannot remove a label from a live post or predict how Facebook will treat a new upload.",
     evidenceLabel:
-      "Last reviewed: 2026-09-03\nFacts: official Meta documentation + local file-format testing\nUser discussions: used to identify questions, not platform facts",
+      "Reviewed September 3, 2026\nPlatform claims: official Meta documentation\nFile behavior: local format tests\nCommunity discussions: question discovery only",
     editorialSections: [
       {
-        title: "Check a Batch Before a Campaign Goes Live",
+        title: "Check a Batch Before Publishing",
         paragraphs: [
           "Product and brand teams often work with several exports from different editing tools. Add the final files as one batch so each image gets its own result instead of assuming the whole set is clean.",
-          "One unsupported or failed file does not cancel the completed checks. Download is offered only for clean copies that passed verification, and the original files remain unchanged.",
+          "One unsupported or failed file does not stop the other checks. Downloads are offered only for copies that pass verification, and the original files remain unchanged.",
         ],
       },
     ],
     sources: [metaLabelingSource, facebookRedditSource],
     whyTitle: "Why Facebook May Show AI Info",
     whyPoints: [
-      "Meta uses an AI-labeling approach across Facebook and Instagram that includes industry-shared signals and disclosure.",
+      "Meta describes an AI-labeling approach across Facebook and Instagram that includes industry signals and disclosure.",
       "A photo can carry Content Credentials or AI-related XMP after it leaves an editing app.",
       "A new local copy changes supported metadata in that file, not Facebook's account, post, or policy systems.",
     ],
@@ -388,16 +394,16 @@ export const launchPages: Record<string, PageContent> = {
     workflow: [
       "Collect the final JPG and PNG exports you intend to publish.",
       "Scan the files locally, one result per image, without sending their contents to this site.",
-      "Download only the copies marked Clean copy ready.",
+      "Download only the copies marked File-level clean copy ready.",
       "Keep the originals for provenance, editing history, and future revisions.",
     ],
-    verifyTitle: "How to Read a Batch Result",
+      verifyTitle: "What Each Batch Result Means",
     verifySteps: [
       "Check each file's before and clean-copy columns instead of relying on the batch total alone.",
       "Confirm that expected EXIF, orientation, copyright, and ICC data stayed preserved when separable.",
-      "Treat the report as file verification, not a Facebook outcome prediction.",
+      "This report describes the file; it does not predict what Facebook will do.",
     ],
-    misunderstandingsTitle: "What This Does Not Fix on Facebook",
+    misunderstandingsTitle: "What Stays With Facebook",
     misunderstandings: [
       "It cannot edit, appeal, or relabel an existing post.",
       "It cannot change visible edits inside the pixels.",
@@ -422,22 +428,22 @@ export const launchPages: Record<string, PageContent> = {
     heroDescription:
       "Used Generative Fill, Generative Expand, Crop, or an AI-assisted Remove option on a real photo? Check the final JPG or PNG export instead of guessing from the tool name.",
     quickAnswer:
-      "An AI-related credential says that an AI-assisted action may be part of the file's history; it does not measure how much of the image was generated. Photoshop versions and export paths change, so inspect the final export before delivery or posting.",
+      "An AI-related credential can record an AI-assisted action in the file history. It does not measure how much of the image was generated. Photoshop versions and export paths vary, so inspect the final export before delivery or posting.",
     evidenceLabel:
-      "Last reviewed: 2026-09-03\nFacts: official Adobe and Meta documentation + local file-format testing\nUser discussions: used to identify questions, not trigger rules",
+      "Reviewed September 3, 2026\nPlatform claims: Adobe and Meta documentation\nFile behavior: local format tests\nCommunity discussions: question discovery only",
     editorialSections: [
       {
-        title: "Check the Export, Not Just the Tool Name",
+        title: "What to Check in the Export",
         paragraphs: [
-          "Photographers repeatedly ask whether Generative Fill, Generative Expand, Crop, Remove, or an undone edit caused an AI Info notice. There is no stable tool-name checklist that covers every Photoshop version and export path.",
+          "Photographers often ask whether a Photoshop action such as Generative Fill, or an edit they later undid, caused an AI Info notice. There is no stable tool-name checklist for every Photoshop version and export path.",
           "Use Photoshop's current export options to review how Content Credentials will be handled, then scan the actual JPG or PNG you plan to share. That is more reliable than inferring metadata from the editing step alone.",
         ],
       },
       {
-        title: "A Small Retouch Is Not the Same as a Fully Generated Photo",
+        title: "A Small Retouch Is Different From a Fully Generated Image",
         paragraphs: [
           "Community discussions often come from photographers who removed a distraction, extended a crop, or repaired a small area in a photo they shot. Their concern is that viewers or clients may read an AI label as proof that the whole image was generated.",
-          "This scanner avoids that conclusion. It reports supported fields in the exported file; it does not estimate the percentage of generated pixels or decide whether the photograph is authentic.",
+          "The scan cannot make that judgment. It reports supported fields in the exported file; it does not estimate the percentage of generated pixels or decide whether the photograph is authentic.",
         ],
       },
     ],
@@ -454,7 +460,7 @@ export const launchPages: Record<string, PageContent> = {
       "Whether supported XMP includes confirmed AI-related fields",
       "Whether supported prompt or workflow text is present",
     ],
-    cannotTitle: "What the File Cannot Tell You",
+    cannotTitle: "What the Export Leaves Open",
     cannotChange: [
       "Which Photoshop button definitively caused a platform label",
       "How much of the visible image was generated or photographed",
@@ -467,13 +473,13 @@ export const launchPages: Record<string, PageContent> = {
       "Scan the final JPG or PNG that will actually be posted or delivered.",
       "Download a verified clean copy when appropriate and archive the original with its provenance.",
     ],
-    verifyTitle: "Read the Export Result Without Overclaiming",
+      verifyTitle: "What Each Export Result Means",
     verifySteps: [
       "Removed means a supported target existed before cleanup and is absent from the verified copy.",
       "Preserved means the scanner confirmed the relevant EXIF, orientation, copyright, or ICC data stayed intact when separable.",
       "Not found describes this export only; it is not proof that no AI-assisted edit occurred.",
     ],
-    misunderstandingsTitle: "Questions the Export Alone Cannot Answer",
+    misunderstandingsTitle: "Questions the Export Leaves Open",
     misunderstandings: [
       "Undoing or deleting a layer does not prove what metadata is present in the final export.",
       "Removing an embedded credential does not remove a credential stored elsewhere.",
@@ -498,14 +504,14 @@ export const launchPages: Record<string, PageContent> = {
     heroDescription:
       "A photo can be real and still carry AI-related provenance or editing information. Separate what is inside the file from what the platform decides after upload.",
     quickAnswer:
-      "AI Info can come from an embedded industry signal, a disclosure made during posting, or a platform system outside the file. A local scan answers only the first question, so an already-clean result cannot explain every label.",
+      "AI Info can come from an embedded file signal, a disclosure made during posting, or a platform system outside the file. A local scan answers only the file question, so an already-clean result cannot explain every label.",
     evidenceLabel:
-      "Last reviewed: 2026-09-03\nFacts: official Meta, Adobe, and C2PA documentation + local file-format testing\nPlatform behavior may change",
+      "Reviewed September 3, 2026\nPlatform claims: Meta and Adobe documentation\nFile behavior: local format tests\nPlatform behavior may change",
     editorialSections: [
       {
-        title: "Where an AI Info Signal Can Come From",
+        title: "Where AI Info Can Come From",
         paragraphs: [
-          "The same notice can sit at the end of different paths. Keeping those paths separate prevents a metadata scan from being mistaken for a full explanation of a platform decision.",
+          "The notice can have several causes. Keep them separate so a file scan is not mistaken for a full explanation of the platform's decision.",
         ],
         bullets: [
           "Inside the file: an embedded C2PA credential, supported AI-related XMP, or prompt and workflow text.",
@@ -514,7 +520,7 @@ export const launchPages: Record<string, PageContent> = {
         ],
       },
       {
-        title: "What to Do When the Scan Finds Nothing",
+        title: "When the Scan Finds Nothing",
         paragraphs: [
           "First confirm that you scanned the same source or export you intended to upload. A social-media download may not contain the same metadata as your local master.",
           "If the correct local file is already clean, stop treating metadata as the only possible cause. Review disclosure choices and the platform's current help or appeal options instead.",
@@ -534,7 +540,7 @@ export const launchPages: Record<string, PageContent> = {
       "Prompt or workflow text stored in supported PNG fields",
       "Whether the verified copy preserved expected EXIF, orientation, and ICC data",
     ],
-    cannotTitle: "What Requires a Different Investigation",
+    cannotTitle: "What Requires a Platform Check",
     cannotChange: [
       "A disclosure selected during publishing",
       "A classifier or other platform-side signal",
@@ -547,13 +553,13 @@ export const launchPages: Record<string, PageContent> = {
       "Keep the original and use a verified copy only when removing those fields fits your purpose.",
       "If the file is already clean, review disclosure and platform-side explanations separately.",
     ],
-    verifyTitle: "How to Interpret the File Evidence",
+    verifyTitle: "What the File Evidence Shows",
     verifySteps: [
       "Found identifies a supported field in this file, not the origin of every visible pixel.",
       "Removed means that field is absent from the verified copy.",
       "Not found means the scanner did not find a supported target in this file; it is not a platform guarantee.",
     ],
-    misunderstandingsTitle: "Conclusions the Scan Does Not Support",
+    misunderstandingsTitle: "What Needs a Platform Check",
     misunderstandings: [
       "A software name alone does not prove that the whole image was AI-generated.",
       "Removing metadata does not change visible edits or invisible pixel watermarks.",
@@ -580,10 +586,10 @@ export const launchPages: Record<string, PageContent> = {
     quickAnswer:
       "Removing a supported embedded C2PA credential also removes that provenance package from the cleaned copy. The original file is never overwritten, and removing one embedded copy does not erase credentials that may be stored elsewhere.",
     evidenceLabel:
-      "Last reviewed: 2026-09-03\nFacts: official C2PA and Adobe documentation + local file-format testing\nStorage and platform behavior may change",
+      "Reviewed September 3, 2026\nPlatform claims: C2PA and Adobe documentation\nFile behavior: local format tests\nStorage and platform behavior may change",
     editorialSections: [
       {
-        title: "Before You Remove Content Credentials",
+        title: "What Changes in the Cleaned Copy",
         paragraphs: [
           "Ask what the next copy is for. If a client, archive, or publication needs verifiable provenance, keep the original credential-bearing file. If you need a separate publishing copy without a supported embedded credential, create that copy and keep both files clearly named.",
           "Adobe documents both file-attached and cloud-published Content Credentials. Removing an embedded package from one file cannot remove a credential stored in Adobe's cloud or another external location.",
@@ -599,7 +605,7 @@ export const launchPages: Record<string, PageContent> = {
     whyTitle: "What Content Credentials Record",
     whyPoints: [
       "A C2PA manifest can record provenance, assertions, and editing history that travel with a file.",
-      "The credential is designed to be validated and assessed under a trust model, not treated as a simple AI yes-or-no flag.",
+      "C2PA is a provenance record, not a yes-or-no detector.",
       "Storage can be embedded in the file or associated through an external service, depending on the producing tool.",
     ],
     canTitle: "What This Scanner Can Verify",
@@ -608,7 +614,7 @@ export const launchPages: Record<string, PageContent> = {
       "Whether that embedded package is absent from the cleaned copy",
       "Whether the encoded image payload, orientation, and color data stayed intact where supported",
     ],
-    cannotTitle: "What Removing One File Cannot Do",
+    cannotTitle: "What Stays Outside This File",
     cannotChange: [
       "Delete cloud-stored or otherwise external provenance",
       "Remove invisible pixel-level watermarking systems such as SynthID",
@@ -621,13 +627,13 @@ export const launchPages: Record<string, PageContent> = {
       "Download only a clean copy that passed verification.",
       "Archive the original separately so the provenance record is not lost.",
     ],
-    verifyTitle: "Verify Both Removal and Preservation",
+    verifyTitle: "Check the Copy and Keep the Original",
     verifySteps: [
       "Check Removed only when Embedded C2PA was found before cleanup.",
       "Confirm the report shows the encoded image payload was not re-encoded on the supported file.",
       "Keep the original master even after the cleaned copy is verified.",
     ],
-    misunderstandingsTitle: "What C2PA Removal Does Not Prove",
+    misunderstandingsTitle: "Reading a Cleaned Credential Result",
     misunderstandings: [
       "It does not remove visible AI artifacts or reverse an edit.",
       "It does not remove SynthID or another pixel-level watermark.",
@@ -650,11 +656,11 @@ export const launchPages: Record<string, PageContent> = {
       "See what the local tool can inspect, remove or preserve in JPG, PNG and beta WebP files, including C2PA, XMP, EXIF and ICC.",
     h1: "Supported Image Formats and Metadata",
     heroDescription:
-      "Check what this build can scan, clean, and preserve in JPG and PNG files—and why WebP remains inspect-only until its release gate is complete.",
+      "Check what this version can scan, clean, and preserve in JPG and PNG files. WebP can be inspected but not cleaned here.",
     quickAnswer:
-      "JPG and PNG support verified cleanup for confirmed targets. WebP can be inspected but not cleaned in this build. Keep the original whenever you may need its Content Credentials, camera data, or embedded workflow later.",
+      "JPG and PNG support verified cleanup for confirmed targets. WebP can be inspected but not cleaned in this version. Keep the original whenever you may need its Content Credentials, camera data, or embedded workflow later.",
     evidenceLabel:
-      "Last reviewed: 2026-09-03\nFacts: file-format specifications + local parser and pixel-regression tests\nUser discussions: used to identify preserve-versus-remove decisions",
+      "Reviewed September 3, 2026\nFile behavior: format specifications and local parser tests\nCommunity discussions: preserve-versus-remove questions",
     editorialSections: [
       {
         title: "Keep or Remove Workflow Metadata?",
@@ -666,38 +672,38 @@ export const launchPages: Record<string, PageContent> = {
       },
     ],
     sources: [pngSpecificationSource, webpSpecificationSource, c2paSpecificationSource, comfyUiDiscussionSource],
-    whyTitle: "What This Build Supports Today",
+    whyTitle: "What This Version Supports",
     whyPoints: [
       "JPG and PNG support scanning, confirmed-target cleanup, and post-clean verification.",
-      "WebP is inspect-only because the full real-image and decoded-pixel release gate is not complete.",
-      "An ambiguous or damaged file fails closed rather than falling back to Canvas re-encoding.",
+      "WebP can be inspected but not cleaned in this version.",
+      "If a file is damaged or ambiguous, the tool stops instead of offering an unverified copy.",
     ],
     canTitle: "What the Scanner Can Inspect",
     canCheck: [
       "JPG: confirmed C2PA APP11 groups, AI-related XMP, EXIF, orientation, copyright, and ICC",
       "PNG: caBX, supported prompt and workflow text, XMP, eXIf, color, transparency, and animation chunks",
-      "WebP: supported container and metadata inspection without a cleaned download",
+      "WebP: supported container and metadata inspection without creating a cleaned copy",
     ],
-    cannotTitle: "What Is Not a Supported Cleanup",
+    cannotTitle: "Formats and Cleanup Limits",
     cannotChange: [
       "HEIC, AVIF, video, PDF, audio, or Office files",
       "Visible image content or pixel-level watermarks",
       "A metadata layout that cannot be rewritten and verified safely",
     ],
-    workflowTitle: "Choose the Right Copy for the Job",
+    workflowTitle: "Choose a Copy for the Job",
     workflow: [
       "Keep the original file as the archive and working master.",
       "Scan the exact copy you plan to publish, share, or deliver.",
       "Review what was found and adjust Advanced Options when you need to preserve workflow data.",
-      "Use a downloaded copy only when its status is Clean copy ready.",
+      "Use a downloaded copy only when its status says File-level clean copy ready.",
     ],
-    verifyTitle: "How Format Support Appears in the Result",
+    verifyTitle: "What Each Format Status Means",
     verifySteps: [
       "Ready provides a verified download for a supported rewrite.",
       "Already clean leaves the source untouched because no supported target was found.",
       "Review needed, unsupported, or failed never provides an unverified clean download.",
     ],
-    misunderstandingsTitle: "Format Limits Worth Knowing",
+    misunderstandingsTitle: "Format Limits to Keep in Mind",
     misunderstandings: [
       "A .jpg, .png, or .webp extension does not override the file's real magic bytes.",
       "WebP support on this page does not mean WebP cleanup is enabled.",
@@ -719,7 +725,7 @@ export const launchPages: Record<string, PageContent> = {
       "Practical guides for checking AI label metadata in Instagram, Facebook, Photoshop and other image workflows.",
     h1: "AI Label and AI Info Guides",
     quickAnswer:
-      "These launch guides explain supported file-level signals and let you run the same local tool without leaving the page.",
+      "Use these guides to check file-level signals with the same local tool.",
     faqs: pageFaqs.guides,
     relatedGuides: guideCards,
     breadcrumbs: [

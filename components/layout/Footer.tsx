@@ -5,7 +5,7 @@ interface FooterProps {
   siteBLabel?: string;
 }
 
-export function Footer({ siteBLabel = "Explore the companion visual cleanup site" }: FooterProps) {
+export function Footer({ siteBLabel = "Review visible image artifacts" }: FooterProps) {
   const siteBUrl = process.env.NEXT_PUBLIC_SITE_B_URL?.trim();
 
   return (
@@ -16,7 +16,7 @@ export function Footer({ siteBLabel = "Explore the companion visual cleanup site
             Remove AI Label
           </AppLink>
           <p className="body-copy">
-            A free local tool for checking and cleaning supported AI label metadata before you post.
+            A free browser-based tool for checking and cleaning supported AI-related metadata before you post.
           </p>
           <p className="mono-copy">© 2026 Remove AI Label</p>
         </div>
@@ -40,16 +40,14 @@ export function Footer({ siteBLabel = "Explore the companion visual cleanup site
             ))}
           </ul>
         </div>
-        <div>
-          <h3>Companion</h3>
-          {siteBUrl && siteBLabel ? (
+        {siteBUrl && siteBLabel ? (
+          <div>
+            <h3>Companion</h3>
             <a href={siteBUrl} className="text-link" target="_blank" rel="noreferrer">
               {siteBLabel}
             </a>
-          ) : (
-            <p className="body-copy">Visible cleanup guidance appears only when the companion site is configured.</p>
-          )}
-        </div>
+          </div>
+        ) : null}
       </div>
     </footer>
   );

@@ -124,6 +124,7 @@ export function RemoveAiLabelTool() {
   const [dragging, setDragging] = useState(false);
   const [batchMessage, setBatchMessage] = useState<string | null>(null);
   const [zipBusy, setZipBusy] = useState(false);
+  const [sampleBusy, setSampleBusy] = useState(false);
   const [c2paNoticeVisible, setC2paNoticeVisible] = useState(false);
   const siteBUrl = useMemo(() => {
     const configured = process.env.NEXT_PUBLIC_SITE_B_URL?.trim();
@@ -354,6 +355,28 @@ export function RemoveAiLabelTool() {
     });
   }
 
+  async function trySampleImage() {
+    if (sampleBusy) {
+      return;
+    }
+
+    setSampleBusy(true);
+    setBatchMessage(null);
+    try {
+      const response = await fetch("/samples/adobe-20220124-CA.jpg", { cache: "force-cache" });
+      if (!response.ok) {
+        throw new Error("Sample image request failed");
+      }
+
+      const blob = await response.blob();
+      enqueueFiles([new File([blob], "sample-adobe-export.jpg", { type: blob.type || "image/jpeg" })]);
+    } catch {
+      setBatchMessage("The sample image could not be loaded locally. Choose an image file instead.");
+    } finally {
+      setSampleBusy(false);
+    }
+  }
+
   function updateOptions(entryId: string, options: CleanupOptions) {
     setEntries((current) =>
       current.map((entry) => (entry.id === entryId ? { ...entry, options } : entry)),
@@ -473,6 +496,8 @@ export function RemoveAiLabelTool() {
         dragging={dragging}
         onSelect={enqueueFiles}
         onPasteFiles={enqueueFiles}
+        onTrySample={trySampleImage}
+        sampleBusy={sampleBusy}
         onDragChange={setDragging}
       />
       {batchMessage ? (
@@ -483,12 +508,12 @@ export function RemoveAiLabelTool() {
       ) : null}
       {c2paNoticeVisible ? (
         <div className="warning-banner">
-          Content Credentials can contain verifiable provenance and editing history. The cleaned
-          copy will no longer carry that embedded credential. Keep your original master file.
+          This file contains an embedded Content Credential. If cleanup succeeds, the downloaded
+          copy will not carry it. Keep the original master file.
         </div>
       ) : null}
       <QueueList entries={queueEntries} />
-      {checked > 0 ? (
+      {entries.length > 1 && checked > 0 ? (
         <BatchSummary
           checked={checked}
           ready={ready}

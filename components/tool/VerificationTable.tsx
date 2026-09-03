@@ -60,28 +60,28 @@ export function VerificationTable({ result }: VerificationTableProps) {
       <tbody>
         <tr className="table-row">
           <td>Embedded C2PA</td>
-          <td>{scan?.hasEmbeddedC2pa ? "Found" : "Not found"}</td>
-          <td>{verification?.c2paAbsentAfterCleanup ? <span className="cell-removed">Removed</span> : "Not found"}</td>
+          <td data-label="Before">{scan?.hasEmbeddedC2pa ? "Found" : "Not found"}</td>
+          <td data-label="Clean copy">{verification?.c2paAbsentAfterCleanup ? <span className="cell-removed">Removed</span> : "Not found"}</td>
         </tr>
         <tr className="table-row">
           <td>AI-related XMP</td>
-          <td>{aiXmpFindingIds.length > 0 ? "Found" : "Not found"}</td>
-          <td>{removalCell(result, aiXmpFindingIds)}</td>
+          <td data-label="Before">{aiXmpFindingIds.length > 0 ? "Found" : "Not found"}</td>
+          <td data-label="Clean copy">{removalCell(result, aiXmpFindingIds)}</td>
         </tr>
         <tr className="table-row">
           <td>Prompt / workflow</td>
-          <td>{workflowFindingIds.length > 0 ? "Found" : "Not found"}</td>
-          <td>{removalCell(result, workflowFindingIds)}</td>
+          <td data-label="Before">{workflowFindingIds.length > 0 ? "Found" : "Not found"}</td>
+          <td data-label="Clean copy">{removalCell(result, workflowFindingIds)}</td>
         </tr>
         <tr className="table-row">
           <td>Camera EXIF</td>
-          <td>{scan?.hasCameraExif ? "Found" : "Not found"}</td>
-          <td>{boolCell(verification?.preservedCategories.includes("camera-exif"), "Preserved")}</td>
+          <td data-label="Before">{scan?.hasCameraExif ? "Found" : "Not found"}</td>
+          <td data-label="Clean copy">{boolCell(verification?.preservedCategories.includes("camera-exif"), "Preserved")}</td>
         </tr>
         <tr className="table-row">
           <td>Creator / copyright</td>
-          <td>{scan?.hasCopyright ? "Found" : "Not found"}</td>
-          <td>
+          <td data-label="Before">{scan?.hasCopyright ? "Found" : "Not found"}</td>
+          <td data-label="Clean copy">
             {verification?.preservedCategories.includes("copyright") ? (
               <span className="cell-preserved">
                 Preserved*
@@ -94,13 +94,13 @@ export function VerificationTable({ result }: VerificationTableProps) {
         </tr>
         <tr className="table-row">
           <td>ICC profile</td>
-          <td>{scan?.hasIccProfile ? "Found" : "Not found"}</td>
-          <td>{boolCell(verification?.iccPreserved, "Preserved")}</td>
+          <td data-label="Before">{scan?.hasIccProfile ? "Found" : "Not found"}</td>
+          <td data-label="Clean copy">{boolCell(verification?.iccPreserved, "Preserved")}</td>
         </tr>
         <tr className="table-row">
           <td>Image payload</td>
-          <td>—</td>
-          <td>{boolCell(verification?.encodedPayloadUnchanged, "Not re-encoded")}</td>
+          <td data-label="Before">—</td>
+          <td data-label="Clean copy">{boolCell(verification?.encodedPayloadUnchanged, "Not re-encoded")}</td>
         </tr>
       </tbody>
     </table>

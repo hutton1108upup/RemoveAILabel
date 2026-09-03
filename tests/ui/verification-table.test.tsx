@@ -67,5 +67,10 @@ describe("verification table", () => {
     expect(within(aiRow).getAllByText("Not found")).toHaveLength(2);
     expect(within(workflowRow).getAllByText("Not found")).toHaveLength(2);
     expect(screen.getByText("Camera EXIF").closest(".table-row")).toHaveTextContent("Preserved");
+    expect(within(aiRow).getAllByText("Not found")[0].closest("td")).toHaveAttribute("data-label", "Before");
+    expect(within(aiRow).getAllByText("Not found")[1].closest("td")).toHaveAttribute(
+      "data-label",
+      "Clean copy",
+    );
   });
 });
