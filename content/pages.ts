@@ -156,18 +156,53 @@ const comfyUiDiscussionSource: SourceLink = {
 };
 
 export const homePageContent = {
-  title: "Check and Clean AI Label Metadata | Free Local Tool",
+  title: "Remove AI Label from Images — Free & Private Tool",
   description:
-    "Inspect and clean supported C2PA, XMP and workflow metadata in JPG and PNG files in your browser. No account or image upload.",
-  h1: "Check and Clean Supported AI-Related Metadata Before You Post",
+    "Check and remove supported C2PA, XMP and AI label metadata from JPG and PNG images locally in your browser. Free, private and no account.",
+  h1: "Check and Remove AI Label Metadata Before You Post",
   subtitle:
-    "Inspect a JPG or PNG in your browser. If confirmed fields are found, create a separate copy and verify it before downloading. Selected files are not uploaded.",
+    "Use this free AI label remover to inspect a JPG or PNG for supported file-level signals. When confirmed C2PA, XMP, or workflow fields are found, it creates a separate local copy and verifies the result. Your image stays in your browser.",
   trustBadges: [
     "Processed in your browser",
     "No account",
     "Original stays unchanged",
     "No re-encoding",
   ],
+  sectionCopy: {
+    checks: [
+      "A Remove AI Label scan starts with the actual file you plan to post, not a screenshot or a copy already processed by a social app. The scanner reads supported structures inside JPG and PNG files, then separates confirmed findings from possible or unsupported signals. You can review that result before any cleaned copy is prepared.",
+      "AI-related information can live in more than one part of an image file. Content Credentials may be stored as a C2PA package, editing applications can write XMP fields, and image-generation workflows may save prompts, model names, seeds, or node data. The tool only marks a field as removable when it recognizes a supported structure; unknown data is not silently treated as an AI label.",
+    ],
+    preserves: [
+      "Removing supported AI label metadata should not require flattening or recompressing the picture. For supported JPG and PNG files, the cleaner works on file containers and metadata segments rather than drawing the image onto a canvas. The verification report checks that the encoded image payload was not re-encoded.",
+      "Default cleanup is deliberately narrower than a full privacy scrub. Camera EXIF, orientation, ICC color information, PNG transparency, and creator or copyright details are kept when they are separate from a removed packet. If a field cannot be preserved safely and separately, the result explains the limitation instead of presenting an overconfident success message. Your original file is never replaced.",
+    ],
+    limits: [
+      "This is a file preflight tool, not a control panel for Instagram, Facebook, or another publishing platform. It can inspect the selected local file, remove confirmed supported fields in a separate copy, and scan that copy again. It cannot edit a post that is already live, change an account-level disclosure, or determine every signal a platform may use.",
+      "Some searches describe a tool like this as an AI Info remover. That shorthand is useful for finding a file checker, but it is not a promise that a platform notice will disappear. Visible text, pixel-level watermarks, image appearance, disclosure rules, and platform-side classification remain outside the file-level cleanup performed here. Use the report as evidence about the downloaded copy, not as a guarantee about a future post.",
+    ],
+    scenarios: [
+      "The tool is useful when a real photo has passed through an AI-assisted editing workflow, when a social media manager wants to inspect the final export, or when a photographer needs a separate delivery copy. In each case, the practical question is the same: what supported signals are inside this exact file, and can confirmed fields be removed without re-encoding the image payload?",
+      "Run the check on the final JPG or PNG you intend to share. Scanning an earlier working file does not describe a later export, and scanning one image does not describe every item in a carousel or batch. Each file receives its own findings and verification result.",
+    ],
+    workflow: [
+      "To remove AI label metadata from an image, add the final file and let the browser inspect its supported containers. There is no upload stage: validation, scanning, cleanup, and verification run locally. The result shows whether it found confirmed targets, possible signals that need review, or no supported metadata.",
+      "A cleaned copy is prepared only for confirmed, supported targets. Compare the Before and Clean copy columns, check which camera, color, orientation, or copyright fields were preserved, then download the verified result. Keep the original so you can return to the source export if the cleaned copy is not appropriate for your publishing workflow.",
+    ],
+    report: [
+      "The before-and-after report makes the change inspectable. A target marked Found should become Removed in the cleaned copy, while supported camera EXIF, color profiles, orientation, and creator details should remain Preserved when separable. The image payload row records whether the encoded picture data was re-encoded.",
+      "Verification uses the same class of file checks after cleanup instead of relying on a successful download alone. If a target remains, the rewrite is unsafe, or the resulting file cannot be validated, the tool does not offer that copy as verified. The example below shows the structure of the report; your real result will reflect only the fields found in your own file.",
+    ],
+    guides: [
+      "Choose the guide that matches the point where the label question appeared. The Instagram and Facebook pages explain what a local file check can and cannot say about AI Info. The Photoshop guide focuses on exported files after AI-assisted edits, while the broader AI Info guide explains why a photographed image may still carry provenance or editing signals. These pages add context without changing the scope of the cleaner.",
+    ],
+    faq: [
+      "These answers cover the most common decisions before using an AI label remover: whether files are uploaded, which metadata is supported, what happens to image quality, and why a cleaned file can still receive a platform notice. Open any question for the short answer, then use the relevant guide when you need workflow-specific detail.",
+    ],
+    cta: [
+      "Check the exact JPG or PNG you plan to share. The Remove AI Label tool will show supported file-level findings, prepare a separate copy only when confirmed cleanup is safe, and verify that result before download. No account is required, selected image bytes stay in your browser, and the original remains unchanged.",
+    ],
+  },
   checks: [
     {
       title: "Embedded C2PA Credentials",

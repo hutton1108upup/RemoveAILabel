@@ -3,7 +3,7 @@ import type { GuideCard } from "@/content/pages";
 import { AppLink } from "@/components/layout/AppLink";
 
 interface GuideCardGridProps {
-  title: string;
+  title?: string;
   items: readonly GuideCard[];
 }
 
@@ -12,7 +12,7 @@ export function GuideCardGrid({ title, items }: GuideCardGridProps) {
 
   return (
     <section>
-      <h2>{title}</h2>
+      {title ? <h2>{title}</h2> : null}
       <div className="card-grid card-grid-four">
         {items.map((item, index) => {
           const Icon = icons[index % icons.length];

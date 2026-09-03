@@ -330,6 +330,18 @@ h3 {
   gap: 48px;
 }
 
+.section-copy {
+  display: grid;
+  max-width: 860px;
+  gap: var(--Spacing-gap-sm);
+  margin: 16px 0 var(--Spacing-gap-lg);
+}
+
+.section-copy-dark,
+.section-copy-dark p {
+  color: var(--Colors-navy-text);
+}
+
 .route-stack {
   padding-top: 24px;
 }

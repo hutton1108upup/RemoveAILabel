@@ -36,7 +36,7 @@ test("every launch route and static SEO endpoint opens", async ({ page, request 
     const response = await page.goto(route);
     expect(response?.ok(), route).toBeTruthy();
     await expect(page.locator("h1")).toHaveCount(1);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/removeailabel\.com\//);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/removeailabel\.app\//);
   }
 
   for (const route of ["/robots.txt", "/sitemap.xml", "/icon.svg", "/opengraph-image"]) {

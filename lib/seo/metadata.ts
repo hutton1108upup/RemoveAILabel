@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { PageContent } from "@/content/pages";
 
-export const SITE_URL_FALLBACK = "https://removeailabel.com";
+export const SITE_URL_FALLBACK = "https://removeailabel.app";
 
 export function getSiteOrigin(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
