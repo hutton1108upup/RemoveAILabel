@@ -1,4 +1,5 @@
 import { homeFaqs, pageFaqs, type FaqItem } from "./faqs";
+import { scenarioGuideCards, scenarioPages } from "./scenario-pages";
 
 export interface BreadcrumbLink {
   label: string;
@@ -63,6 +64,11 @@ export const launchRouteOrder = [
   "/why-does-my-photo-say-ai-info",
   "/c2pa-ai-label",
   "/supported-formats",
+  "/lightroom-ai-label",
+  "/remove-ai-label-iphone",
+  "/threads-ai-info",
+  "/pinterest-ai-label",
+  "/tiktok-photo-ai-label",
   "/guides",
   "/about",
   "/privacy",
@@ -298,6 +304,7 @@ export const homePageContent = {
 } as const;
 
 export const launchPages: Record<string, PageContent> = {
+  ...scenarioPages,
   home: {
     slug: "home",
     path: "/",
@@ -375,7 +382,7 @@ export const launchPages: Record<string, PageContent> = {
       "It does not hide visible edits or replace a disclosure you are required to make.",
     ],
     faqs: pageFaqs["instagram-ai-info"],
-    relatedGuides: guideCards.filter((card) => card.href !== "/instagram-ai-info/"),
+    relatedGuides: [guideCards[1], guideCards[2], scenarioGuideCards[1], scenarioGuideCards[2]],
     breadcrumbs: [
       { href: "/", label: "Home" },
       { href: "/guides/", label: "Guides" },
@@ -444,7 +451,7 @@ export const launchPages: Record<string, PageContent> = {
       "It cannot rule out platform signals that are not stored in the file.",
     ],
     faqs: pageFaqs["facebook-ai-info"],
-    relatedGuides: guideCards.filter((card) => card.href !== "/facebook-ai-info/"),
+    relatedGuides: [guideCards[0], guideCards[3], scenarioGuideCards[1], scenarioGuideCards[2]],
     breadcrumbs: [
       { href: "/", label: "Home" },
       { href: "/guides/", label: "Guides" },
@@ -520,7 +527,7 @@ export const launchPages: Record<string, PageContent> = {
       "A clean verification table does not promise a particular platform label.",
     ],
     faqs: pageFaqs["photoshop-ai-label"],
-    relatedGuides: guideCards.filter((card) => card.href !== "/photoshop-ai-label/"),
+    relatedGuides: [guideCards[0], guideCards[3], scenarioGuideCards[0], scenarioGuideCards[3]],
     breadcrumbs: [
       { href: "/", label: "Home" },
       { href: "/guides/", label: "Guides" },
@@ -756,12 +763,25 @@ export const launchPages: Record<string, PageContent> = {
     path: "/guides",
     title: "AI Info and Image Label Guides",
     description:
-      "Practical guides for checking AI label metadata in Instagram, Facebook, Photoshop and other image workflows.",
+      "Find AI label guides for Instagram, Threads, Pinterest, TikTok photos, Lightroom and iPhone. Check file signals and choose the right next step before posting.",
     h1: "AI Label and AI Info Guides",
     quickAnswer:
-      "Use these guides to check file-level signals with the same local tool.",
+      "Choose your platform, editing app, or file format. Each guide explains what you can check locally and what needs a different next step.",
     faqs: pageFaqs.guides,
-    relatedGuides: guideCards,
+    relatedGuides: [
+      ...guideCards,
+      ...scenarioGuideCards,
+      {
+        title: "C2PA and AI Labels",
+        description: "Understand Content Credentials and the limits of a file-level result.",
+        href: "/c2pa-ai-label/",
+      },
+      {
+        title: "Supported Image Formats",
+        description: "Check JPG and PNG cleanup, WebP inspection, and unsupported file types.",
+        href: "/supported-formats/",
+      },
+    ],
     breadcrumbs: [
       { href: "/", label: "Home" },
       { href: "/guides/", label: "Guides" },
