@@ -13,10 +13,50 @@ import GuidesPage, { metadata as guidesMetadata } from "@/app/guides/page";
 import AboutPage from "@/app/about/page";
 import PrivacyPage from "@/app/privacy/page";
 import TermsPage from "@/app/terms/page";
+import LightroomPage, { metadata as lightroomMetadata } from "@/app/lightroom-ai-label/page";
+import IphonePage, { metadata as iphoneMetadata } from "@/app/remove-ai-label-iphone/page";
+import ThreadsPage, { metadata as threadsMetadata } from "@/app/threads-ai-info/page";
+import PinterestPage, { metadata as pinterestMetadata } from "@/app/pinterest-ai-label/page";
+import TiktokPhotoPage, { metadata as tiktokPhotoMetadata } from "@/app/tiktok-photo-ai-label/page";
 
 afterEach(() => cleanup());
 
 const expectedRoutes = [
+  {
+    path: "/lightroom-ai-label",
+    title: "Lightroom AI Label: Check Your Export",
+    h1: "Lightroom AI Labels: Check the Final Export",
+    metadata: lightroomMetadata,
+    Page: LightroomPage,
+  },
+  {
+    path: "/remove-ai-label-iphone",
+    title: "Remove AI Label on iPhone: Photo Guide",
+    h1: "How to Remove AI Label Metadata on iPhone",
+    metadata: iphoneMetadata,
+    Page: IphonePage,
+  },
+  {
+    path: "/threads-ai-info",
+    title: "Threads AI Info: Photo Labels Explained",
+    h1: "Threads AI Info: Check Photos Before Posting",
+    metadata: threadsMetadata,
+    Page: ThreadsPage,
+  },
+  {
+    path: "/pinterest-ai-label",
+    title: "Pinterest Gen AI Label: Check or Appeal",
+    h1: "Pinterest Gen AI Labels: Check a Photo or Appeal",
+    metadata: pinterestMetadata,
+    Page: PinterestPage,
+  },
+  {
+    path: "/tiktok-photo-ai-label",
+    title: "TikTok Photo AI Label: Check Each Image",
+    h1: "TikTok Photo AI Labels: Check Every Image",
+    metadata: tiktokPhotoMetadata,
+    Page: TiktokPhotoPage,
+  },
   {
     path: "/",
     title: "Remove AI Label from Images — Free & Private Tool",
@@ -223,7 +263,7 @@ describe("route metadata and static seo", () => {
 
     expect(robotsConfig.host).toBe("https://removeailabel.app");
     expect(robotsConfig.sitemap).toBe("https://removeailabel.app/sitemap.xml");
-    expect(sitemapEntries).toHaveLength(11);
+    expect(sitemapEntries).toHaveLength(16);
     expect(sitemapEntries.map((entry) => entry.url)).toEqual([
       "https://removeailabel.app/",
       "https://removeailabel.app/instagram-ai-info/",
@@ -232,6 +272,11 @@ describe("route metadata and static seo", () => {
       "https://removeailabel.app/why-does-my-photo-say-ai-info/",
       "https://removeailabel.app/c2pa-ai-label/",
       "https://removeailabel.app/supported-formats/",
+      "https://removeailabel.app/lightroom-ai-label/",
+      "https://removeailabel.app/remove-ai-label-iphone/",
+      "https://removeailabel.app/threads-ai-info/",
+      "https://removeailabel.app/pinterest-ai-label/",
+      "https://removeailabel.app/tiktok-photo-ai-label/",
       "https://removeailabel.app/guides/",
       "https://removeailabel.app/about/",
       "https://removeailabel.app/privacy/",

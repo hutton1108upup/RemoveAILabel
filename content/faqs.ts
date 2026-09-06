@@ -191,14 +191,14 @@ export const pageFaqs: Record<string, FaqItem[]> = {
   ],
   guides: [
     {
-      question: "Why are there only a few launch guides?",
+      question: "Which guide should I start with?",
       answer:
-        "The launch set is intentionally limited to substantive pages rather than programmatic pages that only swap platform names.",
+        "Choose the platform where you see the notice, or the editor or device you used for the final photo. Start with Supported Image Formats if you are unsure whether your file can be checked here.",
     },
     {
       question: "Do all guides include the tool?",
       answer:
-        "Yes. Launch guides embed the same local tool so the explanation and action stay on one page.",
+        "Yes. Each workflow guide includes the same browser-local image tool, followed by guidance for that scenario. An embedded tool does not mean every platform label or file type can be changed.",
     },
   ],
 };

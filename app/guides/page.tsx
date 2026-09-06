@@ -23,7 +23,7 @@ export default function GuidesPage() {
         <main className="main-shell" role="main">
           <div className="shell route-stack">
             <RouteHero heading={page.h1} description={page.quickAnswer} />
-            <GuideCardGrid title="Launch Guides" items={page.relatedGuides ?? []} />
+            <GuideCardGrid title="Find Your Photo Workflow" items={page.relatedGuides ?? []} />
             <FaqAccordion items={page.faqs} />
           </div>
         </main>
