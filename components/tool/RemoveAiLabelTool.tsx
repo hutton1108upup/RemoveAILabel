@@ -1,7 +1,9 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- These previews are local blob URLs, not network images. */
+
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, FileCheck2, ShieldCheck } from "lucide-react";
 import { asVerifiedDownload } from "@/lib/files/download";
 import {
   DESKTOP_BATCH_LIMIT,
@@ -32,6 +34,7 @@ interface ToolEntry {
   status: ProcessingStatus;
   result?: ProcessFileResult;
   options: CleanupOptions;
+  previewHref?: string;
   downloadHref?: string;
   advancedExpanded: boolean;
   visualExpanded: boolean;
@@ -103,6 +106,11 @@ function statusSummary(entries: ToolEntry[]) {
 }
 
 function createEntry(id: string, file: File): ToolEntry {
+  const previewHref =
+    typeof URL !== "undefined" && typeof URL.createObjectURL === "function"
+      ? URL.createObjectURL(file)
+      : undefined;
+
   return {
     id,
     file,
@@ -111,6 +119,7 @@ function createEntry(id: string, file: File): ToolEntry {
     size: file.size,
     status: "queued",
     options: mergeDefaults(),
+    previewHref,
     advancedExpanded: false,
     visualExpanded: false,
     downloaded: false,
@@ -156,6 +165,7 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
   const resultListRef = useRef<HTMLDivElement | null>(null);
   const previousAllSettledRef = useRef(false);
   const [entries, setEntries] = useState<ToolEntry[]>([]);
+  const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   const [batchMessage, setBatchMessage] = useState<string | null>(null);
   const [zipBusy, setZipBusy] = useState(false);
@@ -193,6 +203,9 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
       }
 
       if (response.type === "result") {
+        const matchesExistingEntry = entriesRef.current.some(
+          (entry) => entry.id === response.result.id,
+        );
         setEntries((current) => {
           const existing = current.find((entry) => entry.id === response.result.id);
           const download = asVerifiedDownload(response.result);
@@ -210,6 +223,7 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
             status: response.result.status,
             result: response.result,
             options: existing?.options ?? mergeDefaults(),
+            previewHref: existing?.previewHref,
             downloadHref: nextHref,
             advancedExpanded: existing?.advancedExpanded ?? false,
             visualExpanded: existing?.visualExpanded ?? false,
@@ -228,6 +242,10 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
 
           return [...current, nextEntry];
         });
+
+        if (!matchesExistingEntry) {
+          setSelectedEntryId(response.result.id);
+        }
 
         trackResultAnalytics(response.result);
         return;
@@ -267,6 +285,9 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
         entriesRef.current.forEach((entry) => {
           if (entry.downloadHref) {
             URL.revokeObjectURL(entry.downloadHref);
+          }
+          if (entry.previewHref) {
+            URL.revokeObjectURL(entry.previewHref);
           }
         });
       }
@@ -369,6 +390,7 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
 
     setBatchMessage(null);
     setEntries((current) => [...current, ...nextEntries]);
+    setSelectedEntryId((current) => current ?? nextEntries[0]?.id ?? null);
     trackAnalyticsEvent("files_selected", {
       file_count_bucket:
         files.length === 1
@@ -409,7 +431,7 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
     );
   }
 
-  function regenerate(entryId: string) {
+  function handleRegenerate(entryId: string) {
     const entry = entries.find((item) => item.id === entryId);
     const worker = workerRef.current;
     if (!entry?.file || !worker) {
@@ -502,6 +524,7 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
     fileName: entry.fileName,
     bytes: entry.size,
     status: entry.status,
+    previewHref: entry.previewHref,
   }));
 
   const results = entries.filter((entry) => entry.result);
@@ -512,7 +535,10 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
   const alreadyClean = entries.filter((entry) => entry.status === "already-clean").length;
   const reviewNeeded = entries.filter((entry) => entry.status === "review-needed").length;
   const unsupported = entries.filter((entry) => entry.status === "unsupported").length;
+  const failed = entries.filter((entry) => entry.status === "failed").length;
   const allSettled = entries.length > 0 && checked === entries.length;
+  const selectedEntry =
+    entries.find((entry) => entry.id === selectedEntryId) ?? entries[0] ?? null;
   const c2paReadyCount = entries.filter(
     (entry) =>
       entry.status === "ready" &&
@@ -539,9 +565,15 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
     previousAllSettledRef.current = allSettled;
   }, [allSettled, results.length]);
 
+  function handleSelectedRegenerate() {
+    if (selectedEntry) {
+      handleRegenerate(selectedEntry.id);
+    }
+  }
+
   return (
     <section
-      className="tool-shell"
+      className={`tool-shell${entries.length > 0 ? " tool-shell-active" : ""}`}
       aria-label="Remove AI label tool"
       data-clarity-mask="true"
     >
@@ -549,113 +581,172 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
         {statusSummary(entries)}
       </div>
       {entries.length === 0 ? (
-        <ImageDropzone
-          inputId={fileInputId}
-          dragging={dragging}
-          onSelect={enqueueFiles}
-          onPasteFiles={enqueueFiles}
-          onTrySample={trySampleImage}
-          sampleBusy={sampleBusy}
-          onDragChange={setDragging}
-        />
+        <>
+          <ImageDropzone
+            inputId={fileInputId}
+            dragging={dragging}
+            onSelect={enqueueFiles}
+            onPasteFiles={enqueueFiles}
+            onTrySample={trySampleImage}
+            sampleBusy={sampleBusy}
+            onDragChange={setDragging}
+          />
+          <div className="tool-privacy-strip" aria-label="Local processing privacy summary">
+            <ShieldCheck size={18} strokeWidth={1.75} aria-hidden="true" />
+            <span>Processed locally in your browser. Your images never leave this device.</span>
+          </div>
+        </>
       ) : null}
-      {entries.length > 0 && !allSettled ? (
-        <ImageDropzone
-          inputId={fileInputId}
-          variant="compact"
-          dragging={dragging}
-          onSelect={enqueueFiles}
-          onPasteFiles={enqueueFiles}
-          onTrySample={trySampleImage}
-          sampleBusy={sampleBusy}
-          onDragChange={setDragging}
-        />
-      ) : null}
-      {batchMessage ? (
+      {entries.length === 0 && batchMessage ? (
         <div className="error-banner">
           <AlertTriangle size={18} strokeWidth={1.5} aria-hidden="true" />
           <span>{batchMessage}</span>
         </div>
       ) : null}
-      <QueueList entries={queueEntries} />
-      {entries.length > 1 && checked > 0 ? (
-        <BatchSummary
-          checked={checked}
-          ready={ready}
-          alreadyClean={alreadyClean}
-          reviewNeeded={reviewNeeded}
-          unsupported={unsupported}
-          onDownloadZip={downloadZip}
-        />
-      ) : null}
-      <div
-        ref={resultListRef}
-        className="result-list"
-        role="region"
-        aria-label="Processing results"
-        tabIndex={-1}
-      >
-        {results.map((entry) => {
-          const result = entry.result!;
-          const showSiteB =
-            Boolean(siteBUrl) &&
-            ((result.status === "ready" && entry.downloaded) || result.status === "already-clean");
+      {entries.length > 0 ? (
+        <div className="privacy-workbench">
+          <header className="workbench-header">
+            <div>
+              <p className="workbench-kicker">Private browser workspace</p>
+              <h2>Your local metadata check</h2>
+            </div>
+            <div className="workbench-privacy-note">
+              <ShieldCheck size={18} strokeWidth={1.75} aria-hidden="true" />
+              <span>No image upload · Original unchanged</span>
+            </div>
+          </header>
+          <div className="workbench-grid">
+            <aside className="workbench-sidebar" aria-label="Files in this check">
+              <ImageDropzone
+                inputId={fileInputId}
+                variant="compact"
+                dragging={dragging}
+                onSelect={enqueueFiles}
+                onPasteFiles={enqueueFiles}
+                onTrySample={trySampleImage}
+                sampleBusy={sampleBusy}
+                onDragChange={setDragging}
+              />
+              {batchMessage ? (
+                <div className="error-banner">
+                  <AlertTriangle size={18} strokeWidth={1.5} aria-hidden="true" />
+                  <span>{batchMessage}</span>
+                </div>
+              ) : null}
+              <QueueList
+                entries={queueEntries}
+                selectedId={selectedEntry?.id}
+                onSelect={setSelectedEntryId}
+              />
+            </aside>
+            <div
+              ref={resultListRef}
+              className="result-list workbench-detail"
+              role="region"
+              aria-label="Processing results"
+              tabIndex={-1}
+            >
+              {selectedEntry?.result ? (() => {
+                const entry = selectedEntry;
+                const result = entry.result!;
+                const showSiteB =
+                  Boolean(siteBUrl) &&
+                  ((result.status === "ready" && entry.downloaded) || result.status === "already-clean");
 
-          return (
-            <FileResultCard
-              key={entry.id}
-              result={result}
-              downloadHref={entry.downloadHref}
-              downloadName={result.cleanedFileName}
-              showSiteB={showSiteB}
-              siteBUrl={siteBUrl ?? undefined}
-              visualExpanded={entry.visualExpanded}
-              advancedExpanded={entry.advancedExpanded}
-              options={entry.options}
-              onDownload={() => {
-                setEntries((current) =>
-                  current.map((item) =>
-                    item.id === entry.id ? { ...item, downloaded: true } : item,
-                  ),
+                return (
+                  <FileResultCard
+                    key={entry.id}
+                    result={result}
+                    downloadHref={entry.downloadHref}
+                    downloadName={result.cleanedFileName}
+                    showSiteB={showSiteB}
+                    siteBUrl={siteBUrl ?? undefined}
+                    visualExpanded={entry.visualExpanded}
+                    advancedExpanded={entry.advancedExpanded}
+                    options={entry.options}
+                    onDownload={() => {
+                      setEntries((current) =>
+                        current.map((item) =>
+                          item.id === entry.id ? { ...item, downloaded: true } : item,
+                        ),
+                      );
+                      trackAnalyticsEvent("download_single", { format: result.scan?.format });
+                    }}
+                    onToggleVisual={() =>
+                      setEntries((current) =>
+                        current.map((item) =>
+                          item.id === entry.id
+                            ? { ...item, visualExpanded: !item.visualExpanded }
+                            : item,
+                        ),
+                      )
+                    }
+                    onToggleAdvanced={() => {
+                      if (!entry.advancedExpanded) {
+                        trackAnalyticsEvent("advanced_options_opened");
+                      }
+                      setEntries((current) =>
+                        current.map((item) =>
+                          item.id === entry.id
+                            ? { ...item, advancedExpanded: !item.advancedExpanded }
+                            : item,
+                        ),
+                      )
+                    }}
+                    onOptionsChange={(options) => updateOptions(entry.id, options)}
+                    onRegenerate={handleSelectedRegenerate}
+                    onCheckAnother={() => {
+                      if (entry.downloadHref && typeof URL.revokeObjectURL === "function") {
+                        URL.revokeObjectURL(entry.downloadHref);
+                      }
+                      if (entry.previewHref && typeof URL.revokeObjectURL === "function") {
+                        URL.revokeObjectURL(entry.previewHref);
+                      }
+                      const nextEntry = entries.find((item) => item.id !== entry.id);
+                      setEntries((current) => current.filter((item) => item.id !== entry.id));
+                      setSelectedEntryId(nextEntry?.id ?? null);
+                    }}
+                  />
                 );
-                trackAnalyticsEvent("download_single", { format: result.scan?.format });
-              }}
-              onToggleVisual={() =>
-                setEntries((current) =>
-                  current.map((item) =>
-                    item.id === entry.id
-                      ? { ...item, visualExpanded: !item.visualExpanded }
-                      : item,
-                  ),
-                )
-              }
-              onToggleAdvanced={() => {
-                if (!entry.advancedExpanded) {
-                  trackAnalyticsEvent("advanced_options_opened");
-                }
-                setEntries((current) =>
-                  current.map((item) =>
-                    item.id === entry.id
-                      ? { ...item, advancedExpanded: !item.advancedExpanded }
-                      : item,
-                  ),
-                )
-              }}
-              onOptionsChange={(options) => updateOptions(entry.id, options)}
-              onRegenerate={() => regenerate(entry.id)}
-              onCheckAnother={() =>
-                setEntries((current) => {
-                  const target = current.find((item) => item.id === entry.id);
-                  if (target?.downloadHref && typeof URL.revokeObjectURL === "function") {
-                    URL.revokeObjectURL(target.downloadHref);
-                  }
-                  return current.filter((item) => item.id !== entry.id);
-                })
-              }
+              })() : (
+                <section className="card processing-panel" aria-label="Current file status">
+                  {selectedEntry?.previewHref ? (
+                    <img
+                      src={selectedEntry.previewHref}
+                      alt=""
+                      className="processing-preview"
+                    />
+                  ) : (
+                    <div className="processing-preview-fallback" aria-hidden="true">
+                      <FileCheck2 size={32} strokeWidth={1.5} />
+                    </div>
+                  )}
+                  <div className="processing-copy">
+                    <p className="workbench-kicker">Checking locally</p>
+                    <h3>{selectedEntry?.fileName ?? "Preparing file"}</h3>
+                    <p className="body-copy">
+                      Reading supported metadata and preparing a verified result. Your original stays unchanged.
+                    </p>
+                    <div className="progress-bar" role="progressbar" aria-label="Checking file" />
+                  </div>
+                </section>
+              )}
+            </div>
+          </div>
+          {entries.length > 1 && checked > 0 ? (
+            <BatchSummary
+              checked={checked}
+              ready={ready}
+              alreadyClean={alreadyClean}
+              reviewNeeded={reviewNeeded}
+              unsupported={unsupported}
+              failed={failed}
+              busy={zipBusy}
+              onDownloadZip={downloadZip}
             />
-          );
-        })}
-      </div>
+          ) : null}
+        </div>
+      ) : null}
       {c2paReadyCount > 0 ? (
         <p className="result-provenance-note">
           {c2paReadyCount === 1
@@ -664,19 +755,6 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
         </p>
       ) : null}
       {allSettled && ready > 0 ? <ToolStepRail /> : null}
-      {entries.length > 0 && allSettled ? (
-        <ImageDropzone
-          inputId={fileInputId}
-          variant="compact"
-          dragging={dragging}
-          onSelect={enqueueFiles}
-          onPasteFiles={enqueueFiles}
-          onTrySample={trySampleImage}
-          sampleBusy={sampleBusy}
-          onDragChange={setDragging}
-        />
-      ) : null}
-      {zipBusy ? <p className="mono-copy">Preparing ZIP…</p> : null}
     </section>
   );
 }

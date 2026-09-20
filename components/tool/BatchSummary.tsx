@@ -4,6 +4,8 @@ interface BatchSummaryProps {
   alreadyClean: number;
   reviewNeeded: number;
   unsupported: number;
+  failed?: number;
+  busy?: boolean;
   onDownloadZip?: () => void;
 }
 
@@ -13,6 +15,8 @@ export function BatchSummary({
   alreadyClean,
   reviewNeeded,
   unsupported,
+  failed = 0,
+  busy = false,
   onDownloadZip,
 }: BatchSummaryProps) {
   const summary = [
@@ -21,6 +25,7 @@ export function BatchSummary({
     alreadyClean > 0 ? `${alreadyClean} already clean` : null,
     reviewNeeded > 0 ? `${reviewNeeded} review needed` : null,
     unsupported > 0 ? `${unsupported} unsupported` : null,
+    failed > 0 ? `${failed} failed` : null,
   ]
     .filter((item): item is string => item !== null)
     .join(" · ");
@@ -29,8 +34,8 @@ export function BatchSummary({
     <section className="card batch-summary">
       <p className="batch-summary-line">{summary}</p>
       {ready > 1 && onDownloadZip ? (
-        <button type="button" className="button button-primary" onClick={onDownloadZip}>
-          Download {ready} Verified Files as ZIP
+        <button type="button" className="button button-primary" disabled={busy} onClick={onDownloadZip}>
+          {busy ? "Preparing ZIP…" : `Download ${ready} Verified Files as ZIP`}
         </button>
       ) : null}
     </section>
