@@ -21,6 +21,7 @@ import { BatchSummary } from "./BatchSummary";
 import { FileResultCard } from "./FileResultCard";
 import { ImageDropzone } from "./ImageDropzone";
 import { QueueList } from "./QueueList";
+import { ToolStepRail } from "./ToolStepRail";
 
 interface ToolEntry {
   id: string;
@@ -120,12 +121,13 @@ export function RemoveAiLabelTool() {
   const workerRef = useRef<Worker | null>(null);
   const counterRef = useRef(0);
   const entriesRef = useRef<ToolEntry[]>([]);
+  const resultListRef = useRef<HTMLDivElement | null>(null);
+  const previousAllSettledRef = useRef(false);
   const [entries, setEntries] = useState<ToolEntry[]>([]);
   const [dragging, setDragging] = useState(false);
   const [batchMessage, setBatchMessage] = useState<string | null>(null);
   const [zipBusy, setZipBusy] = useState(false);
   const [sampleBusy, setSampleBusy] = useState(false);
-  const [c2paNoticeVisible, setC2paNoticeVisible] = useState(false);
   const siteBUrl = useMemo(() => {
     const configured = process.env.NEXT_PUBLIC_SITE_B_URL?.trim();
     return configured ? createSiteBHref(configured) : null;
@@ -181,10 +183,6 @@ export function RemoveAiLabelTool() {
             visualExpanded: existing?.visualExpanded ?? false,
             downloaded: existing?.downloaded ?? false,
           };
-
-          if (response.result.scan?.hasEmbeddedC2pa) {
-            setC2paNoticeVisible(true);
-          }
 
           if (existing?.downloadHref && existing.downloadHref !== nextHref) {
             if (typeof URL.revokeObjectURL === "function") {
@@ -486,6 +484,32 @@ export function RemoveAiLabelTool() {
   const alreadyClean = entries.filter((entry) => entry.status === "already-clean").length;
   const reviewNeeded = entries.filter((entry) => entry.status === "review-needed").length;
   const unsupported = entries.filter((entry) => entry.status === "unsupported").length;
+  const allSettled = entries.length > 0 && checked === entries.length;
+  const c2paReadyCount = entries.filter(
+    (entry) =>
+      entry.status === "ready" &&
+      entry.result?.scan?.hasEmbeddedC2pa &&
+      entry.result.verification?.c2paAbsentAfterCleanup,
+  ).length;
+
+  useEffect(() => {
+    if (allSettled && !previousAllSettledRef.current && results.length > 0) {
+      const resultRegion = resultListRef.current;
+      if (resultRegion) {
+        resultRegion.focus({ preventScroll: true });
+        if (typeof resultRegion.scrollIntoView === "function") {
+          const reduceMotion =
+            typeof window.matchMedia === "function" &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          resultRegion.scrollIntoView({
+            behavior: reduceMotion ? "auto" : "smooth",
+            block: "start",
+          });
+        }
+      }
+    }
+    previousAllSettledRef.current = allSettled;
+  }, [allSettled, results.length]);
 
   return (
     <section
@@ -496,24 +520,31 @@ export function RemoveAiLabelTool() {
       <div data-testid="tool-status-live" aria-live="polite" className="visually-hidden">
         {statusSummary(entries)}
       </div>
-      <ImageDropzone
-        dragging={dragging}
-        onSelect={enqueueFiles}
-        onPasteFiles={enqueueFiles}
-        onTrySample={trySampleImage}
-        sampleBusy={sampleBusy}
-        onDragChange={setDragging}
-      />
+      {entries.length === 0 ? (
+        <ImageDropzone
+          dragging={dragging}
+          onSelect={enqueueFiles}
+          onPasteFiles={enqueueFiles}
+          onTrySample={trySampleImage}
+          sampleBusy={sampleBusy}
+          onDragChange={setDragging}
+        />
+      ) : null}
+      {entries.length > 0 && !allSettled ? (
+        <ImageDropzone
+          variant="compact"
+          dragging={dragging}
+          onSelect={enqueueFiles}
+          onPasteFiles={enqueueFiles}
+          onTrySample={trySampleImage}
+          sampleBusy={sampleBusy}
+          onDragChange={setDragging}
+        />
+      ) : null}
       {batchMessage ? (
         <div className="error-banner">
           <AlertTriangle size={18} strokeWidth={1.5} aria-hidden="true" />
           <span>{batchMessage}</span>
-        </div>
-      ) : null}
-      {c2paNoticeVisible ? (
-        <div className="warning-banner">
-          This file contains an embedded Content Credential. If cleanup succeeds, the downloaded
-          copy will not carry it. Keep the original master file.
         </div>
       ) : null}
       <QueueList entries={queueEntries} />
@@ -527,7 +558,13 @@ export function RemoveAiLabelTool() {
           onDownloadZip={downloadZip}
         />
       ) : null}
-      <div className="result-list">
+      <div
+        ref={resultListRef}
+        className="result-list"
+        role="region"
+        aria-label="Processing results"
+        tabIndex={-1}
+      >
         {results.map((entry) => {
           const result = entry.result!;
           const showSiteB =
@@ -586,6 +623,25 @@ export function RemoveAiLabelTool() {
           );
         })}
       </div>
+      {c2paReadyCount > 0 ? (
+        <p className="result-provenance-note">
+          {c2paReadyCount === 1
+            ? "The embedded Content Credential was removed from the verified clean copy. Keep the original master if you need its provenance record."
+            : `Embedded Content Credentials were removed from ${c2paReadyCount} verified clean copies. Keep the original masters if you need their provenance records.`}
+        </p>
+      ) : null}
+      {allSettled && ready > 0 ? <ToolStepRail /> : null}
+      {entries.length > 0 && allSettled ? (
+        <ImageDropzone
+          variant="compact"
+          dragging={dragging}
+          onSelect={enqueueFiles}
+          onPasteFiles={enqueueFiles}
+          onTrySample={trySampleImage}
+          sampleBusy={sampleBusy}
+          onDragChange={setDragging}
+        />
+      ) : null}
       {zipBusy ? <p className="mono-copy">Preparing ZIP…</p> : null}
     </section>
   );

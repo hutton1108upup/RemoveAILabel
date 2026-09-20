@@ -72,7 +72,7 @@ describe("tool accessibility", () => {
     expect(screen.getByTestId("tool-status-live")).toHaveAttribute("aria-live", "polite");
   });
 
-  it("shows the C2PA warning once even if multiple results include embedded credentials", async () => {
+  it("shows one compact C2PA provenance note even if multiple verified results include credentials", async () => {
     render(<RemoveAiLabelTool />);
     await waitFor(() => {
       expect(AccessibleWorker.instances.length).toBe(1);
@@ -165,11 +165,11 @@ describe("tool accessibility", () => {
 
     expect(
       await screen.findByText(
-        "This file contains an embedded Content Credential. If cleanup succeeds, the downloaded copy will not carry it. Keep the original master file.",
+        "Embedded Content Credentials were removed from 2 verified clean copies. Keep the original masters if you need their provenance records.",
       ),
     ).toBeInTheDocument();
     expect(
-      screen.getAllByText(/This file contains an embedded Content Credential\./),
+      screen.getAllByText(/Embedded Content Credentials were removed from 2 verified clean copies\./),
     ).toHaveLength(1);
   });
 
@@ -210,7 +210,7 @@ describe("tool accessibility", () => {
 
     const button = await screen.findByRole("button", { name: "Check Another Image" });
     await userEvent.click(button);
-    expect(screen.queryByText("No supported AI-label fields were found in this file.")).not.toBeInTheDocument();
+    expect(screen.queryByText("No supported AI-label metadata found")).not.toBeInTheDocument();
   });
 
   it("collapses the mobile navigation behind a menu trigger instead of showing the full link list by default", async () => {
