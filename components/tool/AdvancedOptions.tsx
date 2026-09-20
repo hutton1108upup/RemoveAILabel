@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import type { CleanupOptions } from "@/lib/metadata/types";
 
 interface AdvancedOptionsProps {
@@ -17,6 +18,8 @@ export function AdvancedOptions({
   onChange,
   onRegenerate,
 }: AdvancedOptionsProps) {
+  const panelId = useId();
+
   function setOption<K extends keyof CleanupOptions>(key: K, value: CleanupOptions[K]) {
     if (key === "removeExifPrivacyData" && value === true) {
       onChange({
@@ -40,18 +43,19 @@ export function AdvancedOptions({
   }
 
   return (
-    <div className="card">
+    <section className="advanced-options">
       <button
         type="button"
-        className="button button-secondary"
+        className="button button-ghost advanced-options-trigger"
         aria-expanded={expanded}
+        aria-controls={panelId}
         onClick={onToggle}
       >
         Advanced Options
       </button>
       {expanded ? (
-        <div className="route-stack">
-          <div>
+        <div id={panelId} className="advanced-options-panel">
+          <div className="advanced-options-group">
             <h3>Recommended cleanup</h3>
             <label>
               <input
@@ -117,7 +121,7 @@ export function AdvancedOptions({
               These preservation choices protect the image and cannot be changed here.
             </p>
           </div>
-          <div>
+          <div className="advanced-options-group">
             <h3>Privacy cleanup</h3>
             <label>
               <input
@@ -136,6 +140,6 @@ export function AdvancedOptions({
           </button>
         </div>
       ) : null}
-    </div>
+    </section>
   );
 }

@@ -169,9 +169,17 @@ describe("remove-ai-label tool behavior", () => {
     worker?.emit(createReadyResponse(fileId, true));
     expect(await screen.findByRole("link", { name: "Download Cleaned Image" })).toBeInTheDocument();
     expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
-    expect(screen.getByText("Checked 1 file")).toBeInTheDocument();
+    expect(screen.queryByText("Checked 1 file")).not.toBeInTheDocument();
     expect(screen.queryByText("Checking 1 of 1 files…")).not.toBeInTheDocument();
     expect(screen.queryByText("verified copies ready")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Image file dropzone" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Add more image files" })).toBeInTheDocument();
+    expect(screen.getByText("Done — clean copy verified")).toBeInTheDocument();
+    expect(screen.getByLabelText("Before and clean copy summary")).toBeInTheDocument();
+    expect(screen.getByText("View full 7-point verification report").closest("details")).not.toHaveAttribute("open");
+    await waitFor(() => {
+      expect(screen.getByRole("region", { name: "Processing results" })).toHaveFocus();
+    });
   });
 
   it("loads the built-in sample image into the local processing queue", async () => {
@@ -334,9 +342,10 @@ describe("remove-ai-label tool behavior", () => {
       },
     });
 
-    expect(
-      await screen.findByText("This file contains an embedded Content Credential. If cleanup succeeds, the downloaded copy will not carry it. Keep the original master file."),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("Review needed — no clean copy created")).toBeInTheDocument();
+    expect(screen.getByText("Your original file remains unchanged.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Check Another Image" })).toBeInTheDocument();
+    expect(screen.queryByText(/removed from the verified clean copy/i)).not.toBeInTheDocument();
     expect(screen.queryByText("The cleaned copy will no longer carry that embedded credential.")).not.toBeInTheDocument();
   });
 
@@ -415,7 +424,8 @@ describe("remove-ai-label tool behavior", () => {
     });
 
     const pastedFile = new File([blobPart(buildPng())], "paste.png", { type: "image/png" });
-    fireEvent.paste(dropzone, {
+    const compactDropzone = screen.getByRole("button", { name: "Add more image files" });
+    fireEvent.paste(compactDropzone, {
       clipboardData: {
         files: [pastedFile],
         items: [{ kind: "file", type: "image/png", getAsFile: () => pastedFile }],
@@ -439,7 +449,7 @@ describe("remove-ai-label tool behavior", () => {
     await user.upload(screen.getByLabelText("Choose image files"), [brokenFile, goodFile]);
 
     await waitFor(() => {
-      expect(screen.getByText(/Processing failed\./)).toBeInTheDocument();
+      expect(screen.getByText("Processing failed — original unchanged")).toBeInTheDocument();
       expect(FakeWorker.instances.at(0)?.messages).toHaveLength(1);
     });
   });
@@ -467,6 +477,7 @@ describe("remove-ai-label tool behavior", () => {
     await user.click(await screen.findByRole("button", { name: "Advanced Options" }));
     await user.click(screen.getByRole("button", { name: "Create New Clean Copy" }));
 
-    expect(await screen.findByText("Processing failed. regenerate read failed")).toBeInTheDocument();
+    expect(await screen.findByText("Processing failed — original unchanged")).toBeInTheDocument();
+    expect(screen.getByText("regenerate read failed")).toBeInTheDocument();
   });
 });

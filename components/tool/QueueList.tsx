@@ -41,6 +41,10 @@ export function QueueList({ entries }: QueueListProps) {
   const allChecked = checkedCount === entries.length;
   const fileLabel = entries.length === 1 ? "file" : "files";
 
+  if (allChecked && entries.length === 1) {
+    return null;
+  }
+
   if (allChecked) {
     return (
       <details className="card queue-shell queue-shell-complete">

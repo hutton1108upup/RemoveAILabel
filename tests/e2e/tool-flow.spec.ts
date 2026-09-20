@@ -86,8 +86,8 @@ test("already-clean file is not rewritten and can reset", async ({ page }) => {
   await page.goto("/");
   await page.getByLabel("Choose image files").setInputFiles(pngFile("camera-clean.png"));
 
-  await expect(page.getByText("No supported AI-label fields were found in this file.").first()).toBeVisible();
-  await expect(page.getByText("The original file was not rewritten.").first()).toBeVisible();
+  await expect(page.getByText("No supported AI-label metadata found").first()).toBeVisible();
+  await expect(page.getByText("No clean copy was created because there was no supported target to remove.").first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Download Cleaned Image" })).toHaveCount(0);
   await expect(page.getByText("Review visible artifacts")).toHaveCount(0);
 
@@ -101,7 +101,13 @@ test("confirmed PNG metadata is cleaned, verified, regenerated, and downloaded",
 
   await expect(page.locator(".result-card").getByText("File-level clean copy ready").first()).toBeVisible();
   const result = page.locator(".result-card").first();
-  await expect(result.getByText("Prompt / workflow")).toBeVisible();
+  await expect(result.getByText("Done — clean copy verified")).toBeVisible();
+  await expect(result.getByText("What changed in the verified copy")).toBeVisible();
+  await expect(result.getByText("Prompt / workflow data found")).toBeVisible();
+  await expect(result.getByText("Prompt / workflow data removed · Image payload unchanged")).toBeVisible();
+  await expect(result.locator(".verification-details")).not.toHaveAttribute("open", "");
+  await result.getByText("View full 7-point verification report").click();
+  await expect(result.getByText("Prompt / workflow", { exact: true })).toBeVisible();
   await expect(result.getByText("Removed").first()).toBeVisible();
   await expect(result.getByText("Not re-encoded")).toBeVisible();
 
@@ -125,7 +131,7 @@ test("one failed file does not block verified files and ZIP contains successes o
   ]);
 
   await expect(page.getByText("2 verified copies ready")).toBeVisible();
-  await expect(page.getByText("Processing failed.")).toBeVisible();
+  await expect(page.getByText("Processing failed — original unchanged")).toBeVisible();
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download 2 Verified Files as ZIP" }).click();
   const download = await downloadPromise;
@@ -156,7 +162,7 @@ test("official Adobe C2PA JPEG is read by the browser SDK and safely cleaned", a
 
   await expect(page.locator(".result-card").getByText("File-level clean copy ready").first()).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText("Embedded C2PA").first()).toBeVisible();
-  await expect(page.getByText("This file contains an embedded Content Credential.")).toBeVisible();
+  await expect(page.getByText("The embedded Content Credential was removed from the verified clean copy.")).toBeVisible();
 });
 
 test("dropzone is keyboard operable and the 375px layout does not overflow", async ({ page }) => {
@@ -171,7 +177,7 @@ test("dropzone is keyboard operable and the 375px layout does not overflow", asy
   await dropzone.press("Enter");
   const chooser = await chooserPromise;
   await chooser.setFiles(pngFile("keyboard.png"));
-  await expect(page.getByText("No supported AI-label fields were found in this file.").first()).toBeVisible();
+  await expect(page.getByText("No supported AI-label metadata found").first()).toBeVisible();
 
   if (page.viewportSize()?.width === 375) {
     const menu = page.getByRole("button", { name: "Open navigation menu" });
