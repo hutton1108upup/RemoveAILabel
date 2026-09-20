@@ -68,6 +68,32 @@ test("mobile page hydrates without runtime or console errors", async ({ page }) 
   expect(consoleErrors).toEqual([]);
 });
 
+test("mobile first viewport exposes the real picker and HEIC guidance", async ({ page }) => {
+  await page.goto("/");
+  const launcher = page.getByText("Choose an image", { exact: true });
+
+  if (page.viewportSize()?.width !== 375) {
+    await expect(launcher).toBeHidden();
+    return;
+  }
+
+  await expect(launcher).toBeVisible();
+
+  const launcherBox = await launcher.boundingBox();
+  expect(launcherBox).not.toBeNull();
+  expect(launcherBox!.y + launcherBox!.height).toBeLessThanOrEqual(812);
+  await expect(page.getByText("iPhone photo in HEIC? Save or export it as JPG first.")).toBeVisible();
+
+  const chooserPromise = page.waitForEvent("filechooser");
+  await launcher.click();
+  const chooser = await chooserPromise;
+  await chooser.setFiles(pngFile("mobile-picker.png", true));
+
+  const download = page.getByRole("link", { name: "Download Cleaned Image" });
+  await expect(download).toBeVisible();
+  await expect(download).toHaveAttribute("download", "mobile-picker-clean.png");
+});
+
 test("content route keeps the breadcrumb close to the header", async ({ page }) => {
   await page.goto("/instagram-ai-info/");
   await page.waitForLoadState("networkidle");

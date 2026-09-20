@@ -117,7 +117,39 @@ function createEntry(id: string, file: File): ToolEntry {
   };
 }
 
-export function RemoveAiLabelTool() {
+function trackResultAnalytics(result: ProcessFileResult) {
+  trackAnalyticsEvent("scan_completed");
+
+  if (result.status === "ready") {
+    trackAnalyticsEvent("confirmed_target_found");
+    trackAnalyticsEvent("clean_copy_prepared");
+    trackAnalyticsEvent("verification_passed");
+    return;
+  }
+
+  if (result.status === "already-clean") {
+    trackAnalyticsEvent("no_supported_metadata_found");
+    return;
+  }
+
+  if (result.status === "review-needed") {
+    trackAnalyticsEvent("possible_target_found");
+    return;
+  }
+
+  if (result.status === "unsupported") {
+    trackAnalyticsEvent("unsupported_format");
+    return;
+  }
+
+  trackAnalyticsEvent("verification_failed");
+}
+
+interface RemoveAiLabelToolProps {
+  fileInputId?: string;
+}
+
+export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) {
   const workerRef = useRef<Worker | null>(null);
   const counterRef = useRef(0);
   const entriesRef = useRef<ToolEntry[]>([]);
@@ -197,13 +229,7 @@ export function RemoveAiLabelTool() {
           return [...current, nextEntry];
         });
 
-        if (response.result.status === "ready") {
-          trackAnalyticsEvent("verification_passed", {
-            format: response.result.scan?.format,
-            has_c2pa: response.result.scan?.hasEmbeddedC2pa,
-            result: response.result.status,
-          });
-        }
+        trackResultAnalytics(response.result);
         return;
       }
 
@@ -229,6 +255,7 @@ export function RemoveAiLabelTool() {
       if (response.type === "error") {
         setBatchMessage(response.errorMessage);
         setZipBusy(false);
+        trackAnalyticsEvent("verification_failed");
       }
     };
 
@@ -312,6 +339,7 @@ export function RemoveAiLabelTool() {
               : item,
           ),
         );
+        trackAnalyticsEvent("verification_failed");
       }
     });
   }, [entries]);
@@ -522,6 +550,7 @@ export function RemoveAiLabelTool() {
       </div>
       {entries.length === 0 ? (
         <ImageDropzone
+          inputId={fileInputId}
           dragging={dragging}
           onSelect={enqueueFiles}
           onPasteFiles={enqueueFiles}
@@ -532,6 +561,7 @@ export function RemoveAiLabelTool() {
       ) : null}
       {entries.length > 0 && !allSettled ? (
         <ImageDropzone
+          inputId={fileInputId}
           variant="compact"
           dragging={dragging}
           onSelect={enqueueFiles}
@@ -599,7 +629,10 @@ export function RemoveAiLabelTool() {
                   ),
                 )
               }
-              onToggleAdvanced={() =>
+              onToggleAdvanced={() => {
+                if (!entry.advancedExpanded) {
+                  trackAnalyticsEvent("advanced_options_opened");
+                }
                 setEntries((current) =>
                   current.map((item) =>
                     item.id === entry.id
@@ -607,7 +640,7 @@ export function RemoveAiLabelTool() {
                       : item,
                   ),
                 )
-              }
+              }}
               onOptionsChange={(options) => updateOptions(entry.id, options)}
               onRegenerate={() => regenerate(entry.id)}
               onCheckAnother={() =>
@@ -633,6 +666,7 @@ export function RemoveAiLabelTool() {
       {allSettled && ready > 0 ? <ToolStepRail /> : null}
       {entries.length > 0 && allSettled ? (
         <ImageDropzone
+          inputId={fileInputId}
           variant="compact"
           dragging={dragging}
           onSelect={enqueueFiles}

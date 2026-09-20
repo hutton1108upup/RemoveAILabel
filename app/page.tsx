@@ -112,6 +112,9 @@ export default function HomePage() {
               <div className="hero-copy">
                 <p className="eyebrow">Free local image tool</p>
                 <h1>{homePageContent.h1}</h1>
+                <label className="button button-primary mobile-file-launcher" htmlFor="home-image-picker">
+                  Choose an image
+                </label>
                 <p className="body-large">{homePageContent.subtitle}</p>
                 <div className="trust-badges">
                   {homePageContent.trustBadges.map((badge) => (
@@ -121,7 +124,7 @@ export default function HomePage() {
                   ))}
                 </div>
               </div>
-              <RemoveAiLabelTool />
+              <RemoveAiLabelTool fileInputId="home-image-picker" />
             </div>
           </section>
 
