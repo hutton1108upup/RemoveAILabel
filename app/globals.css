@@ -156,6 +156,11 @@ button {
   text-align: center;
 }
 
+.button.mobile-file-launcher,
+.mobile-format-note {
+  display: none;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -1101,11 +1106,44 @@ h3 {
 }
 
 @media (max-width: 767px) {
-  .hero-section,
   .route-stack,
   .section-stack > section,
   .site-footer {
     padding-block: 64px;
+  }
+
+  .hero-section {
+    padding-block: 32px 48px;
+  }
+
+  .hero-copy {
+    margin-bottom: 24px;
+  }
+
+  .hero-copy .eyebrow {
+    min-height: auto;
+    margin-bottom: 12px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--Colors-ink-tertiary);
+  }
+
+  .button.mobile-file-launcher {
+    display: inline-flex;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .hero-copy > .body-large {
+    margin-top: 16px;
+  }
+
+  .mobile-format-note {
+    display: block;
+    color: var(--Colors-ink-secondary);
+    font-size: var(--Typography-small);
   }
 
   .route-stack {
@@ -1126,8 +1164,17 @@ h3 {
   }
 
   .trust-badges {
-    flex-direction: row;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .trust-chip {
+    min-width: 0;
+    padding-inline: 8px;
+    font-size: var(--Typography-small);
+    line-height: 1.35;
   }
 
   .tool-dropzone-compact {

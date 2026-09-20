@@ -1,5 +1,6 @@
 export type AnalyticsEventName =
   | "tool_view"
+  | "file_picker_opened"
   | "files_selected"
   | "scan_started"
   | "scan_completed"
@@ -35,6 +36,25 @@ const noopAdapter: AnalyticsAdapter = {
   track: () => undefined,
 };
 
+type ClarityFunction = (command: "event", eventName: AnalyticsEventName) => void;
+
+const clarityAdapter: AnalyticsAdapter = {
+  track: (event) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const clarity = (window as Window & { clarity?: ClarityFunction }).clarity;
+    if (typeof clarity !== "function") {
+      return;
+    }
+
+    // Deliberately send only the fixed event name. File names, image contents,
+    // scan findings, and the optional internal payload never leave the browser.
+    clarity("event", event);
+  },
+};
+
 export function getAnalyticsAdapter(): AnalyticsAdapter {
-  return noopAdapter;
+  return typeof window === "undefined" ? noopAdapter : clarityAdapter;
 }

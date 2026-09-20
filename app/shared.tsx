@@ -20,10 +20,14 @@ export function renderContentPage(page: PageContent) {
       <main className="main-shell" role="main">
         <div className="shell route-stack">
           {page.breadcrumbs ? <Breadcrumbs items={page.breadcrumbs} /> : null}
-          <RouteHero heading={page.h1} description={page.heroDescription ?? page.description} />
+          <RouteHero
+            heading={page.h1}
+            description={page.heroDescription ?? page.description}
+            fileInputId="route-image-picker"
+          />
           {page.quickAnswer ? <QuickAnswerCard answer={page.quickAnswer} /> : null}
           <div className="route-tool">
-            <RemoveAiLabelTool />
+            <RemoveAiLabelTool fileInputId="route-image-picker" />
           </div>
           {page.evidenceLabel ? <EvidenceNote text={page.evidenceLabel} /> : null}
           {page.editorialSections?.map((section) => (

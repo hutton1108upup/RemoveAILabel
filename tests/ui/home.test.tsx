@@ -62,6 +62,11 @@ describe("home page shell", () => {
     expect(container.querySelectorAll("[data-surface='navy']")).toHaveLength(1);
     expect(screen.queryByText("Uploading")).not.toBeInTheDocument();
     expect(tool).toHaveAttribute("data-clarity-mask", "true");
+
+    const mobileLauncher = screen.getByText("Choose an image", { selector: "label" });
+    expect(mobileLauncher).toHaveAttribute("for", "home-image-picker");
+    expect(screen.getByLabelText("Choose image files")).toHaveAttribute("id", "home-image-picker");
+    expect(screen.getByText("iPhone photo in HEIC? Save or export it as JPG first.")).toBeInTheDocument();
   });
 
   it("keeps the homepage focused on the Remove AI Label search intent", () => {

@@ -3,6 +3,7 @@
 import { useId, useRef } from "react";
 import type { ClipboardEvent, DragEvent, KeyboardEvent } from "react";
 import { Upload } from "lucide-react";
+import { trackAnalyticsEvent } from "@/lib/analytics/events";
 
 interface ImageDropzoneProps {
   dragging: boolean;
@@ -12,6 +13,7 @@ interface ImageDropzoneProps {
   sampleBusy?: boolean;
   onDragChange: (dragging: boolean) => void;
   variant?: "full" | "compact";
+  inputId?: string;
 }
 
 export function ImageDropzone({
@@ -22,8 +24,10 @@ export function ImageDropzone({
   sampleBusy = false,
   onDragChange,
   variant = "full",
+  inputId: providedInputId,
 }: ImageDropzoneProps) {
-  const inputId = useId();
+  const generatedInputId = useId();
+  const inputId = providedInputId ?? generatedInputId;
   const inputRef = useRef<HTMLInputElement>(null);
 
   function openFilePicker() {
@@ -43,6 +47,7 @@ export function ImageDropzone({
         accept="image/jpeg,image/png,image/webp"
         multiple
         aria-label="Choose image files"
+        onClick={() => trackAnalyticsEvent("file_picker_opened")}
         onChange={(event) => {
           if (event.target.files) {
             onSelect(event.target.files);
@@ -122,6 +127,7 @@ export function ImageDropzone({
       <Upload size={48} strokeWidth={1.5} color="var(--Colors-accent)" aria-hidden="true" />
       <p className="body-large">Drop, paste, or choose image files</p>
       <p className="mono-copy">JPG & PNG · WebP inspection only · Up to 25 MB each · No image upload</p>
+      <p className="mobile-format-note">iPhone photo in HEIC? Save or export it as JPG first.</p>
       <button
         type="button"
         className="button button-secondary"
