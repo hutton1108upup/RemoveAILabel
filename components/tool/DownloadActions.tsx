@@ -16,7 +16,7 @@ export function DownloadActions({
   onCheckAnother,
 }: DownloadActionsProps) {
   return (
-    <div className="button-row">
+    <div className="button-row result-actions">
       {href && downloadName ? (
         <a
           href={href}

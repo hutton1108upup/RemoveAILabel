@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-img-element -- These previews are local blob URLs, not network images. */
+
+import { CheckCircle2, CircleAlert, FileImage, LoaderCircle } from "lucide-react";
 import type { ProcessingStatus } from "@/lib/metadata/types";
 
 interface QueueListEntry {
@@ -5,10 +8,13 @@ interface QueueListEntry {
   fileName: string;
   bytes: number;
   status: ProcessingStatus;
+  previewHref?: string;
 }
 
 interface QueueListProps {
   entries: QueueListEntry[];
+  selectedId?: string;
+  onSelect: (entryId: string) => void;
 }
 
 function formatBytes(bytes: number) {
@@ -30,7 +36,20 @@ function statusLabel(status: ProcessingStatus) {
   return status.charAt(0).toUpperCase() + status.slice(1);
 }
 
-export function QueueList({ entries }: QueueListProps) {
+function StatusIcon({ status }: { status: ProcessingStatus }) {
+  if (status === "validating" || status === "scanning" || status === "preparing") {
+    return <LoaderCircle size={14} strokeWidth={1.75} className="status-icon-spinning" aria-hidden="true" />;
+  }
+  if (status === "ready" || status === "already-clean") {
+    return <CheckCircle2 size={14} strokeWidth={1.75} aria-hidden="true" />;
+  }
+  if (status === "review-needed" || status === "unsupported" || status === "failed") {
+    return <CircleAlert size={14} strokeWidth={1.75} aria-hidden="true" />;
+  }
+  return <FileImage size={14} strokeWidth={1.75} aria-hidden="true" />;
+}
+
+export function QueueList({ entries, selectedId, onSelect }: QueueListProps) {
   if (entries.length === 0) {
     return null;
   }
@@ -40,44 +59,53 @@ export function QueueList({ entries }: QueueListProps) {
   ).length;
   const allChecked = checkedCount === entries.length;
   const fileLabel = entries.length === 1 ? "file" : "files";
-
-  if (allChecked && entries.length === 1) {
-    return null;
-  }
-
-  if (allChecked) {
-    return (
-      <details className="card queue-shell queue-shell-complete">
-        <summary className="queue-summary">
-          <span>{`Checked ${checkedCount} ${fileLabel}`}</span>
-          <span className="file-meta">View file details</span>
-        </summary>
-        <div className="queue-complete-list">
-          {entries.map((entry) => (
-            <div key={entry.id} className="queue-item">
-              <strong>{entry.fileName}</strong>
-              <span className="file-meta">{formatBytes(entry.bytes)}</span>
-              <span className={`status-chip status-chip-${entry.status}`}>{statusLabel(entry.status)}</span>
-            </div>
-          ))}
-        </div>
-      </details>
-    );
-  }
+  const heading = allChecked
+    ? entries.length === 1
+      ? "Selected file"
+      : `${entries.length} files in this check`
+    : `Checking ${checkedCount} of ${entries.length} ${fileLabel}…`;
 
   return (
-    <section className="card queue-shell">
-      <p>{`Checking ${checkedCount} of ${entries.length} ${fileLabel}…`}</p>
-      {entries.map((entry) => (
-        <div key={entry.id} className="queue-item">
-          <strong>{entry.fileName}</strong>
-          <span className="file-meta">{formatBytes(entry.bytes)}</span>
-          <span className={`status-chip status-chip-${entry.status}`}>{statusLabel(entry.status)}</span>
-          {entry.status === "validating" || entry.status === "scanning" || entry.status === "preparing" ? (
-            <div className="progress-bar" aria-hidden="true" />
-          ) : null}
-        </div>
-      ))}
+    <section className="queue-shell" aria-label="Selected image files">
+      <div className="queue-heading">
+        <p>{heading}</p>
+        <span className="file-meta">{checkedCount}/{entries.length} checked</span>
+      </div>
+      <div className="queue-file-list">
+        {entries.map((entry) => {
+          const active = entry.status === "validating" || entry.status === "scanning" || entry.status === "preparing";
+          const selected = entry.id === selectedId;
+
+          return (
+            <button
+              key={entry.id}
+              type="button"
+              className={`queue-item${selected ? " is-selected" : ""}`}
+              aria-current={selected ? "true" : undefined}
+              onClick={() => onSelect(entry.id)}
+            >
+              <span className="queue-thumbnail" aria-hidden="true">
+                {entry.previewHref ? (
+                  <img src={entry.previewHref} alt="" />
+                ) : (
+                  <FileImage size={22} strokeWidth={1.5} />
+                )}
+              </span>
+              <span className="queue-file-copy">
+                <strong title={entry.fileName}>{entry.fileName}</strong>
+                <span className="file-meta">{formatBytes(entry.bytes)}</span>
+                <span className={`status-chip status-chip-${entry.status}`}>
+                  <StatusIcon status={entry.status} />
+                  {statusLabel(entry.status)}
+                </span>
+                {active ? (
+                  <span className="progress-bar" role="progressbar" aria-label={`${statusLabel(entry.status)} for ${entry.fileName}`} />
+                ) : null}
+              </span>
+            </button>
+          );
+        })}
+      </div>
     </section>
   );
 }

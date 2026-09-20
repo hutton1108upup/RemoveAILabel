@@ -111,7 +111,9 @@ describe("remove-ai-label tool behavior", () => {
       removeListener: vi.fn(),
       dispatchEvent: vi.fn(),
     })));
-    URL.createObjectURL = vi.fn(() => "blob:verified-download");
+    URL.createObjectURL = vi.fn((value: Blob | MediaSource) =>
+      value instanceof File ? `blob:preview-${value.name}` : "blob:verified-download",
+    );
     URL.revokeObjectURL = vi.fn();
     delete process.env.NEXT_PUBLIC_SITE_B_URL;
     delete process.env.NEXT_PUBLIC_ENABLE_WEBP_CLEAN;
@@ -164,11 +166,12 @@ describe("remove-ai-label tool behavior", () => {
     await waitFor(() => {
       expect(screen.queryByRole("link", { name: "Download Cleaned Image" })).not.toBeInTheDocument();
     });
-    expect(URL.createObjectURL).not.toHaveBeenCalled();
+    expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
+    expect(URL.createObjectURL).toHaveBeenCalledWith(file);
 
     worker?.emit(createReadyResponse(fileId, true));
     expect(await screen.findByRole("link", { name: "Download Cleaned Image" })).toBeInTheDocument();
-    expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
+    expect(URL.createObjectURL).toHaveBeenCalledTimes(2);
     expect(screen.queryByText("Checked 1 file")).not.toBeInTheDocument();
     expect(screen.queryByText("Checking 1 of 1 files…")).not.toBeInTheDocument();
     expect(screen.queryByText("verified copies ready")).not.toBeInTheDocument();
@@ -219,6 +222,45 @@ describe("remove-ai-label tool behavior", () => {
     expect(screen.queryByText(/0 already clean/)).not.toBeInTheDocument();
     expect(screen.queryByText(/0 review needed/)).not.toBeInTheDocument();
     expect(screen.queryByText(/0 unsupported/)).not.toBeInTheDocument();
+  });
+
+  it("switches the visible result from the local file queue", async () => {
+    const user = userEvent.setup();
+    const first = new File([blobPart(buildJpeg())], "first.jpg", { type: "image/jpeg" });
+    const second = new File([blobPart(buildPng())], "second.png", { type: "image/png" });
+    render(<RemoveAiLabelTool />);
+
+    await user.upload(screen.getByLabelText("Choose image files"), [first, second]);
+    const worker = FakeWorker.instances.at(0);
+    await waitFor(() => expect(worker?.messages).toHaveLength(2));
+    const [firstId, secondId] = worker?.messages.map(
+      (message) => (message as { file: { id: string } }).file.id,
+    ) ?? [];
+
+    const firstResult = createReadyResponse(firstId, true);
+    const secondResult = createReadyResponse(secondId, true);
+    if (firstResult.type !== "result" || secondResult.type !== "result") {
+      throw new Error("Expected result fixtures");
+    }
+    worker?.emit({
+      ...firstResult,
+      result: { ...firstResult.result, fileName: "first.jpg", cleanedFileName: "first-clean.jpg" },
+    });
+    worker?.emit({
+      ...secondResult,
+      result: { ...secondResult.result, fileName: "second.png", cleanedFileName: "second-clean.png" },
+    });
+
+    const firstButton = await screen.findByRole("button", { name: /first\.jpg/i });
+    const secondButton = screen.getByRole("button", { name: /second\.png/i });
+    expect(firstButton).toHaveAttribute("aria-current", "true");
+    expect(secondButton).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("heading", { name: "first-clean.jpg" })).toBeInTheDocument();
+
+    await user.click(secondButton);
+    expect(secondButton).toHaveAttribute("aria-current", "true");
+    expect(firstButton).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("heading", { name: "second-clean.png" })).toBeInTheDocument();
   });
 
   it("keeps WebP cleaning sealed in this build even when the public flag is set", async () => {
@@ -312,6 +354,7 @@ describe("remove-ai-label tool behavior", () => {
       },
     });
 
+    await user.click(await screen.findByRole("button", { name: /clean\.png.*Already clean/i }));
     expect(await screen.findByRole("link", { name: "Review visible artifacts" })).toBeInTheDocument();
   });
 
@@ -398,6 +441,7 @@ describe("remove-ai-label tool behavior", () => {
     await user.click(await screen.findByRole("button", { name: "Check Another Image" }));
 
     expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:verified-download");
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:preview-photo.jpg");
     expect(screen.queryByRole("link", { name: "Download Cleaned Image" })).not.toBeInTheDocument();
   });
 

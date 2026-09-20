@@ -157,6 +157,9 @@ test("one failed file does not block verified files and ZIP contains successes o
   ]);
 
   await expect(page.getByText("2 verified copies ready")).toBeVisible();
+  const failedFile = page.getByRole("button", { name: /broken\.jpg.*Failed/i });
+  await expect(failedFile).toBeVisible();
+  await failedFile.click();
   await expect(page.getByText("Processing failed — original unchanged")).toBeVisible();
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download 2 Verified Files as ZIP" }).click();
