@@ -6,6 +6,10 @@ import { toAbsoluteUrl } from "@/lib/seo/metadata";
 export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const contentUpdatedRoutes = new Set([
+    "/", "/instagram-ai-info", "/facebook-ai-info", "/photoshop-ai-label",
+    "/c2pa-ai-label", "/supported-formats", "/remove-ai-label-iphone", "/guides",
+  ]);
   const updatedRoutes = new Set([
     ...Object.values(scenarioPages).map((page) => page.path),
     "/guides",
@@ -15,6 +19,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
   return launchRouteOrder.map((path) => ({
     url: toAbsoluteUrl(path),
-    lastModified: updatedRoutes.has(path) ? scenarioReviewDate : "2026-09-03",
+    lastModified: contentUpdatedRoutes.has(path)
+      ? "2026-09-23"
+      : updatedRoutes.has(path) ? scenarioReviewDate : "2026-09-03",
   }));
 }

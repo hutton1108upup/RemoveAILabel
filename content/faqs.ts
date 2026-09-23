@@ -5,6 +5,11 @@ export interface FaqItem {
 
 export const homeFaqs: FaqItem[] = [
   {
+    question: "What does an AI tag remover remove?",
+    answer:
+      "For images, an AI tag remover usually means a tool that removes hidden AI-related metadata. This tool checks supported C2PA, XMP, and prompt/workflow fields. It does not erase visible text or change labels on existing posts.",
+  },
+  {
     question: "What does an AI label remover actually remove?",
     answer:
       "It removes supported file-level metadata such as embedded C2PA credentials, confirmed AI-related XMP packets, and supported prompt or workflow fields in a new local copy.",
