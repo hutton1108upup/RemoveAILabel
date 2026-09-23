@@ -43,9 +43,11 @@ describe("approved scenario guides", () => {
     );
     for (const [slug] of scenarios) {
       expect(links, slug).toContain(`/${slug}`);
-      expect(entries.find((entry) => entry.url.endsWith(`/${slug}/`))?.lastModified).toBe("2026-09-06");
+      expect(entries.find((entry) => entry.url.endsWith(`/${slug}/`))?.lastModified).toBe(
+        slug === "remove-ai-label-iphone" ? "2026-09-23" : "2026-09-06",
+      );
     }
-    expect(entries.find((entry) => entry.url === "https://removeailabel.app/")?.lastModified).toBe("2026-09-03");
+    expect(entries.find((entry) => entry.url === "https://removeailabel.app/")?.lastModified).toBe("2026-09-23");
   });
 
   it("gives the new guides distinct titles, descriptions, and primary headings", () => {

@@ -16,6 +16,8 @@ import type { ProcessFileResult } from "@/lib/metadata/types";
 import { VerificationTable } from "@/components/tool/VerificationTable";
 import { AppLink } from "@/components/layout/AppLink";
 import { ExternalLink } from "lucide-react";
+import { EditorialSection } from "@/components/content/EditorialSection";
+import { homeIntentSection, sampleEvidenceSection } from "@/content/search-intent";
 
 const page = {
   path: "/",
@@ -116,6 +118,7 @@ export default function HomePage() {
                   Choose an image
                 </label>
                 <p className="body-large">{homePageContent.subtitle}</p>
+                <p className="body-copy">For file metadata before sharing. Existing posts and visible watermarks stay unchanged.</p>
                 <div className="trust-badges">
                   {homePageContent.trustBadges.map((badge) => (
                     <span key={badge} className="trust-chip">
@@ -129,6 +132,45 @@ export default function HomePage() {
           </section>
 
           <div className="shell section-stack">
+            <div data-home-section="how-it-works" id="how-it-works">
+              <section>
+                <h2>How to Remove AI Label Metadata from an Image</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.workflow.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <StepList steps={homePageContent.workflow} />
+              </section>
+            </div>
+
+            <section data-home-section="report">
+              <h2>Before / After Report</h2>
+              <div className="section-copy">
+                {homePageContent.sectionCopy.report.map((paragraph) => (
+                  <p key={paragraph} className="body-copy">{paragraph}</p>
+                ))}
+              </div>
+              <EditorialSection section={sampleEvidenceSection} />
+              <article className="card result-card">
+                <h3>Example verification report</h3>
+                <p className="body-copy">Illustration only: these rows explain the report, not the findings in the sample above. Your own file may contain different fields.</p>
+                <VerificationTable result={exampleResult} />
+                <a
+                  href="/example-report.txt"
+                  download="remove-ai-label-example-report.txt"
+                  className="button button-secondary"
+                  data-prefetch="false"
+                >
+                  Download example report
+                </a>
+              </article>
+            </section>
+
+            <div data-home-section="intent">
+              <EditorialSection section={homeIntentSection} />
+            </div>
+
             <div data-home-section="checks">
               <section>
                 <h2>What the Remove AI Label Tool Checks</h2>
@@ -150,6 +192,30 @@ export default function HomePage() {
                   ))}
                 </div>
                 <PreserveCard items={homePageContent.preserves} />
+              </section>
+            </div>
+
+            <div data-home-section="scenarios">
+              <section>
+                <h2>Who This Helps</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.scenarios.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <ScenarioGrid items={homePageContent.scenarios} />
+              </section>
+            </div>
+
+            <div data-home-section="guides">
+              <section>
+                <h2>Start with a Specific Guide</h2>
+                <div className="section-copy">
+                  {homePageContent.sectionCopy.guides.map((paragraph) => (
+                    <p key={paragraph} className="body-copy">{paragraph}</p>
+                  ))}
+                </div>
+                <GuideCardGrid items={homePageContent.entryCards} />
               </section>
             </div>
 
@@ -184,63 +250,6 @@ export default function HomePage() {
                 ))}
               </div>
             </section>
-
-            <div data-home-section="scenarios">
-              <section>
-                <h2>Who This Helps</h2>
-                <div className="section-copy">
-                  {homePageContent.sectionCopy.scenarios.map((paragraph) => (
-                    <p key={paragraph} className="body-copy">{paragraph}</p>
-                  ))}
-                </div>
-                <ScenarioGrid items={homePageContent.scenarios} />
-              </section>
-            </div>
-
-            <div data-home-section="how-it-works" id="how-it-works">
-              <section>
-                <h2>How to Remove AI Label Metadata from an Image</h2>
-                <div className="section-copy">
-                  {homePageContent.sectionCopy.workflow.map((paragraph) => (
-                    <p key={paragraph} className="body-copy">{paragraph}</p>
-                  ))}
-                </div>
-                <StepList steps={homePageContent.workflow} />
-              </section>
-            </div>
-
-            <section data-home-section="report">
-              <h2>Before / After Report</h2>
-              <div className="section-copy">
-                {homePageContent.sectionCopy.report.map((paragraph) => (
-                  <p key={paragraph} className="body-copy">{paragraph}</p>
-                ))}
-              </div>
-              <article className="card result-card">
-                <h3>Example verification report</h3>
-                <VerificationTable result={exampleResult} />
-                <a
-                  href="/example-report.txt"
-                  download="remove-ai-label-example-report.txt"
-                  className="button button-secondary"
-                  data-prefetch="false"
-                >
-                  Download example report
-                </a>
-              </article>
-            </section>
-
-            <div data-home-section="guides">
-              <section>
-                <h2>Start with a Specific Guide</h2>
-                <div className="section-copy">
-                  {homePageContent.sectionCopy.guides.map((paragraph) => (
-                    <p key={paragraph} className="body-copy">{paragraph}</p>
-                  ))}
-                </div>
-                <GuideCardGrid items={homePageContent.entryCards} />
-              </section>
-            </div>
 
             <div data-home-section="faq">
               <section>

@@ -178,6 +178,28 @@ export const scenarioPages: Record<string, PageContent> = {
       "Reviewed September 6, 2026\nSources: Apple photo-download guidance and Meta labeling policy\nFile selection and download menus depend on your iOS version.",
     editorialSections: [
       {
+        title: "Choose, Check, and Find Your Download",
+        paragraphs: ["No app installation is needed. Start with one full JPG or PNG so it is easy to identify the result."],
+        table: {
+          caption: "What to look for while using the tool on your phone",
+          columns: ["Step", "What you should see"],
+          rows: [
+            ["1. Choose image files", "Select the final JPG or PNG. If you only have HEIC, follow the export guidance below first."],
+            ["2. Review the file result", "File-level clean copy ready provides a verified download. Already clean means no supported target was found; other statuses explain why no clean copy is offered."],
+            ["3. Download Cleaned Image", "Use the download link in that file's result. Find the filename ending in -clean in your browser downloads or configured download folder."],
+            ["4. Share the new copy", "Open it and check the picture. The original and cleaned copy can look identical, so select the new filename deliberately."],
+          ],
+        },
+        links: [{ label: "Return to the free browser image tool", href: "/#use-free-tool" }],
+        illustration: {
+          src: "/guides/phone-clean-copy.png",
+          alt: "Verified JPG result showing File-level clean copy ready, the Download Cleaned Image link, and C2PA removed with the image payload unchanged",
+          width: 305,
+          height: 818,
+          caption: "Website example at phone width, using the public C2PA sample. Look for the ready status and the new filename. Browser download menus vary.",
+        },
+      },
+      {
         title: "Start with a Complete Photo, Not an iCloud Placeholder",
         paragraphs: [
           "A thumbnail in Photos is not enough to inspect the original file. Let the photo finish downloading before you select it. Choosing a locally saved file from Files makes it easier to identify the exact copy you are checking.",

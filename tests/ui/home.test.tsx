@@ -28,7 +28,7 @@ describe("home page shell", () => {
     expect(globalsCss.startsWith("@import '../tokens.css';")).toBe(true);
   });
 
-  it("renders the 12 required homepage sections and only one navy section", () => {
+  it("renders the homepage sections and only one navy section", () => {
     const { container } = render(<HomePage />);
     const main = screen.getByRole("main");
     const tool = screen.getByRole("region", { name: "Remove AI label tool" });
@@ -43,7 +43,7 @@ describe("home page shell", () => {
     ).toBeInTheDocument();
 
     const sections = container.querySelectorAll("[data-home-section]");
-    expect(sections).toHaveLength(12);
+    expect(sections).toHaveLength(13);
 
     expect(
       within(main).getByRole("heading", { level: 2, name: "What the Remove AI Label Tool Checks" }),

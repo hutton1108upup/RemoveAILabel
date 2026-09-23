@@ -1,5 +1,6 @@
 import { homeFaqs, pageFaqs, type FaqItem } from "./faqs";
 import { scenarioGuideCards, scenarioPages } from "./scenario-pages";
+import { formatComparisonSection, platformDecisionSection, sampleEvidenceSection } from "./search-intent";
 
 export interface BreadcrumbLink {
   label: string;
@@ -25,6 +26,19 @@ export interface EditorialSectionContent {
   title: string;
   paragraphs: string[];
   bullets?: string[];
+  table?: {
+    caption: string;
+    columns: string[];
+    rows: string[][];
+  };
+  links?: BreadcrumbLink[];
+  illustration?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    caption: string;
+  };
 }
 
 export interface PageContent {
@@ -167,7 +181,7 @@ export const homePageContent = {
     "Check and remove supported C2PA, XMP and AI label metadata from JPG and PNG images locally in your browser. Free, private and no account.",
   h1: "Check and Remove AI Label Metadata Before You Post",
   subtitle:
-    "Use this free AI label remover to inspect a JPG or PNG for supported file-level signals. When confirmed C2PA, XMP, or workflow fields are found, it creates a separate local copy and verifies the result. Your image stays in your browser.",
+    "Remove supported AI label metadata from JPG and PNG images without re-encoding. Free, private, and no account.",
   trustBadges: [
     "Processed in your browser",
     "No account",
@@ -196,8 +210,7 @@ export const homePageContent = {
       "A cleaned copy is prepared only for confirmed, supported targets. Compare the Before and Clean copy columns, check which camera, color, orientation, or copyright fields were preserved, then download the verified result. Keep the original so you can return to the source export if the cleaned copy is not appropriate for your publishing workflow.",
     ],
     report: [
-      "The before-and-after report makes the change inspectable. A target marked Found should become Removed in the cleaned copy, while supported camera EXIF, color profiles, orientation, and creator details should remain Preserved when separable. The image payload row records whether the encoded picture data was re-encoded.",
-      "Verification uses the same class of file checks after cleanup instead of relying on a successful download alone. If a target remains, the rewrite is unsafe, or the resulting file cannot be validated, the tool does not offer that copy as verified. The example below shows the structure of the report; your real result will reflect only the fields found in your own file.",
+      "Compare Found and Removed fields, then check what stayed Preserved. The tool scans the cleaned copy again before offering a verified download. Try the real sample below or read the illustrated report to understand the result.",
     ],
     guides: [
       "Choose the guide that matches the point where the label question appeared. The Instagram and Facebook pages explain what a local file check can and cannot say about AI Info. The Photoshop guide focuses on exported files after AI-assisted edits, while the broader AI Info guide explains why a photographed image may still carry provenance or editing signals. These pages add context without changing the scope of the cleaner.",
@@ -328,6 +341,7 @@ export const launchPages: Record<string, PageContent> = {
     evidenceLabel:
       "Reviewed September 3, 2026\nPlatform claims: official Meta documentation\nFile behavior: local format tests\nCommunity discussions: question discovery only",
     editorialSections: [
+      platformDecisionSection("Instagram"),
       {
         title: "What Instagram AI Info Tells You",
         paragraphs: [
@@ -404,6 +418,7 @@ export const launchPages: Record<string, PageContent> = {
     evidenceLabel:
       "Reviewed September 3, 2026\nPlatform claims: official Meta documentation\nFile behavior: local format tests\nCommunity discussions: question discovery only",
     editorialSections: [
+      platformDecisionSection("Facebook"),
       {
         title: "Check a Batch Before Publishing",
         paragraphs: [
@@ -473,6 +488,15 @@ export const launchPages: Record<string, PageContent> = {
     evidenceLabel:
       "Reviewed September 3, 2026\nPlatform claims: Adobe and Meta documentation\nFile behavior: local format tests\nCommunity discussions: question discovery only",
     editorialSections: [
+      sampleEvidenceSection,
+      {
+        title: "Record Your Photoshop Export Before Comparing",
+        paragraphs: [
+          "For a result you can reproduce, note your Photoshop version, the edit you made, the export command, the file format, and the Content Credentials option you selected. Keep that original export alongside the cleaned copy.",
+          "Scan the original export, review exactly which fields were found, and compare the cleaned file's report. Check the picture's dimensions, color, and orientation too. A result from one export does not establish what every Photoshop version or save option will do.",
+        ],
+        links: [{ label: "Check your final export with the AI label remover", href: "/#use-free-tool" }],
+      },
       {
         title: "What to Check in the Export",
         paragraphs: [
@@ -630,6 +654,14 @@ export const launchPages: Record<string, PageContent> = {
       "Reviewed September 3, 2026\nPlatform claims: C2PA and Adobe documentation\nFile behavior: local format tests\nStorage and platform behavior may change",
     editorialSections: [
       {
+        title: "A Content Credential Is Not an AI Verdict",
+        paragraphs: [
+          "C2PA is used to record provenance and editing history. Finding an embedded credential does not by itself establish that the whole image was AI-generated. The contents and their validation need to be interpreted separately.",
+          "An AI tag remover may remove a supported embedded credential from a new file copy, but that does not prove the picture was never edited or erase credentials held elsewhere.",
+        ],
+        links: [{ label: "Check supported C2PA metadata with the AI label remover", href: "/#use-free-tool" }],
+      },
+      {
         title: "What Changes in the Cleaned Copy",
         paragraphs: [
           "Ask what the next copy is for. If a client, archive, or publication needs verifiable provenance, keep the original credential-bearing file. If you need a separate publishing copy without a supported embedded credential, create that copy and keep both files clearly named.",
@@ -703,6 +735,7 @@ export const launchPages: Record<string, PageContent> = {
     evidenceLabel:
       "Reviewed September 3, 2026\nFile behavior: format specifications and local parser tests\nCommunity discussions: preserve-versus-remove questions",
     editorialSections: [
+      formatComparisonSection,
       {
         title: "Keep or Remove Workflow Metadata?",
         paragraphs: [
