@@ -3,20 +3,22 @@ import type { EditorialSectionContent } from "./pages";
 export const homeIntentSection: EditorialSectionContent = {
   title: "Which AI Label Do You Want to Remove?",
   paragraphs: [
-    "An AI tag remover for images cleans hidden information inside a file. This free AI label remover checks supported C2PA, XMP, and prompt or workflow fields, then verifies a separate copy. Choose the situation that matches your photo.",
+    "Choose the problem you want to solve. An AI tag remover can clean supported hidden file metadata; platform notices and visible image content need different next steps.",
   ],
   table: {
     caption: "File metadata, platform labels, and visible watermarks are different",
-    columns: ["What you have", "What this tool can do", "Your next step"],
+    columns: ["Your problem", "Start here"],
     rows: [
-      ["Hidden AI tags in a JPG or PNG", "Remove confirmed, supported fields in a new copy.", "Choose the final image in the tool above."],
-      ["AI Info on an existing post", "Inspect a local file; it cannot change a live post or account label.", "Read the Instagram or Facebook guide below."],
-      ["Text, a logo, or a watermark in the picture", "Metadata cleanup leaves the image pixels unchanged.", "Use an image editor for visible content; pixel watermarks are outside this tool."],
+      ["Hidden AI tags in a JPG or PNG", "Choose the final file above. The tool checks supported C2PA, XMP, and workflow fields and verifies a separate copy."],
+      ["AI Info on Instagram or Facebook", "Open the platform guide below to distinguish a local file from an existing post or account notice."],
+      ["Visible text, a watermark, or an AI editing effect", "Read the image-content limits below. Metadata cleanup leaves pixels unchanged; visible edits need an image editor."],
     ],
   },
   links: [
+    { label: "Check hidden AI tags in a local image", href: "/#use-free-tool" },
     { label: "Instagram AI Info: before posting or already live", href: "/instagram-ai-info/" },
     { label: "Facebook AI Info: choose the right next step", href: "/facebook-ai-info/" },
+    { label: "Visible watermarks and image-content limits", href: "/#what-this-tool-can-change" },
   ],
 };
 

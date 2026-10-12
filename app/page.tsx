@@ -132,6 +132,10 @@ export default function HomePage() {
           </section>
 
           <div className="shell section-stack">
+            <div data-home-section="intent">
+              <EditorialSection section={homeIntentSection} />
+            </div>
+
             <div data-home-section="how-it-works" id="how-it-works">
               <section>
                 <h2>How to Remove AI Label Metadata from an Image</h2>
@@ -166,10 +170,6 @@ export default function HomePage() {
                 </a>
               </article>
             </section>
-
-            <div data-home-section="intent">
-              <EditorialSection section={homeIntentSection} />
-            </div>
 
             <div data-home-section="checks">
               <section>
@@ -219,7 +219,7 @@ export default function HomePage() {
               </section>
             </div>
 
-            <section data-home-section="limits" data-surface="navy" className="capability-wrap">
+            <section data-home-section="limits" data-surface="navy" className="capability-wrap" id="what-this-tool-can-change">
               <h2>What It Cannot Guarantee</h2>
               <div className="section-copy section-copy-dark">
                 {homePageContent.sectionCopy.limits.map((paragraph) => (
