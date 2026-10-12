@@ -263,13 +263,14 @@ describe("route metadata and static seo", () => {
 
     expect(robotsConfig.host).toBe("https://removeailabel.app");
     expect(robotsConfig.sitemap).toBe("https://removeailabel.app/sitemap.xml");
-    expect(sitemapEntries).toHaveLength(16);
+    expect(sitemapEntries).toHaveLength(17);
     expect(sitemapEntries.map((entry) => entry.url)).toEqual([
       "https://removeailabel.app/",
       "https://removeailabel.app/instagram-ai-info/",
       "https://removeailabel.app/facebook-ai-info/",
       "https://removeailabel.app/photoshop-ai-label/",
       "https://removeailabel.app/why-does-my-photo-say-ai-info/",
+      "https://removeailabel.app/ai-label-after-metadata-removal/",
       "https://removeailabel.app/c2pa-ai-label/",
       "https://removeailabel.app/supported-formats/",
       "https://removeailabel.app/lightroom-ai-label/",

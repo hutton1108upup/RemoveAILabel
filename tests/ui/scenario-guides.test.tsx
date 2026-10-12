@@ -47,7 +47,7 @@ describe("approved scenario guides", () => {
         slug === "remove-ai-label-iphone" ? "2026-09-23" : "2026-09-06",
       );
     }
-    expect(entries.find((entry) => entry.url === "https://removeailabel.app/")?.lastModified).toBe("2026-09-23");
+    expect(entries.find((entry) => entry.url === "https://removeailabel.app/")?.lastModified).toBe("2026-10-12");
   });
 
   it("gives the new guides distinct titles, descriptions, and primary headings", () => {

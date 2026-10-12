@@ -60,6 +60,14 @@ export const homeFaqs: FaqItem[] = [
       "Yes. It is free to use, requires no account, and does not charge for downloads.",
   },
   {
+    question: "Can an AI Info remover change a label on an existing post?",
+    answer: "No. It can inspect and clean supported metadata in a local image copy before sharing. A notice on an existing post or account needs the platform's current help rather than another pass through the image cleaner.",
+  },
+  {
+    question: "Does removing AI tags stop every AI detector?",
+    answer: "No. Supported file metadata, invisible pixel watermarks, visual classifiers, and platform records are different signals. The verification report describes your cleaned copy, not every detector or a future platform result.",
+  },
+  {
     question: "Looking for “removeailable”?",
     answer:
       "If you mean “remove AI label,” this tool checks and removes supported AI-related metadata from JPG and PNG images in your browser. It creates a separate copy and keeps your original unchanged.",

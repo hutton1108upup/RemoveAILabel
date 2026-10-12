@@ -1,6 +1,7 @@
 import { homeFaqs, pageFaqs, type FaqItem } from "./faqs";
 import { scenarioGuideCards, scenarioPages } from "./scenario-pages";
 import { formatComparisonSection, platformDecisionSection, sampleEvidenceSection } from "./search-intent";
+import { firstScanDecision, formatDecisionExamples, instagramUploadWorkflow, troubleshootingGuide, troubleshootingPage } from "./mvp-troubleshooting";
 
 export interface BreadcrumbLink {
   label: string;
@@ -76,6 +77,7 @@ export const launchRouteOrder = [
   "/facebook-ai-info",
   "/photoshop-ai-label",
   "/why-does-my-photo-say-ai-info",
+  "/ai-label-after-metadata-removal",
   "/c2pa-ai-label",
   "/supported-formats",
   "/lightroom-ai-label",
@@ -318,6 +320,7 @@ export const homePageContent = {
 
 export const launchPages: Record<string, PageContent> = {
   ...scenarioPages,
+  "ai-label-after-metadata-removal": troubleshootingPage,
   home: {
     slug: "home",
     path: "/",
@@ -341,6 +344,7 @@ export const launchPages: Record<string, PageContent> = {
     evidenceLabel:
       "Reviewed September 3, 2026\nPlatform claims: official Meta documentation\nFile behavior: local format tests\nCommunity discussions: question discovery only",
     editorialSections: [
+      instagramUploadWorkflow,
       platformDecisionSection("Instagram"),
       {
         title: "What Instagram AI Info Tells You",
@@ -396,7 +400,7 @@ export const launchPages: Record<string, PageContent> = {
       "It does not hide visible edits or replace a disclosure you are required to make.",
     ],
     faqs: pageFaqs["instagram-ai-info"],
-    relatedGuides: [guideCards[1], guideCards[2], scenarioGuideCards[1], scenarioGuideCards[2]],
+    relatedGuides: [troubleshootingGuide, guideCards[1], guideCards[2], scenarioGuideCards[1], scenarioGuideCards[2]],
     breadcrumbs: [
       { href: "/", label: "Home" },
       { href: "/guides/", label: "Guides" },
@@ -573,6 +577,7 @@ export const launchPages: Record<string, PageContent> = {
     evidenceLabel:
       "Reviewed September 3, 2026\nPlatform claims: Meta and Adobe documentation\nFile behavior: local format tests\nPlatform behavior may change",
     editorialSections: [
+      firstScanDecision,
       {
         title: "Where AI Info Can Come From",
         paragraphs: [
@@ -631,7 +636,7 @@ export const launchPages: Record<string, PageContent> = {
       "An already-clean result does not guarantee how a third party will label the image.",
     ],
     faqs: pageFaqs["why-does-my-photo-say-ai-info"],
-    relatedGuides: guideCards.filter((card) => card.href !== "/why-does-my-photo-say-ai-info/"),
+    relatedGuides: [troubleshootingGuide, ...guideCards.filter((card) => card.href !== "/why-does-my-photo-say-ai-info/")],
     breadcrumbs: [
       { href: "/", label: "Home" },
       { href: "/guides/", label: "Guides" },
@@ -736,6 +741,7 @@ export const launchPages: Record<string, PageContent> = {
       "Reviewed September 3, 2026\nFile behavior: format specifications and local parser tests\nCommunity discussions: preserve-versus-remove questions",
     editorialSections: [
       formatComparisonSection,
+      formatDecisionExamples,
       {
         title: "Keep or Remove Workflow Metadata?",
         paragraphs: [
@@ -803,6 +809,7 @@ export const launchPages: Record<string, PageContent> = {
     faqs: pageFaqs.guides,
     relatedGuides: [
       ...guideCards,
+      troubleshootingGuide,
       ...scenarioGuideCards,
       {
         title: "C2PA and AI Labels",

@@ -6,11 +6,20 @@ import sharp from "sharp";
 test("search-intent pages keep navigation, metadata and phone layouts usable", async ({ page }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  for (const route of ["/", "/instagram-ai-info/", "/facebook-ai-info/", "/photoshop-ai-label/", "/c2pa-ai-label/", "/supported-formats/", "/remove-ai-label-iphone/", "/guides/"]) {
+  for (const route of ["/", "/instagram-ai-info/", "/facebook-ai-info/", "/photoshop-ai-label/", "/c2pa-ai-label/", "/supported-formats/", "/remove-ai-label-iphone/", "/why-does-my-photo-say-ai-info/", "/ai-label-after-metadata-removal/", "/guides/"]) {
     const response = await page.goto(route);
     expect(response?.status()).toBe(200);
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", `https://removeailabel.app${route}`);
+    if (route === "/ai-label-after-metadata-removal/") {
+      const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? "{}")));
+      const faq = schemas.find((schema) => schema["@type"] === "FAQPage");
+      expect(await page.locator(".faq-button").count()).toBe(faq.mainEntity.length);
+      expect(schemas.find((schema) => schema["@type"] === "BreadcrumbList").itemListElement.at(-1).item).toBe(`https://removeailabel.app${route}`);
+      const question = page.getByRole("button", { name: "Can editing after cleanup add metadata again?", exact: true });
+      await question.click();
+      await expect(page.locator(".faq-answer")).toContainText("A new export can contain different fields.");
+    }
     if (route === "/remove-ai-label-iphone/") {
       await page.getByText("See an example of the verified download", { exact: true }).click();
       const example = page.getByRole("img", { name: /Verified JPG result showing/ });
@@ -24,6 +33,7 @@ test("search-intent pages keep navigation, metadata and phone layouts usable", a
   await expect(page).toHaveURL(/\/#use-free-tool$/);
   await expect(page.getByRole("button", { name: "Image file dropzone" })).toBeVisible();
   const order = await page.locator("main [data-home-section]").evaluateAll((sections) => sections.map((section) => section.getAttribute("data-home-section")));
+  expect(order.indexOf("intent")).toBeLessThan(order.indexOf("how-it-works"));
   expect(order.indexOf("how-it-works")).toBeLessThan(order.indexOf("checks"));
   expect(order.indexOf("report")).toBeLessThan(order.indexOf("limits"));
   await page.getByRole("button", { name: "What does an AI tag remover remove?", exact: true }).click();
