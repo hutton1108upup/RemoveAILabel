@@ -17,7 +17,7 @@ import { VerificationTable } from "@/components/tool/VerificationTable";
 import { AppLink } from "@/components/layout/AppLink";
 import { ExternalLink } from "lucide-react";
 import { EditorialSection } from "@/components/content/EditorialSection";
-import { homeIntentSection, sampleEvidenceSection } from "@/content/search-intent";
+import { homeIntentSection, homeTagFieldsSection, sampleEvidenceSection } from "@/content/search-intent";
 
 const page = {
   path: "/",
@@ -180,6 +180,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <ChecksGrid items={homePageContent.checks} />
+                <EditorialSection section={homeTagFieldsSection} />
               </section>
             </div>
 

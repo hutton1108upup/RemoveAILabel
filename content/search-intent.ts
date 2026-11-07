@@ -1,9 +1,14 @@
 import type { EditorialSectionContent } from "./pages";
 
 export const homeIntentSection: EditorialSectionContent = {
-  title: "Which AI Label Do You Want to Remove?",
+  title: "Remove Hidden AI Tags from an Image",
   paragraphs: [
-    "Choose the problem you want to solve. An AI tag remover can clean supported hidden file metadata; platform notices and visible image content need different next steps.",
+    "An AI tag remover checks hidden metadata in JPG and PNG images: supported Content Credentials, AI-related XMP, and prompt or workflow fields. Platform notices and visible watermarks need different next steps.",
+  ],
+  bullets: [
+    "Choose your final image after editing or exporting.",
+    "Review the findings and download a verified copy when available. Your original stays unchanged.",
+    "Recheck the download. A clean metadata report does not guarantee no platform label.",
   ],
   table: {
     caption: "File metadata, platform labels, and visible watermarks are different",
@@ -36,9 +41,51 @@ export function platformDecisionSection(platform: "Instagram" | "Facebook"): Edi
         ["The scan finds no supported AI metadata", "Check that you selected the final export. Unsupported fields, disclosures, or platform systems may still matter; a clean scan is not a platform prediction."],
       ],
     },
-    links: [{ label: "Use the free AI label remover for a local image", href: "/#use-free-tool" }],
+    links: [{ label: `Before posting to ${platform}, check hidden image tags with the free AI tag remover`, href: "/#use-free-tool" }],
   };
 }
+
+export const homeTagFieldsSection: EditorialSectionContent = {
+  title: "What Does an AI Tag in an Image Mean?",
+  paragraphs: ["AI tags can mean different things. Distinguish hidden file metadata from visible marks and platform records."],
+  table: {
+    caption: "Common names, file information, and cleanup scope",
+    columns: ["What you call it", "What may be in the file", "What this tool can do"],
+    rows: [
+      ["Content Credentials or a provenance tag", "An embedded C2PA package; its presence alone is not an AI verdict.", "Remove confirmed packages when safe. Keep the original if you need provenance."],
+      ["AI editing tags", "Supported XMP packets containing confirmed AI-related fields.", "Remove eligible packets in a separate copy. Information inside a removed packet cannot always be kept separately."],
+      ["Prompts, seeds, or workflow data", "Supported PNG text or XMP fields containing generation settings or a workflow.", "Remove recognized targets when enabled. Keep the original if you need to reproduce or reopen the workflow."],
+      ["AI Info, a watermark, or an AI badge", "A platform record, visible image content, or a signal encoded in pixels may be involved.", "File cleanup cannot edit an existing post, erase visible marks, or remove pixel-level watermarks."],
+    ],
+  },
+  links: [
+    { label: "Check which image formats and fields are supported", href: "/supported-formats/" },
+    { label: "Understand C2PA credentials before removing them", href: "/c2pa-ai-label/" },
+  ],
+};
+
+export const formatCleanupExamples: EditorialSectionContent = {
+  title: "JPG and PNG: Before and After AI Tag Removal",
+  paragraphs: ["These are local test examples, not customer cases or tests of a social platform's labeling. The JPG is a public legacy Adobe sample; the PNG is a generated test image with an explicit metadata field added for testing."],
+  table: {
+    caption: "Reproducible file examples and their limits",
+    columns: ["Example", "Before cleanup", "After cleanup and verification"],
+    rows: [
+      ["JPG: adobe-20220124-CA.jpg", "The public 1024 × 683 JPEG contains an embedded C2PA package.", "The supported embedded package is removed. Local tests confirm unchanged dimensions and decoded pixels. This is not a current Photoshop export or a platform-label prediction."],
+      ["PNG: transparent 2 × 2 test image", "A valid PNG has a parameters text field added: Steps: 20, Sampler: Euler, Seed: 42.", "The supported AI text field is removed; local tests confirm unchanged dimensions and decoded pixels, including transparency. This constructed fixture does not establish coverage for every generator export."],
+      ["WebP: inspection only", "The scanner can inspect supported metadata in a WebP file.", "No cleaned WebP download is offered in this version. Export a genuine JPG or PNG if needed, then check that new file; conversion may change image encoding."],
+    ],
+  },
+  bullets: [
+    "Keep the original. Review the removed and preserved fields before downloading the separate copy.",
+    "Recheck the downloaded copy to confirm supported targets no longer appear. No supported target found does not prove the image was never AI-edited.",
+  ],
+  links: [
+    { label: "Open the AI tag remover and choose Try a sample image for the public JPG", href: "/#use-free-tool" },
+    { label: "Original Adobe JPG in the C2PA public test files", href: "https://github.com/c2pa-org/public-testfiles/blob/main/legacy/1.4/image/jpeg/adobe-20220124-CA.jpg" },
+    { label: "A label remains after file cleanup: check the next step", href: "/ai-label-after-metadata-removal/" },
+  ],
+};
 
 export const sampleEvidenceSection: EditorialSectionContent = {
   title: "Try a Real C2PA Sample",

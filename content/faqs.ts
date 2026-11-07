@@ -22,7 +22,7 @@ export const homeFaqs: FaqItem[] = [
   {
     question: "Can this remove AI Info from an existing post?",
     answer:
-      "No. The tool only checks a local file and can create a cleaned local copy before you publish or deliver it.",
+      "No. The tool only checks a local file and can create a cleaned local copy before you publish or deliver it. A notice on an existing post or account needs the platform's current help rather than another pass through the image cleaner.",
   },
   {
     question: "Does cleaning metadata guarantee no AI label?",
@@ -60,8 +60,8 @@ export const homeFaqs: FaqItem[] = [
       "Yes. It is free to use, requires no account, and does not charge for downloads.",
   },
   {
-    question: "Can an AI Info remover change a label on an existing post?",
-    answer: "No. It can inspect and clean supported metadata in a local image copy before sharing. A notice on an existing post or account needs the platform's current help rather than another pass through the image cleaner.",
+    question: "How do I remove AI tags from an image?",
+    answer: "Choose your final JPG or PNG, review the supported metadata findings, and download a verified cleaned copy when available. Keep the original and recheck the downloaded file before sharing. A clean file report does not guarantee that a platform will omit an AI label.",
   },
   {
     question: "Does removing AI tags stop every AI detector?",

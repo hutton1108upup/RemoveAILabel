@@ -87,6 +87,7 @@ export const troubleshootingPage: PageContent = {
         columns: ["What the second check shows", "Action"],
         rows: [
           ["No supported target found", "Keep the result as file evidence. Move on to export history and the location of the label instead of repeatedly cleaning the same copy."],
+          ["Supported tags were removed, but a platform still shows AI Info", "For example, a downloaded JPG no longer contains the supported embedded credential on recheck, while an existing post still has a notice. The local result and the post label describe different things. Check the exact attachment, any later export, and the platform's current help; repeating cleanup cannot edit that post."],
           ["A confirmed target is present", "Confirm this is the downloaded copy and whether another app saved it again. Inspect that final export; do not treat an earlier report as evidence about a later file."],
           ["Review needed, unsupported, or failed", "Read the explanation and format limits. No verified clean result has been established for this operation."],
         ],
