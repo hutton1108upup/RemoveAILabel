@@ -1,6 +1,6 @@
 import { homeFaqs, pageFaqs, type FaqItem } from "./faqs";
 import { scenarioGuideCards, scenarioPages } from "./scenario-pages";
-import { formatComparisonSection, platformDecisionSection, sampleEvidenceSection } from "./search-intent";
+import { formatComparisonSection, formatCleanupExamples, platformDecisionSection, sampleEvidenceSection } from "./search-intent";
 import { firstScanDecision, formatDecisionExamples, instagramUploadWorkflow, troubleshootingGuide, troubleshootingPage } from "./mvp-troubleshooting";
 
 export interface BreadcrumbLink {
@@ -659,10 +659,11 @@ export const launchPages: Record<string, PageContent> = {
       "Reviewed September 3, 2026\nPlatform claims: C2PA and Adobe documentation\nFile behavior: local format tests\nStorage and platform behavior may change",
     editorialSections: [
       {
-        title: "A Content Credential Is Not an AI Verdict",
+        title: "Is a C2PA Credential Always an AI Tag?",
         paragraphs: [
           "C2PA is used to record provenance and editing history. Finding an embedded credential does not by itself establish that the whole image was AI-generated. The contents and their validation need to be interpreted separately.",
           "An AI tag remover may remove a supported embedded credential from a new file copy, but that does not prove the picture was never edited or erase credentials held elsewhere.",
+          "No. Content Credentials can also describe a camera-made photo and non-AI edits. Review the recorded actions and validation separately; do not treat every credential as a hidden AI-generation flag.",
         ],
         links: [{ label: "Check supported C2PA metadata with the AI label remover", href: "/#use-free-tool" }],
       },
@@ -741,6 +742,7 @@ export const launchPages: Record<string, PageContent> = {
       "Reviewed September 3, 2026\nFile behavior: format specifications and local parser tests\nCommunity discussions: preserve-versus-remove questions",
     editorialSections: [
       formatComparisonSection,
+      formatCleanupExamples,
       formatDecisionExamples,
       {
         title: "Keep or Remove Workflow Metadata?",
