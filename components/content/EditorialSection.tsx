@@ -16,7 +16,7 @@ export function EditorialSection({ section }: EditorialSectionProps) {
         ))}
       </div>
       {section.table ? (
-        <table className="content-table" data-columns={section.table.columns.length}>
+        <table className="content-table" data-columns={section.table.columns.length} data-mobile-cards={section.table.mobileCards || undefined}>
           <caption>{section.table.caption}</caption>
           <thead>
             <tr>{section.table.columns.map((column) => <th scope="col" key={column}>{column}</th>)}</tr>
@@ -26,7 +26,7 @@ export function EditorialSection({ section }: EditorialSectionProps) {
               <tr key={row[0]}>
                 {row.map((cell, index) => index === 0
                   ? <th scope="row" key={index}>{cell}</th>
-                  : <td key={index}>{cell}</td>)}
+                  : <td key={index} data-label={section.table?.columns[index]}>{cell}</td>)}
               </tr>
             ))}
           </tbody>
