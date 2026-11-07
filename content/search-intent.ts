@@ -50,6 +50,7 @@ export const homeTagFieldsSection: EditorialSectionContent = {
   paragraphs: ["AI tags can mean different things. Distinguish hidden file metadata from visible marks and platform records."],
   table: {
     caption: "Common names, file information, and cleanup scope",
+    mobileCards: true,
     columns: ["What you call it", "What may be in the file", "What this tool can do"],
     rows: [
       ["Content Credentials or a provenance tag", "An embedded C2PA package; its presence alone is not an AI verdict.", "Remove confirmed packages when safe. Keep the original if you need provenance."],
@@ -69,6 +70,7 @@ export const formatCleanupExamples: EditorialSectionContent = {
   paragraphs: ["These are local test examples, not customer cases or tests of a social platform's labeling. The JPG is a public legacy Adobe sample; the PNG is a generated test image with an explicit metadata field added for testing."],
   table: {
     caption: "Reproducible file examples and their limits",
+    mobileCards: true,
     columns: ["Example", "Before cleanup", "After cleanup and verification"],
     rows: [
       ["JPG: adobe-20220124-CA.jpg", "The public 1024 × 683 JPEG contains an embedded C2PA package.", "The supported embedded package is removed. Local tests confirm unchanged dimensions and decoded pixels. This is not a current Photoshop export or a platform-label prediction."],

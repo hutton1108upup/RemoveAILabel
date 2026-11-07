@@ -28,6 +28,7 @@ export interface EditorialSectionContent {
   paragraphs: string[];
   bullets?: string[];
   table?: {
+    mobileCards?: boolean;
     caption: string;
     columns: string[];
     rows: string[][];
