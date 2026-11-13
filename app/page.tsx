@@ -118,6 +118,7 @@ export default function HomePage() {
                   Choose an image
                 </label>
                 <p className="body-large">{homePageContent.subtitle}</p>
+                <p className="body-copy">JPG and PNG: inspect and clean supported metadata. WebP: inspection only.</p>
                 <p className="body-copy">For file metadata before sharing. Existing posts and visible watermarks stay unchanged.</p>
                 <div className="trust-badges">
                   {homePageContent.trustBadges.map((badge) => (
@@ -138,7 +139,7 @@ export default function HomePage() {
 
             <div data-home-section="how-it-works" id="how-it-works">
               <section>
-                <h2>How to Remove AI Label Metadata from an Image</h2>
+                <h2>How to Remove AI Tags from an Image</h2>
                 <div className="section-copy">
                   {homePageContent.sectionCopy.workflow.map((paragraph) => (
                     <p key={paragraph} className="body-copy">{paragraph}</p>
