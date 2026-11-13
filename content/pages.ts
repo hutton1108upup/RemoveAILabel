@@ -179,12 +179,12 @@ const comfyUiDiscussionSource: SourceLink = {
 };
 
 export const homePageContent = {
-  title: "Remove AI Label from Images — Free & Private Tool",
+  title: "AI Tag Remover for Images | Remove AI Label",
   description:
-    "Check and remove supported C2PA, XMP and AI label metadata from JPG and PNG images locally in your browser. Free, private and no account.",
+    "Inspect and remove supported AI-related metadata from JPG and PNG images in your browser. Review your results before sharing, free and without an account.",
   h1: "Check and Remove AI Label Metadata Before You Post",
   subtitle:
-    "Remove supported AI label metadata from JPG and PNG images without re-encoding. Free, private, and no account.",
+    "Use this AI tag remover to inspect and remove supported AI-related metadata from JPG and PNG images in your browser, without re-encoding.",
   trustBadges: [
     "Processed in your browser",
     "No account",
@@ -310,10 +310,10 @@ export const homePageContent = {
     },
   ],
   workflow: [
-    "Add files",
-    "Scan in your browser",
-    "Create a separate copy",
-    "Verify and download",
+    "Choose the final JPG or PNG you plan to share",
+    "Review the scan findings and any warnings",
+    "Create a separate copy when supported cleanup is available",
+    "Review the verification report and download your copy",
   ],
   entryCards: guideCards,
   faqs: homeFaqs,
