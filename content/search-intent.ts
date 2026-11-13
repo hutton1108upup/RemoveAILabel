@@ -1,14 +1,15 @@
 import type { EditorialSectionContent } from "./pages";
 
 export const homeIntentSection: EditorialSectionContent = {
-  title: "Remove Hidden AI Tags from an Image",
+  title: "How to Remove AI Metadata and Tags from Images",
   paragraphs: [
-    "An AI tag remover checks hidden metadata in JPG and PNG images: supported Content Credentials, AI-related XMP, and prompt or workflow fields. Platform notices and visible watermarks need different next steps.",
+    "Check JPG and PNG files for supported Content Credentials, AI-related XMP, and prompt or workflow fields. Platform notices and visible watermarks need different steps.",
   ],
   bullets: [
-    "Choose your final image after editing or exporting.",
-    "Review the findings and download a verified copy when available. Your original stays unchanged.",
-    "Recheck the download. A clean metadata report does not guarantee no platform label.",
+    "Choose the final JPG or PNG after editing.",
+    "Review the supported metadata findings and warnings.",
+    "Download the verified copy when available; keep your original.",
+    "Recheck the downloaded copy. A clean report cannot guarantee no platform label.",
   ],
   table: {
     caption: "File metadata, platform labels, and visible watermarks are different",
@@ -20,7 +21,9 @@ export const homeIntentSection: EditorialSectionContent = {
     ],
   },
   links: [
-    { label: "Check hidden AI tags in a local image", href: "/#use-free-tool" },
+    { label: "Check an image", href: "/#use-free-tool" },
+    { label: "JPG and PNG examples", href: "/supported-formats/" },
+    { label: "AI label still showing after cleanup?", href: "/ai-label-after-metadata-removal/" },
     { label: "Instagram AI Info: before posting or already live", href: "/instagram-ai-info/" },
     { label: "Facebook AI Info: choose the right next step", href: "/facebook-ai-info/" },
     { label: "Visible watermarks and image-content limits", href: "/#what-this-tool-can-change" },
@@ -80,7 +83,8 @@ export const formatCleanupExamples: EditorialSectionContent = {
   },
   bullets: [
     "Keep the original. Review the removed and preserved fields before downloading the separate copy.",
-    "Recheck the downloaded copy to confirm supported targets no longer appear. No supported target found does not prove the image was never AI-edited.",
+    "Follow the homepage steps to check your final JPG or PNG, review findings, and download a verified copy when available. Recheck that copy for the supported targets removed.",
+    "No supported target found means the scanner found none it recognizes, not that the file has no other metadata or signals. If a label remains, check the exact copy, later exports, and the platform notice.",
   ],
   links: [
     { label: "Open the AI tag remover and choose Try a sample image for the public JPG", href: "/#use-free-tool" },
