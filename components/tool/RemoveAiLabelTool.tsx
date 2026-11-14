@@ -156,9 +156,10 @@ function trackResultAnalytics(result: ProcessFileResult) {
 
 interface RemoveAiLabelToolProps {
   fileInputId?: string;
+  showTroubleshooting?: boolean;
 }
 
-export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) {
+export function RemoveAiLabelTool({ fileInputId, showTroubleshooting = false }: RemoveAiLabelToolProps = {}) {
   const workerRef = useRef<Worker | null>(null);
   const counterRef = useRef(0);
   const entriesRef = useRef<ToolEntry[]>([]);
@@ -655,6 +656,7 @@ export function RemoveAiLabelTool({ fileInputId }: RemoveAiLabelToolProps = {}) 
 
                 return (
                   <FileResultCard
+                    showTroubleshooting={showTroubleshooting}
                     key={entry.id}
                     result={result}
                     downloadHref={entry.downloadHref}

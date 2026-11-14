@@ -1,15 +1,9 @@
 import type { EditorialSectionContent } from "./pages";
 
 export const homeIntentSection: EditorialSectionContent = {
-  title: "How to Remove AI Metadata and Tags from Images",
+  title: "Which AI Tag Do You Want to Remove?",
   paragraphs: [
     "Check JPG and PNG files for supported Content Credentials, AI-related XMP, and prompt or workflow fields. Platform notices and visible watermarks need different steps.",
-  ],
-  bullets: [
-    "Choose the final JPG or PNG after editing.",
-    "Review the supported metadata findings and warnings.",
-    "Download the verified copy when available; keep your original.",
-    "Recheck the downloaded copy. A clean report cannot guarantee no platform label.",
   ],
   table: {
     caption: "File metadata, platform labels, and visible watermarks are different",

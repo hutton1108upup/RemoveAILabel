@@ -67,11 +67,6 @@ export const homeFaqs: FaqItem[] = [
     question: "Does removing AI tags stop every AI detector?",
     answer: "No. Supported file metadata, invisible pixel watermarks, visual classifiers, and platform records are different signals. The verification report describes your cleaned copy, not every detector or a future platform result.",
   },
-  {
-    question: "Looking for “removeailable”?",
-    answer:
-      "If you mean “remove AI label,” this tool checks and removes supported AI-related metadata from JPG and PNG images in your browser. It creates a separate copy and keeps your original unchanged.",
-  },
 ];
 
 export const pageFaqs: Record<string, FaqItem[]> = {

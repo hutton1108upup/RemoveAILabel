@@ -114,6 +114,8 @@ test("already-clean file is not rewritten and can reset", async ({ page }) => {
 
   await expect(page.getByText("No supported AI-label metadata found").first()).toBeVisible();
   await expect(page.getByText("No clean copy was created because there was no supported target to remove.").first()).toBeVisible();
+  await expect(page.getByText("Check that you selected the final file you plan to share.", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Why might an AI label still appear?" })).toHaveAttribute("href", "/ai-label-after-metadata-removal/");
   await expect(page.getByRole("link", { name: "Download Cleaned Image" })).toHaveCount(0);
   await expect(page.getByText("Review visible artifacts")).toHaveCount(0);
 
