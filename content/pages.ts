@@ -184,16 +184,10 @@ export const homePageContent = {
     "Inspect and remove supported AI-related metadata from JPG and PNG images in your browser. Review your results before sharing, free and without an account.",
   h1: "Check and Remove AI Label Metadata Before You Post",
   subtitle:
-    "Use this AI tag remover to inspect and remove supported AI-related metadata from JPG and PNG images in your browser, without re-encoding.",
-  trustBadges: [
-    "Processed in your browser",
-    "No account",
-    "Original stays unchanged",
-    "No re-encoding",
-  ],
+    "Use this AI tag remover to inspect and remove supported AI metadata from JPG and PNG images in your browser without re-encoding.",
   sectionCopy: {
     checks: [
-      "A Remove AI Label scan starts with the actual file you plan to post, not a screenshot or a copy already processed by a social app. The scanner reads supported structures inside JPG and PNG files, then separates confirmed findings from possible or unsupported signals. You can review that result before any cleaned copy is prepared.",
+      "Start with the actual file you plan to post, not a screenshot or a copy already processed by a social app. The tool checks supported structures locally and automatically prepares a separate copy when confirmed targets can be removed safely. Review the findings and verification report before downloading.",
       "AI-related information can live in more than one part of an image file. Content Credentials may be stored as a C2PA package, editing applications can write XMP fields, and image-generation workflows may save prompts, model names, seeds, or node data. The tool only marks a field as removable when it recognizes a supported structure; unknown data is not silently treated as an AI label.",
     ],
     preserves: [
@@ -209,8 +203,7 @@ export const homePageContent = {
       "Run the check on the final JPG or PNG you intend to share. Scanning an earlier working file does not describe a later export, and scanning one image does not describe every item in a carousel or batch. Each file receives its own findings and verification result.",
     ],
     workflow: [
-      "To remove AI label metadata from an image, add the final file and let the browser inspect its supported containers. There is no upload stage: validation, scanning, cleanup, and verification run locally. The result shows whether it found confirmed targets, possible signals that need review, or no supported metadata.",
-      "A cleaned copy is prepared only for confirmed, supported targets. Compare the Before and Clean copy columns, check which camera, color, orientation, or copyright fields were preserved, then download the verified result. Keep the original so you can return to the source export if the cleaned copy is not appropriate for your publishing workflow.",
+      "Choose your final image. The tool checks it locally and automatically prepares and verifies a separate copy when supported targets can be removed safely. Your original stays unchanged.",
     ],
     report: [
       "Compare Found and Removed fields, then check what stayed Preserved. The tool scans the cleaned copy again before offering a verified download. Try the real sample below or read the illustrated report to understand the result.",
@@ -294,7 +287,7 @@ export const homePageContent = {
   scenarios: [
     {
       title: "Real Photos Lightly Edited with AI",
-      description: "Create a separate copy after reviewing the file-level result.",
+      description: "Review the file-level result and download a separate copy when available.",
     },
     {
       title: "Social Media Preflight",
@@ -311,9 +304,9 @@ export const homePageContent = {
   ],
   workflow: [
     "Choose the final JPG or PNG you plan to share",
-    "Review the scan findings and any warnings",
-    "Create a separate copy when supported cleanup is available",
-    "Review the verification report and download your copy",
+    "The tool checks the file and prepares a copy when safe",
+    "Review findings, warnings, and the verification report",
+    "Download the verified copy when available; keep the original",
   ],
   entryCards: guideCards,
   faqs: homeFaqs,

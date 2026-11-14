@@ -118,25 +118,14 @@ export default function HomePage() {
                   Choose an image
                 </label>
                 <p className="body-large">{homePageContent.subtitle}</p>
-                <p className="body-copy">JPG and PNG: inspect and clean supported metadata. WebP: inspection only.</p>
-                <p className="body-copy">For file metadata before sharing. Existing posts and visible watermarks stay unchanged.</p>
-                <div className="trust-badges">
-                  {homePageContent.trustBadges.map((badge) => (
-                    <span key={badge} className="trust-chip">
-                      {badge}
-                    </span>
-                  ))}
-                </div>
+                <p className="body-copy">WebP: inspection only · No image upload · No account</p>
+                <p className="body-copy">Your original stays unchanged. Existing posts and visible watermarks cannot be changed.</p>
               </div>
-              <RemoveAiLabelTool fileInputId="home-image-picker" />
+              <RemoveAiLabelTool fileInputId="home-image-picker" showTroubleshooting />
             </div>
           </section>
 
           <div className="shell section-stack">
-            <div data-home-section="intent">
-              <EditorialSection section={homeIntentSection} />
-            </div>
-
             <div data-home-section="how-it-works" id="how-it-works">
               <section>
                 <h2>How to Remove AI Tags from an Image</h2>
@@ -147,6 +136,10 @@ export default function HomePage() {
                 </div>
                 <StepList steps={homePageContent.workflow} />
               </section>
+            </div>
+
+            <div data-home-section="intent">
+              <EditorialSection section={homeIntentSection} />
             </div>
 
             <section data-home-section="report">

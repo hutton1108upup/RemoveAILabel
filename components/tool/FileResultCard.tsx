@@ -4,8 +4,10 @@ import { DownloadActions } from "./DownloadActions";
 import { AdvancedOptions } from "./AdvancedOptions";
 import { SiteBUpsell } from "./SiteBUpsell";
 import { ResultComparison } from "./ResultComparison";
+import { AppLink } from "@/components/layout/AppLink";
 
 interface FileResultCardProps {
+  showTroubleshooting?: boolean;
   result: ProcessFileResult;
   downloadHref?: string;
   downloadName?: string;
@@ -23,6 +25,7 @@ interface FileResultCardProps {
 }
 
 export function FileResultCard({
+  showTroubleshooting = false,
   result,
   downloadHref,
   downloadName,
@@ -96,10 +99,18 @@ export function FileResultCard({
           <p className="body-copy result-note">
             This result describes the selected file only. A platform may still use other signals or disclosure rules.
           </p>
+          {showTroubleshooting ? (
+            <p className="body-copy">Check that you selected the final file you plan to share. A later edit or export may contain different metadata.</p>
+          ) : null}
           <div className="button-row">
             <button type="button" className="button button-secondary" onClick={onCheckAnother}>
               Check Another Image
             </button>
+            {showTroubleshooting ? (
+              <AppLink href="/ai-label-after-metadata-removal/" className="button button-secondary">
+                Why might an AI label still appear?
+              </AppLink>
+            ) : null}
           </div>
         </article>
         {showSiteB && siteBUrl ? <SiteBUpsell href={siteBUrl} variant="already-clean" /> : null}

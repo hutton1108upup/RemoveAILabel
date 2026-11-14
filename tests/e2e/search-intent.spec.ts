@@ -33,7 +33,7 @@ test("search-intent pages keep navigation, metadata and phone layouts usable", a
   await expect(page).toHaveURL(/\/#use-free-tool$/);
   await expect(page.getByRole("button", { name: "Image file dropzone" })).toBeVisible();
   const order = await page.locator("main [data-home-section]").evaluateAll((sections) => sections.map((section) => section.getAttribute("data-home-section")));
-  expect(order.indexOf("intent")).toBeLessThan(order.indexOf("how-it-works"));
+  expect(order.indexOf("how-it-works")).toBeLessThan(order.indexOf("intent"));
   expect(order.indexOf("how-it-works")).toBeLessThan(order.indexOf("checks"));
   expect(order.indexOf("report")).toBeLessThan(order.indexOf("limits"));
   await page.getByRole("button", { name: "What does an AI tag remover remove?", exact: true }).click();
