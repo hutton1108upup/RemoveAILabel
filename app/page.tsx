@@ -117,6 +117,7 @@ export default function HomePage() {
                 <label className="button button-primary mobile-file-launcher" htmlFor="home-image-picker">
                   Choose an image
                 </label>
+                <a className="mobile-sample-entry" href="#home-sample-trigger">Try a sample image</a>
                 <p className="body-large">{homePageContent.subtitle}</p>
                 <p className="body-copy">WebP: inspection only · No image upload · No account</p>
                 <p className="body-copy">Your original stays unchanged. Existing posts and visible watermarks cannot be changed.</p>

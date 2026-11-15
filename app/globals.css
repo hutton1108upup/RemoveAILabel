@@ -157,8 +157,16 @@ button {
 }
 
 .button.mobile-file-launcher,
+.mobile-sample-entry,
 .mobile-format-note {
   display: none;
+}
+
+.table-row-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 8px;
 }
 
 .eyebrow {
@@ -1522,6 +1530,15 @@ h3 {
     display: inline-flex;
     width: 100%;
     margin-top: 20px;
+  }
+
+  .mobile-sample-entry {
+    display: inline-block;
+    margin-top: 12px;
+  }
+
+  .hero-section:has(.privacy-workbench) .mobile-sample-entry {
+    display: none;
   }
 
   .hero-copy > .body-large {

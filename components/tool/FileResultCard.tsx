@@ -95,7 +95,12 @@ export function FileResultCard({
             </div>
             <span className="status-chip status-chip-already-clean">Original unchanged</span>
           </div>
-          <p>No clean copy was created because there was no supported target to remove.</p>
+          <p>{result.scan?.format === "webp" && !options.webpCleanEnabled
+            ? "No supported target was found. WebP files can be inspected, but cleaned WebP downloads are not available in this version."
+            : "No clean copy was created because there was no supported target to remove."}</p>
+          {result.scan?.format === "webp" && !options.webpCleanEnabled ? (
+            <AppLink href="/supported-formats/">Check supported formats and options</AppLink>
+          ) : null}
           <p className="body-copy result-note">
             This result describes the selected file only. A platform may still use other signals or disclosure rules.
           </p>
@@ -132,6 +137,9 @@ export function FileResultCard({
           <AlertTriangle size={18} strokeWidth={1.5} aria-hidden="true" />
           <span>{result.errorMessage ?? "Metadata may be related to an AI signal, but this file cannot be cleaned safely. No clean copy was created."}</span>
         </div>
+        {result.scan?.format === "webp" && !options.webpCleanEnabled ? (
+          <p className="body-copy">{result.errorMessage === "WebP can be inspected but not cleaned in this version." ? null : "WebP files can be inspected, but cleaned WebP downloads are not available in this version. "}<AppLink href="/supported-formats/">Check supported formats and options</AppLink></p>
+        ) : null}
         <p className="body-copy result-note">Your original file remains unchanged.</p>
         <div className="button-row">
           <button type="button" className="button button-secondary" onClick={onCheckAnother}>
