@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { unzipSync } from "fflate";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import sharp from "sharp";
 import {
   ascii,
   buildPng,
@@ -121,6 +122,37 @@ test("already-clean file is not rewritten and can reset", async ({ page }) => {
 
   await page.getByRole("button", { name: "Check Another Image" }).click();
   await expect(page.getByText("camera-clean.png")).toHaveCount(0);
+});
+
+test("a WebP inspection explains that WebP cleanup is unavailable", async ({ page }) => {
+  const buffer = await sharp({ create: { width: 2, height: 2, channels: 3, background: "#fff" } }).webp().toBuffer();
+  await page.goto("/");
+  await page.getByLabel("Choose image files").setInputFiles({ name: "clean.webp", mimeType: "image/webp", buffer });
+  await expect(page.getByText("No supported AI-label metadata found").first()).toBeVisible();
+  await expect(page.getByText(/WebP files can be inspected, but cleaned WebP downloads are not available/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Check supported formats and options" })).toHaveAttribute("href", "/supported-formats/");
+  await expect(page.getByRole("link", { name: "Download Cleaned Image" })).toHaveCount(0);
+});
+
+test("homepage routes each question to its relevant next step", async ({ page }) => {
+  await page.goto("/");
+  const table = page.locator('[data-home-section="intent"] table');
+  await expect(table.getByRole("link", { name: "Check an image" })).toHaveAttribute("href", "/#use-free-tool");
+  await expect(table.getByRole("link", { name: "Instagram guide" })).toHaveAttribute("href", "/instagram-ai-info/");
+  await expect(table.getByRole("link", { name: "Facebook guide" })).toHaveAttribute("href", "/facebook-ai-info/");
+  await expect(table.getByRole("link", { name: "See tool limits" })).toHaveAttribute("href", "/#what-this-tool-can-change");
+});
+
+test("mobile sample shortcut reaches the existing working sample", async ({ page }) => {
+  test.skip(page.viewportSize()?.width !== 375, "The shortcut is mobile-only.");
+  await page.goto("/");
+  const shortcut = page.locator(".mobile-sample-entry");
+  await expect(shortcut).toBeInViewport();
+  await shortcut.click();
+  await expect(page.locator("#home-sample-trigger")).toBeInViewport();
+  await page.locator("#home-sample-trigger").click();
+  await expect(page.getByText("File-level clean copy ready").first()).toBeVisible({ timeout: 30_000 });
+  await expect(shortcut).toBeHidden();
 });
 
 test("confirmed PNG metadata is cleaned, verified, regenerated, and downloaded", async ({ page }) => {

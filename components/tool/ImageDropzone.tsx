@@ -14,6 +14,7 @@ interface ImageDropzoneProps {
   onDragChange: (dragging: boolean) => void;
   variant?: "full" | "compact";
   inputId?: string;
+  sampleId?: string;
 }
 
 export function ImageDropzone({
@@ -25,6 +26,7 @@ export function ImageDropzone({
   onDragChange,
   variant = "full",
   inputId: providedInputId,
+  sampleId,
 }: ImageDropzoneProps) {
   const generatedInputId = useId();
   const inputId = providedInputId ?? generatedInputId;
@@ -142,6 +144,7 @@ export function ImageDropzone({
         <span>No file handy? </span>
         <button
           type="button"
+          id={sampleId}
           className="sample-link"
           aria-label="Try a sample image"
           disabled={sampleBusy}

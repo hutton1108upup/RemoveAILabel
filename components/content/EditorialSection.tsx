@@ -22,11 +22,20 @@ export function EditorialSection({ section }: EditorialSectionProps) {
             <tr>{section.table.columns.map((column) => <th scope="col" key={column}>{column}</th>)}</tr>
           </thead>
           <tbody>
-            {section.table.rows.map((row) => (
+            {section.table.rows.map((row, rowIndex) => (
               <tr key={row[0]}>
                 {row.map((cell, index) => index === 0
                   ? <th scope="row" key={index}>{cell}</th>
-                  : <td key={index} data-label={section.table?.columns[index]}>{cell}</td>)}
+                  : <td key={index} data-label={section.table?.columns[index]}>
+                    {cell}
+                    {index === row.length - 1 && section.table?.rowLinks?.[rowIndex]?.length ? (
+                      <div className="table-row-links">
+                        {section.table.rowLinks[rowIndex].map((link) => (
+                          <AppLink key={link.href} href={link.href}>{link.label}</AppLink>
+                        ))}
+                      </div>
+                    ) : null}
+                  </td>)}
               </tr>
             ))}
           </tbody>

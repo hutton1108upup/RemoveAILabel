@@ -32,6 +32,7 @@ export interface EditorialSectionContent {
     caption: string;
     columns: string[];
     rows: string[][];
+    rowLinks?: BreadcrumbLink[][];
   };
   links?: BreadcrumbLink[];
   illustration?: {
@@ -187,20 +188,17 @@ export const homePageContent = {
     "Use this AI tag remover to inspect and remove supported AI metadata from JPG and PNG images in your browser without re-encoding.",
   sectionCopy: {
     checks: [
-      "Start with the actual file you plan to post, not a screenshot or a copy already processed by a social app. The tool checks supported structures locally and automatically prepares a separate copy when confirmed targets can be removed safely. Review the findings and verification report before downloading.",
-      "AI-related information can live in more than one part of an image file. Content Credentials may be stored as a C2PA package, editing applications can write XMP fields, and image-generation workflows may save prompts, model names, seeds, or node data. The tool only marks a field as removable when it recognizes a supported structure; unknown data is not silently treated as an AI label.",
+      "Check the final file you plan to share, rather than a screenshot or a copy processed by a social app. AI-related information can appear in embedded C2PA credentials, XMP fields, or supported prompt and workflow data. Unknown information is not automatically treated as an AI label.",
     ],
     preserves: [
       "Removing supported AI label metadata should not require flattening or recompressing the picture. For supported JPG and PNG files, the cleaner works on file containers and metadata segments rather than drawing the image onto a canvas. The verification report checks that the encoded image payload was not re-encoded.",
       "Default cleanup is deliberately narrower than a full privacy scrub. Camera EXIF, orientation, ICC color information, PNG transparency, and creator or copyright details are kept when they are separate from a removed packet. If a field cannot be preserved safely and separately, the result explains the limitation instead of presenting an overconfident success message. Your original file is never replaced.",
     ],
     limits: [
-      "This is a file preflight tool, not a control panel for Instagram, Facebook, or another publishing platform. It can inspect the selected local file, remove confirmed supported fields in a separate copy, and scan that copy again. It cannot edit a post that is already live, change an account-level disclosure, or determine every signal a platform may use.",
-      "Some searches describe a tool like this as an AI Info remover. That shorthand is useful for finding a file checker, but it is not a promise that a platform notice will disappear. Visible text, pixel-level watermarks, image appearance, disclosure rules, and platform-side classification remain outside the file-level cleanup performed here. Use the report as evidence about the downloaded copy, not as a guarantee about a future post.",
+      "This tool checks local file metadata. It cannot edit an existing post or account disclosure, remove visible or pixel-level watermarks, or predict how a platform will classify an image. The report describes the downloaded copy, not a future platform outcome.",
     ],
     scenarios: [
-      "The tool is useful when a real photo has passed through an AI-assisted editing workflow, when a social media manager wants to inspect the final export, or when a photographer needs a separate delivery copy. In each case, the practical question is the same: what supported signals are inside this exact file, and can confirmed fields be removed without re-encoding the image payload?",
-      "Run the check on the final JPG or PNG you intend to share. Scanning an earlier working file does not describe a later export, and scanning one image does not describe every item in a carousel or batch. Each file receives its own findings and verification result.",
+      "Check an AI-assisted photo, a social media export, or a client delivery copy. Each file receives its own findings and verification result.",
     ],
     workflow: [
       "Choose your final image. The tool checks it locally and automatically prepares and verifies a separate copy when supported targets can be removed safely. Your original stays unchanged.",

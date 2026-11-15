@@ -584,6 +584,7 @@ export function RemoveAiLabelTool({ fileInputId, showTroubleshooting = false }: 
       {entries.length === 0 ? (
         <>
           <ImageDropzone
+            sampleId={showTroubleshooting ? "home-sample-trigger" : undefined}
             inputId={fileInputId}
             dragging={dragging}
             onSelect={enqueueFiles}

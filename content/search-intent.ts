@@ -9,18 +9,19 @@ export const homeIntentSection: EditorialSectionContent = {
     caption: "File metadata, platform labels, and visible watermarks are different",
     columns: ["Your problem", "Start here"],
     rows: [
-      ["Hidden AI tags in a JPG or PNG", "Choose the final file above. The tool checks supported C2PA, XMP, and workflow fields and verifies a separate copy."],
-      ["AI Info on Instagram or Facebook", "Open the platform guide below to distinguish a local file from an existing post or account notice."],
-      ["Visible text, a watermark, or an AI editing effect", "Read the image-content limits below. Metadata cleanup leaves pixels unchanged; visible edits need an image editor."],
+      ["Hidden AI tags in a JPG or PNG", "Check the final file. A separate copy is prepared and verified only when supported targets can be safely removed."],
+      ["AI Info on Instagram or Facebook", "Find the right next step for a local file or an existing post."],
+      ["Visible text, a watermark, or an AI editing effect", "Metadata cleanup leaves visible image content unchanged."],
+    ],
+    rowLinks: [
+      [{ label: "Check an image", href: "/#use-free-tool" }],
+      [{ label: "Instagram guide", href: "/instagram-ai-info/" }, { label: "Facebook guide", href: "/facebook-ai-info/" }],
+      [{ label: "See tool limits", href: "/#what-this-tool-can-change" }],
     ],
   },
   links: [
-    { label: "Check an image", href: "/#use-free-tool" },
     { label: "JPG and PNG examples", href: "/supported-formats/" },
     { label: "AI label still showing after cleanup?", href: "/ai-label-after-metadata-removal/" },
-    { label: "Instagram AI Info: before posting or already live", href: "/instagram-ai-info/" },
-    { label: "Facebook AI Info: choose the right next step", href: "/facebook-ai-info/" },
-    { label: "Visible watermarks and image-content limits", href: "/#what-this-tool-can-change" },
   ],
 };
 
